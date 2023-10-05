@@ -19,9 +19,7 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
     private final AdminService adminService;
-
     @GetMapping
     public ResponseEntity<List<AdminResponseDto>> getAllUsers() {
         return ResponseEntity.ok(adminService.getAllUsers());
