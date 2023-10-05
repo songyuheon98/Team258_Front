@@ -7,6 +7,7 @@ import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.SurveyRepository;
+import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +19,15 @@ import java.util.List;
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public MessageDto createSurvey(SurveyRequestDto requestDto, User user) {
         Survey survey = new Survey(requestDto, user);
         surveyRepository.save(survey);
+        User savedUser = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("(임시) 일치하는 유저 없음"));
+        savedUser.addSurvey(survey);
         return new MessageDto("작성이 완료되었습니다");
     }
 
@@ -40,7 +45,7 @@ public class SurveyService {
     @Transactional
     public MessageDto updateSurvey(Long surveyId, SurveyRequestDto requestDto, User user) {
         Survey survey = getSurveyById(surveyId);
-        if (!survey.getUser().equals(user)&&user.getRole().equals(UserRoleEnum.USER)) {
+        if (!survey.getUser().getUserId().equals(user.getUserId())&&user.getRole().equals(UserRoleEnum.USER)) {
             throw new IllegalArgumentException("(임시)권한이 없음");
         }
         survey.update(requestDto);
@@ -50,7 +55,7 @@ public class SurveyService {
     @Transactional
     public MessageDto deleteSurvey(Long surveyId, User user) {
         Survey survey = getSurveyById(surveyId);
-        if (!survey.getUser().equals(user)&&user.getRole().equals(UserRoleEnum.USER)) {
+        if (!survey.getUser().getUserId().equals(user.getUserId())&&user.getRole().equals(UserRoleEnum.USER)) {
             throw new IllegalArgumentException("(임시)권한이 없음");
         }
         surveyRepository.delete(survey);
