@@ -69,6 +69,34 @@ public class AnswerServiceTest {
 
         assertEquals("작성이 완료되었습니다.", response.getMsg());
     }
+    @Test
+    @DisplayName("응답 저장 - 선택지 없음")
+    public void testCreateAnswerButWrong() {
+
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2023,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+
+        surveyRepository.save(survey);
+
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(1L)
+                .answer(4L)
+                .build();
+
+        assertThrows(IllegalArgumentException.class,()->answerService.createAnswer(requestDto, user));
+    }
 
     @Test
     @DisplayName("응답 저장 - 기간만료")
@@ -194,6 +222,7 @@ public class AnswerServiceTest {
     }
 
     @Test
+    @DisplayName("응답 수정")
     public void testUpdateAnswer() {
         User user = User.builder()
                 .userId(1L)
@@ -226,8 +255,83 @@ public class AnswerServiceTest {
 
         MessageDto response = answerService.updateAnswer(requestDto, answerId, user);
 
-        assertNotNull(response);
         assertEquals("수정이 완료되었습니다.", response.getMsg());
+    }
+
+    @Test
+    @DisplayName("응답 수정 - 응답자 아님")
+    public void testUpdateAnswerByWrongUser() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        User user2 = User.builder()
+                .userId(2L)
+                .username("username1")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2023,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
+
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(1L)
+                .answer(1L)
+                .build();
+        Long answerId = 1L;
+
+        assertThrows(IllegalArgumentException.class,()->answerService.updateAnswer(requestDto, answerId, user2));
+    }
+
+    @Test
+    @DisplayName("응답 수정 - 선택지 없음")
+    public void testUpdateAnswerButWrong() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2023,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
+
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(1L)
+                .answer(4L)
+                .build();
+        Long answerId = 1L;
+
+        assertThrows(IllegalArgumentException.class,()->answerService.updateAnswer(requestDto, answerId, user));
     }
 
     @Test
@@ -262,6 +366,43 @@ public class AnswerServiceTest {
 
         assertNotNull(response);
         assertEquals("삭제가 완료되었습니다.", response.getMsg());
+    }
+
+    @Test
+    @DisplayName("응답 삭제 - 응답자 아님")
+    public void testDeleteAnswerByWrongUser() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        User user2 = User.builder()
+                .userId(2L)
+                .username("username1")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2023,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
+
+        Long answerId = 1L;
+
+        assertThrows(IllegalArgumentException.class,()->answerService.deleteAnswer(answerId, user2));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
