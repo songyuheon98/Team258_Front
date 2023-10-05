@@ -1,19 +1,20 @@
 package com.example.team258.entity;
 
+import com.example.team258.entity.Survey;
+import com.example.team258.entity.Timestamped;
+import com.example.team258.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Answer extends Timestamped{
+public class Answer extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +34,17 @@ public class Answer extends Timestamped{
     @JoinColumn(name="user_id")
     private User user;
 
+    public Answer(Long answerNum, User user,Survey survey) {
+        this.answerNum = answerNum;
+        this.survey = survey;
+        this.user = user;
+    }
+
     public void addUser(User user){
         this.user = user;
     }
 
+    public void update(Long answerNum) {
+        this.answerNum = answerNum;
+    }
 }
