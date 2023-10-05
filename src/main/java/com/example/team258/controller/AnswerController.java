@@ -9,6 +9,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -16,9 +18,16 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping("/answer")
-    public ResponseEntity<String> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){ //@AuthenticationPrincipal은 class확인 후 추가
+    public ResponseEntity<String> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseEntity<String> answer = answerService.createAnswer(requestDto,userDetails.getUser());
         return answer;
     }
+
+    @GetMapping("/answer")
+    public List<AnswerResponseDto> getAnswers(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        List<AnswerResponseDto> answer = answerService.getAnswers(userDetails.getUser());
+        return answer;
+    }
+
 
 }

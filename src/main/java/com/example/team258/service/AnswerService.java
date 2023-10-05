@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -21,5 +24,10 @@ public class AnswerService {
         Answer answer = new Answer(requestDto.getAnswer(), user,survey);
         Answer savedAnswer = answerRepository.save(answer);
         return ResponseEntity.ok("작성이 완료되었습니다.");
+    }
+
+    public List<AnswerResponseDto> getAnswers(User user) {
+        List<Answer> answerList = answerRepository.findAllByUser(user);
+        return answerList.stream().map(i-> new AnswerResponseDto(i)).collect(Collectors.toList());
     }
 }
