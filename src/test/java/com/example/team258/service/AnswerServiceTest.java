@@ -1,14 +1,14 @@
-package com.example.team258.controller.serviceController;
+package com.example.team258.service;
 
 import com.example.team258.dto.AnswerRequestDto;
 import com.example.team258.dto.AnswerResponseDto;
 import com.example.team258.entity.*;
 import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
-import com.example.team258.service.AnswerService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +22,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class AnswerServiceTest {
 
     private AnswerService answerService;
@@ -39,6 +39,7 @@ public class AnswerServiceTest {
     }
 
     @Test
+    @DisplayName("응답 저장")
     public void testCreateAnswer() {
 
         User user = User.builder()
@@ -65,8 +66,87 @@ public class AnswerServiceTest {
 
         MessageDto response = answerService.createAnswer(requestDto, user);
 
-        assertNotNull(response);
+
         assertEquals("작성이 완료되었습니다.", response.getMsg());
+    }
+
+    @Test
+    @DisplayName("응답 저장 - 기간만료")
+    public void testCreateAnswerAfterDeadline() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2022,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(1L)
+                .answer(2L)
+                .build();
+
+        assertThrows(IllegalArgumentException.class,()->answerService.createAnswer(requestDto, user));
+    }
+
+    @Test
+    @DisplayName("응답 저장 - 없는 설문")
+    public void testCreateAnswerAtSurveyNotExisted() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2024,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(2L)
+                .answer(2L)
+                .build();
+        assertThrows(NullPointerException.class,()->answerService.createAnswer(requestDto, user));
+    }
+
+    @Test
+    @DisplayName("응답 저장 - 중복 응답")
+    public void testCreateAnswerAtSurveyAlreadyAnswered() {
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        Survey survey = Survey.builder()
+                .surveyId(1L)
+                .question("질문질문")
+                .choices("대충 답지 3개 있음")
+                .deadline(LocalDateTime.of(2024,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey);
+        AnswerRequestDto requestDto = AnswerRequestDto.builder()
+                .surveyId(1L)
+                .answer(2L)
+                .build();
+
+        MessageDto response = answerService.createAnswer(requestDto, user);
+
+        assertThrows(IllegalArgumentException.class,()->answerService.createAnswer(requestDto, user));
     }
 
     @Test
@@ -75,6 +155,12 @@ public class AnswerServiceTest {
                 .userId(1L)
                 .username("username")
                 .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+        User user2 = User.builder()
+                .userId(2L)
+                .username("username2")
+                .password("password2")
                 .role(UserRoleEnum.USER)
                 .build();
         Survey survey = Survey.builder()
@@ -87,24 +173,24 @@ public class AnswerServiceTest {
                 .build();
 
         surveyRepository.save(survey);
-        for(long i = 1;i<11;i++) {
-            Answer answer = Answer.builder()
-                    .answerId(i)
-                    .answerNum(i%3+1)
-                    .survey(survey)
-                    .user(user)
-                    .build();
-            answerRepository.save(answer);
-        }
-
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(1L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
+        Answer answer2 = Answer.builder()
+                .answerId(2L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user2)
+                .build();
+        answerRepository.save(answer2);
         List<AnswerResponseDto> response = answerService.getAnswers(user);
 
-        assertNotNull(response);
-        for(int i = 1;i<11;i++){
-            System.out.println(i + "번째 데이터 비교");
-            assertEquals(i%3+1, response.get(i-1).getAnswer());
-        }
-
+        assertEquals(1,response.size());
+        assertEquals(1, response.get(0).getAnswer());
     }
 
     @Test
@@ -123,18 +209,14 @@ public class AnswerServiceTest {
                 .maxChoice(3L)
                 .user(user)
                 .build();
-
         surveyRepository.save(survey);
-
-        for(long i = 1;i<11;i++) {
-            Answer answer = Answer.builder()
-                    .answerId(i)
-                    .answerNum(i%3+1)
-                    .survey(survey)
-                    .user(user)
-                    .build();
-            answerRepository.save(answer);
-        }
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
 
         AnswerRequestDto requestDto = AnswerRequestDto.builder()
                 .surveyId(2L)
@@ -166,18 +248,15 @@ public class AnswerServiceTest {
                 .build();
 
         surveyRepository.save(survey);
+        Answer answer = Answer.builder()
+                .answerId(1L)
+                .answerNum(2L)
+                .survey(survey)
+                .user(user)
+                .build();
+        answerRepository.save(answer);
 
-        for(long i = 1;i<11;i++) {
-            Answer answer = Answer.builder()
-                    .answerId(i)
-                    .answerNum(i%3+1)
-                    .survey(survey)
-                    .user(user)
-                    .build();
-            answerRepository.save(answer);
-        }
-
-        Long answerId = 4L;
+        Long answerId = 1L;
 
         MessageDto response = answerService.deleteAnswer(answerId, user);
 
@@ -185,6 +264,20 @@ public class AnswerServiceTest {
         assertEquals("삭제가 완료되었습니다.", response.getMsg());
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 
     private static class AnswerRepositoryStub implements AnswerRepository {
         private List<Answer> answers = new ArrayList<>();
