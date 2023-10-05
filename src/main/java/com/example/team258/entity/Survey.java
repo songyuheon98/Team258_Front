@@ -52,7 +52,6 @@ public class Survey extends Timestamped{
 
     public void addUser(User user){
         this.user = user;
-        user.addSurvey(this);
     }
 
     public void update(SurveyRequestDto requestDto) {
