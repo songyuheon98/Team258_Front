@@ -1,4 +1,4 @@
-package com.example.team258.answer;
+package com.example.team258.entity;
 
 import com.example.team258.entity.Survey;
 import com.example.team258.entity.Timestamped;

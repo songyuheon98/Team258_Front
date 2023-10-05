@@ -1,6 +1,6 @@
-package com.example.team258.answer;
+package com.example.team258.repository;
 
-import com.example.team258.answer.Answer;
+import com.example.team258.entity.Answer;
 import com.example.team258.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

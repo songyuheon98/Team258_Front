@@ -1,4 +1,4 @@
-package com.example.team258.answer;
+package com.example.team258.dto;
 
 import lombok.Getter;
 
