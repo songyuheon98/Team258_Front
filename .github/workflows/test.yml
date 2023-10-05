@@ -43,6 +43,11 @@ jobs:
         with:
           arguments: build
 
+      # (3.5) properties 파일 수정
+      - name: Update properties file
+        run: sed -i 's/\(spring.datasource.password=\).*/\1${{ secrets.DB_PASSWORD }}/' path/to/your/application.properties
+
+
       # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
