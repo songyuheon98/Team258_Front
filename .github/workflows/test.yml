@@ -11,7 +11,7 @@ env:
   S3_BUCKET_NAME: team258-bucket
   CODE_DEPLOY_APPLICATION_NAME: team258-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: team258-codedeploy-deployment-group
-  RESOURCE_PATH: ./src/main/resources/application.properties
+  RESOURCE_PATH: src/main/resources/application.properties
 
 permissions:
   contents: read
