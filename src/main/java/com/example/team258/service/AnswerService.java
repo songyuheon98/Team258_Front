@@ -41,4 +41,14 @@ public class AnswerService {
         answer.update(requestDto.getAnswer());
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
+
+    public ResponseEntity<String> deleteAnswer(Long answerId, User user) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        if (answer.getUser().getUserId() != user.getUserId()){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        }
+        answerRepository.delete(answer);
+        return ResponseEntity.ok("삭제가 완료되었습니다.");
+    }
+
 }

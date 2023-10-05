@@ -35,5 +35,9 @@ public class AnswerController {
         return answer;
     }
 
-
+    @DeleteMapping("/answer/{answerId}")
+    public ResponseEntity<String> deleteAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseEntity<String> answer = answerService.deleteAnswer(answerId,userDetails.getUser());
+        return answer;
+    }
 }
