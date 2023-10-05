@@ -29,5 +29,11 @@ public class AnswerController {
         return answer;
     }
 
+    @PutMapping("/answer/{answerId}")
+    public ResponseEntity<String> updateAnswer(@RequestBody AnswerRequestDto requestDto,@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseEntity<String> answer = answerService.updateAnswer(requestDto, answerId,userDetails.getUser());
+        return answer;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.team258.entity;
 
+import com.example.team258.dto.AnswerRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,4 +44,7 @@ public class Answer extends Timestamped{
         this.user = user;
     }
 
+    public void update(Long answerNum) {
+        this.answerNum = answerNum;
+    }
 }

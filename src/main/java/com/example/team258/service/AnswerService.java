@@ -9,6 +9,7 @@ import com.example.team258.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,5 +30,15 @@ public class AnswerService {
     public List<AnswerResponseDto> getAnswers(User user) {
         List<Answer> answerList = answerRepository.findAllByUser(user);
         return answerList.stream().map(i-> new AnswerResponseDto(i)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ResponseEntity<String> updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
+        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        if (answer.getUser().getUserId() != user.getUserId()){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        }
+        answer.update(requestDto.getAnswer());
+        return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 }
