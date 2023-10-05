@@ -24,6 +24,9 @@ public class AnswerService {
 
     public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
         Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        if(answerRepository.findByUserAndSurvey(user,survey).isPresent()){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        }
         Answer answer = new Answer(requestDto.getAnswer(), user,survey);
         Answer savedAnswer = answerRepository.save(answer);
         MessageDto message = new MessageDto("작성이 완료되었습니다.");
