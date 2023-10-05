@@ -11,6 +11,7 @@ env:
   S3_BUCKET_NAME: team258-bucket
   CODE_DEPLOY_APPLICATION_NAME: team258-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: team258-codedeploy-deployment-group
+  RESOURCE_PATH: ./src/main/resources/application.properties
 
 permissions:
   contents: read
@@ -43,10 +44,11 @@ jobs:
         with:
           arguments: build
 
-#      # (3.5) properties 파일 수정
-#      - name: Update properties file
-#        run: sed -i 's/\(spring.datasource.password=\).*/\1${{ secrets.DB_PASSWORD }}/' src/main/resources/application.properties
-#
+      # (3.5) properties 파일 수정
+      - name: Update properties file
+        run: |
+           sed -i "s/spring.datasource.password=.*/spring.datasource.password=${{ secrets.DB_PASSWORD }}/" Team258/src/main/resources/application.properties
+
 
 
       # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
