@@ -1,9 +1,13 @@
 package com.example.team258.entity;
 
-public class MessageDto {
-    private String message;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-    public MessageDto(String message) {
-        this.message = message;
-    }
+@Builder
+@Getter
+@AllArgsConstructor
+public class MessageDto {
+    private String msg;
+
 }
