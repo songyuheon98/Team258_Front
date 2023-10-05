@@ -15,4 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerController {
     private final AnswerService answerService;
 
+    @PostMapping("/answer")
+    public ResponseEntity<String> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){ //@AuthenticationPrincipal은 class확인 후 추가
+        ResponseEntity<String> answer = answerService.createAnswer(requestDto,userDetails.getUser());
+        return answer;
+    }
+
 }

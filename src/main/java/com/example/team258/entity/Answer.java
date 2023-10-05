@@ -33,6 +33,12 @@ public class Answer extends Timestamped{
     @JoinColumn(name="user_id")
     private User user;
 
+    public Answer(Long answerNum, User user,Survey survey) {
+        this.answerNum = answerNum;
+        this.survey = survey;
+        this.user = user;
+    }
+
     public void addUser(User user){
         this.user = user;
     }
