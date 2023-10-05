@@ -1,20 +1,20 @@
-package com.example.team258.entity;
+package com.example.team258.answer;
 
-import com.example.team258.dto.AnswerRequestDto;
+import com.example.team258.entity.Survey;
+import com.example.team258.entity.Timestamped;
+import com.example.team258.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Answer extends Timestamped{
+public class Answer extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

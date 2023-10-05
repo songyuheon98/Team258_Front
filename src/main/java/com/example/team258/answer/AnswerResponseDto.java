@@ -1,6 +1,4 @@
-package com.example.team258.dto;
-
-import com.example.team258.entity.Answer;
+package com.example.team258.answer;
 
 import java.time.LocalDateTime;
 

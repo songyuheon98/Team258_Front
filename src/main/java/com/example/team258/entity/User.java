@@ -1,6 +1,7 @@
 package com.example.team258.entity;
 
 
+import com.example.team258.answer.Answer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

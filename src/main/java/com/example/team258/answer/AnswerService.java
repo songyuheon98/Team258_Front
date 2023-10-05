@@ -1,8 +1,5 @@
-package com.example.team258.service;
+package com.example.team258.answer;
 
-import com.example.team258.dto.AnswerRequestDto;
-import com.example.team258.dto.AnswerResponseDto;
-import com.example.team258.entity.Answer;
 import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.repository.AnswerRepository;
