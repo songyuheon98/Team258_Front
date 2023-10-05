@@ -178,6 +178,7 @@ public class AnswerServiceTest {
     }
 
     @Test
+    @DisplayName("응답 호출")
     public void testGetAnswers() {
         User user = User.builder()
                 .userId(1L)
@@ -199,8 +200,17 @@ public class AnswerServiceTest {
                 .maxChoice(3L)
                 .user(user)
                 .build();
-
         surveyRepository.save(survey);
+        Survey survey2 = Survey.builder()
+                .surveyId(2L)
+                .question("질문질문2")
+                .choices("대충 답지 3개 있음2")
+                .deadline(LocalDateTime.of(2023,10,31,0,0))
+                .maxChoice(3L)
+                .user(user)
+                .build();
+        surveyRepository.save(survey2);
+
         Answer answer = Answer.builder()
                 .answerId(1L)
                 .answerNum(1L)
@@ -208,6 +218,8 @@ public class AnswerServiceTest {
                 .user(user)
                 .build();
         answerRepository.save(answer);
+
+
         Answer answer2 = Answer.builder()
                 .answerId(2L)
                 .answerNum(2L)
@@ -215,10 +227,20 @@ public class AnswerServiceTest {
                 .user(user2)
                 .build();
         answerRepository.save(answer2);
+
+        Answer answer3 = Answer.builder()
+                .answerId(3L)
+                .answerNum(3L)
+                .survey(survey2)
+                .user(user)
+                .build();
+        answerRepository.save(answer3);
+
         List<AnswerResponseDto> response = answerService.getAnswers(user);
 
-        assertEquals(1,response.size());
+        assertEquals(2,response.size());
         assertEquals(1, response.get(0).getAnswer());
+        assertEquals(3, response.get(1).getAnswer());
     }
 
     @Test
