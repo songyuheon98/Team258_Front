@@ -2,7 +2,7 @@ package com.example.team258.answer;
 
 import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
-import com.example.team258.repository.AnswerRepository;
+import com.example.team258.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

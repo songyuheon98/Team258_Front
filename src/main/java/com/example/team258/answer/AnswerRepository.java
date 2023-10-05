@@ -1,4 +1,4 @@
-package com.example.team258.repository;
+package com.example.team258.answer;
 
 import com.example.team258.answer.Answer;
 import com.example.team258.entity.User;
