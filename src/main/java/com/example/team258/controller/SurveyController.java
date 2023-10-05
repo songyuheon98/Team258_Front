@@ -3,6 +3,7 @@ package com.example.team258.controller;
 import com.example.team258.dto.SurveyRequestDto;
 import com.example.team258.dto.SurveyResponseDto;
 import com.example.team258.entity.MessageDto;
+import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class SurveyController {
 
     @PostMapping
     public ResponseEntity<MessageDto> createSurvey(@RequestBody SurveyRequestDto requestDto,
-                                                   @AuthenticationPrincipal UserdetailsImpl userdetails) {
-        return ResponseEntity.ok(surveyService.createSurvey(requestDto, userdetails.getUser));
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(surveyService.createSurvey(requestDto, userDetails.getUser()));
     }
 
     @GetMapping("/{surveyId}")
@@ -39,14 +40,14 @@ public class SurveyController {
     @PutMapping("/{surveyId}")
     public ResponseEntity<MessageDto> updateSurvey(@PathVariable Long surveyId,
                                                    @RequestBody SurveyRequestDto requestDto,
-                                                   @AuthenticationPrincipal UserdetailsImpl userdetails) {
-        return ResponseEntity.ok(surveyService.updateSurvey(surveyId, requestDto, userdetails.getUser));
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(surveyService.updateSurvey(surveyId, requestDto, userDetails.getUser()));
     }
 
     @DeleteMapping("/{surveyId}")
     public ResponseEntity<MessageDto> deleteSurvey(@PathVariable Long surveyId,
-                                                   @AuthenticationPrincipal UserdetailsImpl userdetails) {
-        return ResponseEntity.ok(surveyService.deleteSurvey(surveyId, userdetails.getUser));
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(surveyService.deleteSurvey(surveyId, userDetails.getUser()));
     }
 
 }

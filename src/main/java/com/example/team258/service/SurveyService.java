@@ -41,7 +41,7 @@ public class SurveyService {
     public MessageDto updateSurvey(Long surveyId, SurveyRequestDto requestDto, User user) {
         Survey survey = getSurveyById(surveyId);
         if (!survey.getUser().equals(user)&&user.getRole().equals(UserRoleEnum.USER)) {
-            throw new IllegalArgumentException("권한이 없음");
+            throw new IllegalArgumentException("(임시)권한이 없음");
         }
         survey.update(requestDto);
         return new MessageDto("수정이 완료되었습니다");
@@ -51,7 +51,7 @@ public class SurveyService {
     public MessageDto deleteSurvey(Long surveyId, User user) {
         Survey survey = getSurveyById(surveyId);
         if (!survey.getUser().equals(user)&&user.getRole().equals(UserRoleEnum.USER)) {
-            throw new IllegalArgumentException("권한이 없음");
+            throw new IllegalArgumentException("(임시)권한이 없음");
         }
         surveyRepository.delete(survey);
         return new MessageDto("삭제가 완료되었습니다");
