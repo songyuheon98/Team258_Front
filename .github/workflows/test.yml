@@ -53,7 +53,7 @@ jobs:
       # (3.5) properties 파일 수정
       - name: Update properties file
         run: |
-           sed -i "s/spring.datasource.password=.*/spring.datasource.password=${{ secrets.DB_PASSWORD }}/" Team258/src/main/resources/application.properties
+           sed -i "s/spring.datasource.password=.*/spring.datasource.password=${{ secrets.DB_PASSWORD }}/" src/main/resources/application.properties
 
 
 
