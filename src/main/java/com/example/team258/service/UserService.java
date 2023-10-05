@@ -23,7 +23,7 @@ public class UserService {
 
     private final String ADMIN_TOKEN = "adminadminadminadminadmin";
 
-    public static void passwordCheck(UserSignupRequestDto requestDto) {
+    public void passwordCheck(UserSignupRequestDto requestDto) {
         if(!requestDto.getPassword1().equals(requestDto.getPassword2())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
