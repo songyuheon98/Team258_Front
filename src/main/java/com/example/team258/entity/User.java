@@ -35,6 +35,12 @@ public class User extends Timestamped{
     @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "user")
     private List<Answer> answers = new ArrayList<>();
 
+    public User(String username, String password, UserRoleEnum role) {
+        this.username=username;
+        this.password=password;
+        this.role=role;
+    }
+
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
     }
