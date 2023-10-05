@@ -37,6 +37,5 @@ public class User extends Timestamped{
 
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
-        survey.addUser(this);
     }
 }
