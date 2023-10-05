@@ -1,9 +1,13 @@
 package com.example.team258.dto;
 
 import com.example.team258.entity.Answer;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class AnswerResponseDto {
     private Long surveyId;
     private Long answer;
