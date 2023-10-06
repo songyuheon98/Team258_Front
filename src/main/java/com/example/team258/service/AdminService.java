@@ -26,7 +26,7 @@ public class AdminService {
     public MessageDto deleteUser(Long userId, User loginUser) {
         User user = getUserById(userId);
         if (!loginUser.equals(user) && loginUser.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new IllegalArgumentException("(임시)권한이 없음");
+            throw new IllegalArgumentException("회원을 삭제할 권한이 없습니다.");
         }
         userRepository.delete(user);
         return new MessageDto("삭제가 완료되었습니다");
