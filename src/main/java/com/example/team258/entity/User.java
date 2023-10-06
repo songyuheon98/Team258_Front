@@ -27,6 +27,7 @@ public class User extends Timestamped{
     private String password;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
     @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "user")
