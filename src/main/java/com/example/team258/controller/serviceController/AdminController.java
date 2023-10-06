@@ -1,4 +1,4 @@
-package com.example.team258.controller;
+package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.AdminResponseDto;
 import com.example.team258.entity.MessageDto;
