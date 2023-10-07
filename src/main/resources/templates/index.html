@@ -1,100 +1,18 @@
+<!-- resources/templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- 부트스트랩 최신 버전의 CSS 파일 참조 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
-    <!-- Index CSS -->
-    <link href="css/index.css" rel="stylesheet" />
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+<body>
+    <!-- 네비게이션 메뉴 레이아웃 적용 -->
+    <div th:replace="~{layout :: nav}"></div>
+    <!-- 헤더 레이아웃 적용 -->
+    <div th:replace="~{layout :: header}"></div>
 
-<body class="index-body">
-    <!-- Navigator -->
-    <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container px-7">
-            <div class="index-logo">
-                <a class="navbar-brand" href="/">
-                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fd22XUp%2FbtsxriHCYvH%2FwA1ES8jDhbNBzCtYDgK9MK%2Fimg.png" style="filter: invert(90%); height: 35px;width: 55px; padding-right: 5px">
-                    Survey App</a>
-            </div>
+    <!-- 컨텐츠(이 부분이 변경 됩니다.) 레이아웃 적용 -->
+    <div th:replace="~{layout :: content}"></div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/signup">SignUp</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/mypage">MyPage</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin">AdminPage</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/survey">CreateSurvey</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/answer">AnswerSurvey</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/result">Results</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="https://ohnyong.notion.site/ohnyong/Team-258-S-A-7ac23961ccee44f39c2f31ff11259633">About Team 258</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Header -->
-    <div class="index-header">
-        <div class="index-container1">
-            <span class="index-text20"><span>Welcome to Survey App</span></span>
-            <span class="index-text22">
-                    <span>Create and manage surveys easily</span>
-                  </span>
-        </div>
-    </div>
-
-    <!-- Contents -->
-    <div class="index-contents">
-        <div class="index-container2">
-            <!-- 이곳에 컨텐츠 레이아웃이 참조 됩니다. -->
-            <span class="index-text23"><span>이곳에 컨텐츠가 나타납니다.</span></span>
-            <span class="index-text23">
-                    <span>Create and manage surveys easily</span>
-                </span>
-            <span class="index-text23"><span>이곳에 컨텐츠가 나타납니다.</span></span>
-            <span class="index-text23">
-                    <span>Create and manage surveys easily</span>
-                </span>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-            <p>컨텐츠1</p>
-            <br>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="index-footer">
-        <div class="index-container3">
-                  <span class="index-text24">
-                    <span>© 2023 TEAM 258. All rights reserved.</span>
-                  </span>
-        </div>
-    </div>
-</div>
+    <!-- 푸터 레이아웃 적용 -->
+    <div th:replace="~{layout :: footer}"></div>
 </body>
 </html>
