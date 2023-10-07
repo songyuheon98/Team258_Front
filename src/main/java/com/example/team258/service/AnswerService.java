@@ -47,7 +47,7 @@ public class AnswerService {
     @Transactional
     public MessageDto updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
-        if (answer.getUser().getUserId() != user.getUserId()){
+        if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
         } // 사용자가 응답자가 아닐 시 에러 출력
         if(answer.getSurvey().getMaxChoice() < requestDto.getAnswer()){
@@ -60,7 +60,7 @@ public class AnswerService {
 
     public MessageDto deleteAnswer(Long answerId, User user) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
-        if (answer.getUser().getUserId() != user.getUserId()){
+        if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
         } // 사용자가 응답자가 아닐 시 에러 출력
         answerRepository.delete(answer);
