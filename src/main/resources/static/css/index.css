@@ -196,6 +196,12 @@
 
     height: 80px;
     z-index: 1000;
+    background-color: #212529;
+
+}
+#navbarSupportedContent {
+    z-index: 1000;
+    background-color: #212529;
 }
 
 
