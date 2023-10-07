@@ -8,6 +8,19 @@
 <!-- 헤더 레이아웃 적용 -->
 <div th:replace="~{layout :: header}"></div>
 <style>
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
   .list-container {
     width: 100%;
     display: flex;
@@ -324,7 +337,7 @@
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
 
   <div>
-    User List
+    <span class="container-text"><span>User List</span></span>
   </div>
 
 
