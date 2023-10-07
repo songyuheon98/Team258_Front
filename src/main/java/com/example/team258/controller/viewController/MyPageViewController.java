@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MyPageViewController {
     @GetMapping("/mypage")
-    public String login() {
+    public String mypageView() {
         return "mypage";
     }
 }
