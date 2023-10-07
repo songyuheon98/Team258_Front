@@ -10,6 +10,7 @@ import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -44,7 +45,7 @@ public class AnswerService {
         return answerList.stream().map(i-> new AnswerResponseDto(i)).collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         if (!answer.getUser().getUserId().equals(user.getUserId())){
@@ -58,6 +59,7 @@ public class AnswerService {
         return message;
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto deleteAnswer(Long answerId, User user) {
         Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         if (!answer.getUser().getUserId().equals(user.getUserId())){
