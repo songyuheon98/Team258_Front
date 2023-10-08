@@ -28,6 +28,7 @@ public class AnswerService {
 
     private final Semaphore semaphore = new Semaphore(1); // 동시에 3개의 스레드만 허용
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public MessageDto createAnswer(AnswerRequestDto requestDto, User user) throws InterruptedException {
         semaphore.acquire(); // Semaphore 획득
         try {
@@ -60,7 +61,7 @@ public class AnswerService {
         return answerList.stream().map(i -> new AnswerResponseDto(i)).collect(Collectors.toList());
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public MessageDto updateAnswer(AnswerRequestDto requestDto, Long answerId, User user) throws InterruptedException {
         semaphore.acquire(); // Semaphore 획득
         try {
@@ -96,7 +97,7 @@ public class AnswerService {
 
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public MessageDto deleteAnswer(Long answerId, User user) throws InterruptedException {
         semaphore.acquire(); // Semaphore 획득
         try {
