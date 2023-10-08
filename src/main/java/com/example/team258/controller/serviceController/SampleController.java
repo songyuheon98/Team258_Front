@@ -1,12 +1,7 @@
-package com.example.team258.controller;
+package com.example.team258.controller.serviceController;
 
-import com.example.team258.entity.MessageDto;
-import com.mysql.cj.protocol.Message;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller

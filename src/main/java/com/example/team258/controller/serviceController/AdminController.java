@@ -1,7 +1,7 @@
 package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.AdminResponseDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,7 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
     private final AdminService adminService;
-
     @GetMapping
     public ResponseEntity<List<AdminResponseDto>> getAllUsers() {
         return ResponseEntity.ok(adminService.getAllUsers());

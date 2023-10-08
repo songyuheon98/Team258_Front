@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "users")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,6 +27,7 @@ public class User extends Timestamped{
     private String password;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
     @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "user")
@@ -44,4 +45,8 @@ public class User extends Timestamped{
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
     }
+
+
+    @Version
+    private int version;
 }
