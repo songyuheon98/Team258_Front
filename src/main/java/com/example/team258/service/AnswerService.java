@@ -25,23 +25,25 @@ public class AnswerService {
     private final SurveyRepository surveyRepository;
 
     public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
-        synchronized (answerRepository) {
-        Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
-        if(answerRepository.findByUserAndSurvey(user,survey).isPresent()){
-            throw new IllegalArgumentException("예외가 발생하였습니다.");
-        } // 이미 선택한 설문지를 중복 응답 시 에러 출력
-        if(survey.getMaxChoice() < requestDto.getAnswer()){
-            throw new IllegalArgumentException("예외가 발생하였습니다.");
-        } // 선택지에 없는 응답 시 에러 출력
-        Answer answer = new Answer(requestDto.getAnswer(), user,survey);
-        if(survey.getDeadline().isBefore(LocalDateTime.now())){
-            throw new IllegalArgumentException("예외가 발생하였습니다.");
-        }
+        synchronized (answerRepository) { // 해당 로직 블록을 동시에 하나의 스레드만 실행할 수 있게 한다.
+            Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
+            if (answerRepository.findByUserAndSurvey(user, survey).isPresent()) {
+                throw new IllegalArgumentException("예외가 발생하였습니다.");
+            } // 이미 선택한 설문지를 중복 응답 시 에러 출력
+            if (survey.getMaxChoice() < requestDto.getAnswer()) {
+                throw new IllegalArgumentException("예외가 발생하였습니다.");
+            } // 선택지에 없는 응답 시 에러 출력
+            Answer answer = new Answer(requestDto.getAnswer(), user, survey);
+            if (survey.getDeadline().isBefore(LocalDateTime.now())) {
+                throw new IllegalArgumentException("예외가 발생하였습니다.");
+            }
 
             Answer savedAnswer = answerRepository.save(answer);
+
+            MessageDto message = new MessageDto("작성이 완료되었습니다.");
+            return message;
         }
-        MessageDto message = new MessageDto("작성이 완료되었습니다.");
-        return message;
+
     }
 
     public List<AnswerResponseDto> getAnswers(User user) {
@@ -51,12 +53,13 @@ public class AnswerService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
+        synchronized (answerRepository) { // 해당 로직 블록을 동시에 하나의 스레드만 실행할 수 있게 한다.
         try{
             PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 업데이트 시작");
             Answer answer;
-            synchronized (answerRepository) { // 해당 로직 블록을 동시에 하나의 스레드만 실행할 수 있게 한다.
+
                 answer = answerRepository.findById(answerId).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
-            }
+
 //        Answer answer = answerRepository.findByIdForUpdate(answerId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
 
@@ -77,37 +80,36 @@ public class AnswerService {
             PerformanceLoggingUtil.logPerformanceError(AnswerService.class, "설문지 응답 업데이트 중 오류 발생", e);
             throw e;
         }
-
+        }
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto deleteAnswer(Long answerId, User user) {
+        synchronized (answerRepository) { // 해당 로직 블록을 동시에 하나의 스레드만 실행할 수 있게 한다.
+            try {
+                PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 시작");
+                Answer answer;
 
-        try {
-            PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 시작");
-            Answer answer;
-            synchronized (answerRepository) {
-                 answer= answerRepository.findById(answerId).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
-            }
+                answer = answerRepository.findById(answerId).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
+
 //         Pessimistic Locking 적용
 //        Answer answer = answerRepository.findByIdForUpdate(answerId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
 
-            if (!answer.getUser().getUserId().equals(user.getUserId())){
-                throw new IllegalArgumentException("예외가 발생하였습니다.");
-            } // 사용자가 응답자가 아닐 시 에러 출력
-            answerRepository.delete(answer);
-            MessageDto message = new MessageDto("삭제가 완료되었습니다.");
+                if (!answer.getUser().getUserId().equals(user.getUserId())) {
+                    throw new IllegalArgumentException("예외가 발생하였습니다.");
+                } // 사용자가 응답자가 아닐 시 에러 출력
+                answerRepository.delete(answer);
+                MessageDto message = new MessageDto("삭제가 완료되었습니다.");
 
-            PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 완료");
+                PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 완료");
 
-            return message;
+                return message;
 
+            } catch (Exception e) {
+                PerformanceLoggingUtil.logPerformanceError(AnswerService.class, "설문지 응답 업데이트 중 오류 발생", e);
+                throw e;
+            }
         }
-        catch (Exception e){
-            PerformanceLoggingUtil.logPerformanceError(AnswerService.class, "설문지 응답 업데이트 중 오류 발생", e);
-            throw e;
-        }
-
     }
 }
