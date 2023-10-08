@@ -47,9 +47,9 @@ public class AnswerService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
-//        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
-        Answer answer = answerRepository.findByIdForUpdate(answerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
+        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+//        Answer answer = answerRepository.findByIdForUpdate(answerId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
 
         if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
@@ -64,10 +64,10 @@ public class AnswerService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto deleteAnswer(Long answerId, User user) {
-//        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
-        // Pessimistic Locking 적용
-        Answer answer = answerRepository.findByIdForUpdate(answerId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
+        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+//         Pessimistic Locking 적용
+//        Answer answer = answerRepository.findByIdForUpdate(answerId)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
 
         if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
