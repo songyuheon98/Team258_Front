@@ -1,8 +1,8 @@
-package com.example.team258.controller;
+package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.SurveyRequestDto;
 import com.example.team258.dto.SurveyResponseDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.SurveyService;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.team258.service;
 
 import com.example.team258.dto.SurveyRequestDto;
 import com.example.team258.dto.SurveyResponseDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;

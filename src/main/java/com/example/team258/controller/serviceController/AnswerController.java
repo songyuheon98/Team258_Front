@@ -1,8 +1,8 @@
-package com.example.team258.controller;
+package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.AnswerRequestDto;
 import com.example.team258.dto.AnswerResponseDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.AnswerService;
 import lombok.RequiredArgsConstructor;

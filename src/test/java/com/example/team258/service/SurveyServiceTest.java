@@ -2,14 +2,12 @@ package com.example.team258.service;
 
 import com.example.team258.dto.SurveyRequestDto;
 import com.example.team258.dto.SurveyResponseDto;
-import com.example.team258.dto.UserSignupRequestDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.SurveyRepository;
 import com.example.team258.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
