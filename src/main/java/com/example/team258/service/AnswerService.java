@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +26,10 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final SurveyRepository surveyRepository;
 
-    private final Lock lock = new ReentrantLock();
+    private final Semaphore semaphore = new Semaphore(1); // 동시에 3개의 스레드만 허용
 
-    public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
-        lock.lock();
+    public MessageDto createAnswer(AnswerRequestDto requestDto, User user) throws InterruptedException {
+        semaphore.acquire(); // Semaphore 획득
         try {
             Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
             if (answerRepository.findByUserAndSurvey(user, survey).isPresent()) {
@@ -48,9 +47,12 @@ public class AnswerService {
 
             MessageDto message = new MessageDto("작성이 완료되었습니다.");
             return message;
+
         } finally {
-            lock.unlock();
+            semaphore.release(); // Semaphore 해제
         }
+
+
     }
 
     public List<AnswerResponseDto> getAnswers(User user) {
@@ -59,8 +61,8 @@ public class AnswerService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public MessageDto updateAnswer(AnswerRequestDto requestDto, Long answerId, User user) {
-        lock.lock();
+    public MessageDto updateAnswer(AnswerRequestDto requestDto, Long answerId, User user) throws InterruptedException {
+        semaphore.acquire(); // Semaphore 획득
         try {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 업데이트 시작");
@@ -88,14 +90,15 @@ public class AnswerService {
                 throw e;
             }
         } finally {
-            lock.unlock();
+            semaphore.release(); // Semaphore 해제
         }
+
 
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public MessageDto deleteAnswer(Long answerId, User user) {
-        lock.lock();
+    public MessageDto deleteAnswer(Long answerId, User user) throws InterruptedException {
+        semaphore.acquire(); // Semaphore 획득
         try {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 시작");
@@ -122,7 +125,9 @@ public class AnswerService {
                 throw e;
             }
         } finally {
-            lock.unlock();
+            semaphore.release(); // Semaphore 해제
         }
+
+
     }
 }
