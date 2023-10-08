@@ -8,6 +8,7 @@ import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -47,7 +48,10 @@ public class AnswerService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto updateAnswer(AnswerRequestDto requestDto,Long answerId, User user) {
-        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+//        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        Answer answer = answerRepository.findByIdForUpdate(answerId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
+
         if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
         } // 사용자가 응답자가 아닐 시 에러 출력
@@ -61,7 +65,11 @@ public class AnswerService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto deleteAnswer(Long answerId, User user) {
-        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+//        Answer answer = answerRepository.findById(answerId).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        // Pessimistic Locking 적용
+        Answer answer = answerRepository.findByIdForUpdate(answerId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
+
         if (!answer.getUser().getUserId().equals(user.getUserId())){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
         } // 사용자가 응답자가 아닐 시 에러 출력
