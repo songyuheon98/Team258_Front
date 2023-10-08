@@ -11,8 +11,7 @@ import org.springframework.web.util.HtmlUtils;
 public class ChatController {
     @MessageMapping("/chat")
     @SendTo("/chatMessage")
-    public ChatingContent greeting(ChatMessageDto message) throws Exception {
-        Thread.sleep(100);
+    public ChatingContent chat(ChatMessageDto message) throws Exception {
         return new ChatingContent( HtmlUtils.htmlEscape(message.getChatingMessage()) );
     }
 }

@@ -18,8 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/websocket1");
-		// URL을 웹소켓 엔드포인트로 등록합니다. 클라이언트는 이 URL을 통해 웹소켓 연결을 초기화
+		registry.addEndpoint("/websocket");
 	}
 
 }
