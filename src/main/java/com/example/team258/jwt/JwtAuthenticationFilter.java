@@ -1,7 +1,7 @@
 package com.example.team258.jwt;
 
 import com.example.team258.dto.LoginRequestDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.exception.UserNotFoundException;
 import com.example.team258.security.UserDetailsImpl;

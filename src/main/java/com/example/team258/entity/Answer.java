@@ -47,4 +47,7 @@ public class Answer extends Timestamped {
     public void update(Long answerNum) {
         this.answerNum = answerNum;
     }
+
+    @Version
+    private int version;
 }

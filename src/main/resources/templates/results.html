@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+<body>
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+<style>
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    min-height: 100vh;
+    align-items: center;
+    flex-direction: column;
+  }
+  .list-list {
+    gap: 40px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    z-index: 1;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  .list-card {
+    width: 240px;
+    display: flex;
+    overflow: hidden;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    flex-direction: column;
+  }
+  .list-imagecontainer {
+    display: flex;
+    overflow: hidden;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .list-image {
+    width: 240px;
+    height: 240px;
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-self: stretch;
+    align-items: flex-start;
+    background-color: rgba(216, 216, 216, 0.5);
+  }
+  .list-text {
+    top: 112px;
+    left: 16px;
+    color: rgba(0, 0, 0, 1);
+    width: 208px;
+    height: auto;
+    position: absolute;
+    font-size: 12px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 16px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-textcontent {
+    gap: 4px;
+    display: flex;
+    padding: 12px;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .list-text02 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 16px;
+    align-self: stretch;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text04 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 13px;
+    align-self: stretch;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 28px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-iconbuttons {
+    gap: 8px;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .list-text06 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text08 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text10 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-card1 {
+    width: 240px;
+    display: flex;
+    overflow: hidden;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    flex-direction: column;
+  }
+  .list-imagecontainer1 {
+    display: flex;
+    overflow: hidden;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .list-image1 {
+    width: 240px;
+    height: 240px;
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-self: stretch;
+    align-items: flex-start;
+    background-color: rgba(216, 216, 216, 0.5);
+  }
+  .list-text12 {
+    top: 112px;
+    left: 16px;
+    color: rgba(0, 0, 0, 1);
+    width: 208px;
+    height: auto;
+    position: absolute;
+    font-size: 12px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 16px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-textcontent1 {
+    gap: 4px;
+    display: flex;
+    padding: 12px;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .list-text14 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 16px;
+    align-self: stretch;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text16 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 13px;
+    align-self: stretch;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 28px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-iconbuttons1 {
+    gap: 8px;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .list-text18 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text20 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text22 {
+    color: rgba(0, 0, 0, 1);
+    width: 24px;
+    height: auto;
+    font-size: 16px;
+    font-style: Regular;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+
+
+
+
+</style>
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div>
+    <span class="container-text"><span>Hit Results List</span></span>
+  </div>
+
+    <div class="list-container">
+      <div class="list-list">
+        <div class="list-card">
+          <div class="list-imagecontainer">
+            <div class="list-image">
+              <span class="list-text"><span>Survey Result 1</span></span>
+            </div>
+          </div>
+          <div class="list-textcontent">
+            <span class="list-text02"><span>Result 1</span></span>
+            <span class="list-text04">
+            <span>Time remaining ... - 00:02:19</span>
+          </span>
+            <button class="list-iconbuttons">
+              <span class="list-text06"><span>❤️</span></span>
+              <span class="list-text08"><span>👍</span></span>
+              <span class="list-text10"><span>👎</span></span>
+            </button>
+          </div>
+        </div>
+        <div class="list-card1">
+          <div class="list-imagecontainer1">
+            <div class="list-image1">
+              <span class="list-text12"><span>Survey Result 2</span></span>
+            </div>
+          </div>
+          <div class="list-textcontent1">
+            <span class="list-text14"><span>Result 2</span></span>
+            <span class="list-text16">
+            <span>Time remaining ... - 00:02:19</span>
+          </span>
+            <button class="list-iconbuttons1">
+              <span class="list-text18"><span>❤️</span></span>
+              <span class="list-text20"><span>👍</span></span>
+              <span class="list-text22"><span>👎</span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
+</div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

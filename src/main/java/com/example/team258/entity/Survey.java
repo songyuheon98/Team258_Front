@@ -60,4 +60,7 @@ public class Survey extends Timestamped{
         this.maxChoice = requestDto.getMaxChoice();
         this.deadline = requestDto.getDeadline();
     }
+
+    @Version
+    private int version;
 }

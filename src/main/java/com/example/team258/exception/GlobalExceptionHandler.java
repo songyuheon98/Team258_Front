@@ -1,6 +1,6 @@
 package com.example.team258.exception;
 
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,4 +1,4 @@
-package com.example.team258.entity;
+package com.example.team258.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
