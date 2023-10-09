@@ -9,6 +9,7 @@ import com.example.team258.entity.User;
 import com.example.team258.logging.PerformanceLoggingUtil;
 import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
+import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -25,29 +26,27 @@ import java.util.concurrent.Semaphore;
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final SurveyRepository surveyRepository;
+    private final UserRepository userRepository;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public MessageDto createAnswer(AnswerRequestDto requestDto, User user) throws InterruptedException {
-
-            Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(() -> new IllegalArgumentException("예외가 발생하였습니다."));
-            if (answerRepository.findByUserAndSurvey(user, survey).isPresent()) {
-                throw new IllegalArgumentException("예외가 발생하였습니다.");
-            } // 이미 선택한 설문지를 중복 응답 시 에러 출력
-            if (survey.getMaxChoice() < requestDto.getAnswer()) {
-                throw new IllegalArgumentException("예외가 발생하였습니다.");
-            } // 선택지에 없는 응답 시 에러 출력
-            Answer answer = new Answer(requestDto.getAnswer(), user, survey);
-            if (survey.getDeadline().isBefore(LocalDateTime.now())) {
-                throw new IllegalArgumentException("예외가 발생하였습니다.");
-            }
-
-            Answer savedAnswer = answerRepository.save(answer);
-
-            MessageDto message = new MessageDto("작성이 완료되었습니다.");
-            return message;
+    @Transactional//(isolation = Isolation.REPEATABLE_READ)
+    public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
+        user = userRepository.findById(user.getUserId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
+        if(answerRepository.findByUserAndSurvey(user,survey).isPresent()){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        } // 이미 선택한 설문지를 중복 응답 시 에러 출력
+        if(survey.getMaxChoice() < requestDto.getAnswer()){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        } // 선택지에 없는 응답 시 에러 출력
+        Answer answer = new Answer(requestDto.getAnswer(), user,survey);
+        if(survey.getDeadline().isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("예외가 발생하였습니다.");
+        }
+        Answer savedAnswer = answerRepository.save(answer);
+        MessageDto message = new MessageDto("작성이 완료되었습니다.");
+        return message;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public List<AnswerResponseDto> getAnswers(User user) {
         List<Answer> answerList = answerRepository.findAllByUser(user);
         return answerList.stream().map(i -> new AnswerResponseDto(i)).collect(Collectors.toList());

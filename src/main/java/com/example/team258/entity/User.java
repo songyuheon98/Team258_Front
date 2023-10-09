@@ -45,6 +45,9 @@ public class User extends Timestamped{
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
     }
+    public void addAnswer(Answer answer) {
+        this.answers.add(answer);
+    }
 
 
     @Version

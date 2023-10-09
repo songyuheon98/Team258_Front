@@ -8,6 +8,19 @@
 <!-- 헤더 레이아웃 적용 -->
 <div th:replace="~{layout :: header}"></div>
 <style>
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
   .list-container {
     width: 100%;
     display: flex;
@@ -336,7 +349,7 @@
     flex-direction: column;
     justify-content: center;
   }
-  .list-text40 {
+  .list-text38 {
     color: rgba(0, 0, 0, 1);
     height: auto;
     font-size: 16px;
@@ -370,7 +383,7 @@
     flex-direction: column;
     justify-content: center;
   }
-  .list-text42 {
+  .list-text40 {
     color: rgba(0, 0, 0, 1);
     height: auto;
     font-size: 16px;
@@ -389,89 +402,52 @@
 <div class="index-contents">
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
-  <div>
-    <span class="container-text"><span>My Answer List</span></span>
-  </div>
+  <div class="container-container1">
+    <span class="container-text"><span>Answer List - ANSWER WRITER ONLY</span></span>
 
-
-    <div class="list-container">
-      <div class="list-list">
-        <div class="list-card">
-          <div class="list-textcontent">
-            <span class="list-text"><span>Answer 1</span></span>
-            <span class="list-text02"><span>Question</span></span>
-            <div class="list-textfield">
-            <span class="list-text04">
-              <span>
-                <span>Previous Question...</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <span class="list-text09"><span>Choice</span></span>
-            <div class="list-textfield1">
-            <span class="list-text11">
-              <span>
-                <span>Previous My choices...</span>
-                <br />
-                <span></span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <button class="list-button">
-              <div class="list-seconday">
-                <span class="list-text18"><span>Update Answer</span></span>
-              </div>
-            </button>
-            <button class="list-button1">
-              <div class="list-seconday1">
-                <span class="list-text20"><span>Delete Answer</span></span>
-              </div>
-            </button>
-          </div>
+    <div class="list-card">
+      <form accept-charset="UTF-8" action="" method="">
+        <div class="mb-3">
+          <label class="form-label">AnswerId</label>
+          <input class="form-control" type="text" placeholder="AnswerID" name="answerId"/>
         </div>
-        <div class="list-card1">
-          <div class="list-textcontent1">
-            <span class="list-text22"><span>Answer 2</span></span>
-            <span class="list-text24"><span>Question</span></span>
-            <div class="list-textfield2">
-            <span class="list-text26">
-              <span>
-                <span>Previous Question...</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <span class="list-text31"><span>Choice</span></span>
-            <div class="list-textfield3">
-            <span class="list-text33">
-              <span>
-                <span>Previous My choices...</span>
-                <br />
-                <span></span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <button class="list-button2">
-              <div class="list-seconday2">
-                <span class="list-text40"><span>Update Answer</span></span>
-              </div>
-            </button>
-            <button class="list-button3">
-              <div class="list-seconday3">
-                <span class="list-text42"><span>Delete Answer</span></span>
-              </div>
-            </button>
-          </div>
+        <div class="mb-3">
+          <label class="form-label">Question</label>
+          <input class="form-control" type="text" placeholder="Question" name="question" readonly/>
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="form-label">Choices</label>
+          <input class="form-control" type="text" placeholder="Choices" name="choices"/>
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-outline-primary" onClick="updateAnswer()">Update Answer</button>
+          <button type="button" class="btn btn-outline-danger" onClick="deleteAnswer()">Delete Answer</button>
+        </div>
+      </form>
     </div>
+
+    <div class="list-card">
+      <form accept-charset="UTF-8" action="" method="">
+        <div class="mb-3">
+          <label class="form-label">AnswerId</label>
+          <input class="form-control" type="text" placeholder="AnswerID" name="answerId"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Question</label>
+          <input class="form-control" type="text" placeholder="Question" name="question" readonly/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Choices</label>
+          <input class="form-control" type="text" placeholder="Choices" name="choices"/>
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-outline-primary" onClick="updateAnswer()">Update Answer</button>
+          <button type="button" class="btn btn-outline-danger" onClick="deleteAnswer()">Delete Answer</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
 
 
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
