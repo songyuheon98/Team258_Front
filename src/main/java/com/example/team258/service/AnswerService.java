@@ -29,7 +29,7 @@ public class AnswerService {
     private final UserRepository userRepository;
 
     @Transactional//(isolation = Isolation.REPEATABLE_READ)
-    public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
+    public AnswerResponseDto createAnswer(AnswerRequestDto requestDto, User user) {
         user = userRepository.findById(user.getUserId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         if(answerRepository.findByUserAndSurvey(user,survey).isPresent()){
@@ -43,8 +43,8 @@ public class AnswerService {
             throw new IllegalArgumentException("예외가 발생하였습니다.");
         }
         Answer savedAnswer = answerRepository.save(answer);
-        MessageDto message = new MessageDto("작성이 완료되었습니다.");
-        return message;
+
+        return new AnswerResponseDto(savedAnswer);
     }
 
     public List<AnswerResponseDto> getAnswers(User user) {
@@ -52,7 +52,7 @@ public class AnswerService {
         return answerList.stream().map(i -> new AnswerResponseDto(i)).collect(Collectors.toList());
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public MessageDto updateAnswer(AnswerRequestDto requestDto, Long answerId, User user) throws InterruptedException {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 업데이트 시작");
@@ -80,7 +80,7 @@ public class AnswerService {
                 throw e;
             }
     }
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public MessageDto deleteAnswer(Long answerId, User user) throws InterruptedException {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 시작");

@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/answer")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity<MessageDto> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws InterruptedException {
-        return ResponseEntity.ok(answerService.createAnswer(requestDto, userDetails.getUser()));
+    public AnswerResponseDto createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws InterruptedException {
+        return answerService.createAnswer(requestDto, userDetails.getUser());
     }
 
     @GetMapping
