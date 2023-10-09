@@ -1,52 +1,265 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>채팅 페이지</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="/css/main.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <script src="/js/app.js"></script>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
 <body>
-<div id="main-content" class="container">
-    <h2 class="text-center">채팅 페이지</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="chatConnect">채팅 연결:</label>
-                    <button id="chatConnect" class="btn btn-primary" type="submit">연결</button>
-                    <button id="chatDisconnect" class="btn btn-danger" type="submit" disabled="disabled">연결 끊기</button>
-                </div>
-            </form>
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+<style>
+    .container-container {
+        width: 100%;
+        display: flex;
+        overflow: auto;
+        min-height: 100vh;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .container-container1 {
+        gap: 24px;
+        width: 100%;
+        height: 428px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        flex-direction: column;
+    }
+
+    .container-text {
+        color: rgba(0, 0, 0, 1);
+        width: 520px;
+        height: auto;
+        font-size: 40px;
+        font-style: Bold;
+        text-align: center;
+        font-family: Roboto;
+        font-weight: 700;
+        line-height: 48px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-input {
+        gap: 4px;
+        width: 600px;
+        display: flex;
+        overflow: hidden;
+        align-items: flex-start;
+        flex-shrink: 0;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .container-text02 {
+        color: rgba(0, 0, 0, 1);
+        height: auto;
+        font-size: 14px;
+        align-self: stretch;
+        font-style: Medium;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 500;
+        line-height: 20px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-textfield {
+        gap: 4px;
+        display: flex;
+        padding: 8px 12px;
+        align-self: stretch;
+        align-items: center;
+        flex-shrink: 0;
+        border-color: rgba(0, 0, 0, 0.10000000149011612);
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    .container-text04 {
+        color: rgba(0, 0, 0, 0.5);
+        height: auto;
+        flex-grow: 1;
+        font-size: 14px;
+        font-style: Regular;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 400;
+        line-height: 20px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-input1 {
+        gap: 4px;
+        width: 600px;
+        display: flex;
+        overflow: hidden;
+        align-items: flex-start;
+        flex-shrink: 0;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .container-text06 {
+        color: rgba(0, 0, 0, 1);
+        height: auto;
+        font-size: 14px;
+        align-self: stretch;
+        font-style: Medium;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 500;
+        line-height: 20px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-textfield1 {
+        gap: 4px;
+        display: flex;
+        padding: 8px 12px;
+        align-self: stretch;
+        align-items: center;
+        flex-shrink: 0;
+        border-color: rgba(0, 0, 0, 0.10000000149011612);
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    .container-text08 {
+        color: rgba(0, 0, 0, 0.5);
+        height: auto;
+        flex-grow: 1;
+        font-size: 14px;
+        font-style: Regular;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 400;
+        line-height: 20px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-button {
+        gap: 12px;
+        display: flex;
+        overflow: hidden;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .container-primary {
+        width: 160px;
+        display: flex;
+        padding: 12px;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 1);
+    }
+
+    .container-text10 {
+        color: rgba(255, 255, 255, 1);
+        height: auto;
+        font-size: 16px;
+        font-style: Medium;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 500;
+        line-height: 24px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+    .container-button1 {
+        gap: 12px;
+        display: flex;
+        overflow: hidden;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .container-primary1 {
+        width: 160px;
+        display: flex;
+        padding: 12px;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 8px;
+        flex-direction: column;
+        justify-content: center;
+        background-color: rgba(255, 128, 128, 1);
+    }
+
+    .container-text12 {
+        color: rgba(255, 255, 255, 1);
+        height: auto;
+        font-size: 16px;
+        font-style: Medium;
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 500;
+        line-height: 24px;
+        font-stretch: normal;
+        text-decoration: none;
+    }
+
+</style>
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+    <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+    <div id="main-content" class="container">
+        <h2 class="text-center">채팅 페이지</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="chatConnect">채팅 연결:</label>
+                        <button id="chatConnect" class="btn btn-primary" type="submit">연결</button>
+                        <button id="chatDisconnect" class="btn btn-danger" type="submit" disabled="disabled">연결 끊기</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="chatingMessage">채팅 메시지:</label>
+                        <input type="text" id="chatingMessage" class="form-control" placeholder="메시지를 입력하세요...">
+                        <button id="messageSend" class="btn btn-success" type="submit">전송</button>
+                        <button id="home" onclick="location.href='/'" class="btn btn-success" type="submit">Main</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="chatingMessage">채팅 메시지:</label>
-                    <input type="text" id="chatingMessage" class="form-control" placeholder="메시지를 입력하세요...">
-                    <button id="messageSend" class="btn btn-success" type="submit">전송</button>
-                    <button id="home" onclick="location.href='/'" class="btn btn-success" type="submit">Main</button>
-                </div>
-            </form>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <table id="conversation" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">채팅 시작</th>
+                    </tr>
+                    </thead>
+                    <tbody id="message">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-bordered">
-                <thead>
-                <tr>
-                    <th class="text-center">채팅 시작</th>
-                </tr>
-                </thead>
-                <tbody id="message">
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
 </div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
 </body>
 </html>

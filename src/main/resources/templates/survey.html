@@ -198,34 +198,26 @@
 <div class="index-contents">
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
-  <div class="container-container">
-    <div class="container-container1">
-      <span class="container-text"><span>Survey Creation</span></span>
-      <div class="container-input">
-        <span class="container-text02"><span>Question</span></span>
-        <div class="container-textfield">
-          <span class="container-text04"><span>Enter your question</span></span>
-        </div>
+  <div class="container-container1">
+    <span class="container-text"><span>Survey Creation</span></span>
+
+    <form accept-charset="UTF-8" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="question">Question</label>
+        <input class="form-control" type="text" placeholder="Enter your question" name="question" id="question" />
       </div>
-      <div class="container-input1">
-        <span class="container-text06"><span>Choice</span></span>
-        <div class="container-textfield1">
-          <span class="container-text08">
-            <span>Enter your Choice ( ex) choice1, choice2, choice3 )</span>
-          </span>
-        </div>
+      <div class="mb-3">
+        <label class="form-label" for="choices">Choices</label>
+        <input class="form-control" type="text" placeholder="choices" name="choices" id="choices" />
       </div>
-      <button class="container-button">
-        <div class="container-primary">
-          <span class="container-text10"><span>Add Question</span></span>
-        </div>
-      </button>
-      <div class="container-primary1" >
-        <a href="/surveyList">
-        <span class="container-text12"><span>Manage Survey</span></span>
-       </a>
+      <div class="">
+        <button type="button" class="btn btn-outline-danger" onclick="createSurvey()">Create Survey</button>
+        <button type="button" class="btn btn-outline-warning" onclick="moveSurveyListView()">Manage Your Surveys</button>
       </div>
-    </div>
+
+    </form>
+
   </div>
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
 

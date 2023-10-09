@@ -20,7 +20,7 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity<MessageDto> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<MessageDto> createAnswer(@RequestBody AnswerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws InterruptedException {
         return ResponseEntity.ok(answerService.createAnswer(requestDto, userDetails.getUser()));
     }
 
@@ -30,12 +30,12 @@ public class AnswerController {
     }
 
     @PutMapping("/{answerId}")
-    public ResponseEntity<MessageDto> updateAnswer(@RequestBody AnswerRequestDto requestDto,@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<MessageDto> updateAnswer(@RequestBody AnswerRequestDto requestDto,@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws InterruptedException {
         return ResponseEntity.ok(answerService.updateAnswer(requestDto,answerId, userDetails.getUser()));
     }
 
     @DeleteMapping("/{answerId}")
-    public ResponseEntity<MessageDto> deleteAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<MessageDto> deleteAnswer(@PathVariable Long answerId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws InterruptedException {
         return ResponseEntity.ok(answerService.deleteAnswer(answerId,userDetails.getUser()));
     }
 }
