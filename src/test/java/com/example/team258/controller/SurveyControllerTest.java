@@ -81,18 +81,27 @@ class SurveyControllerTest {
     void 설문지_생성() throws Exception {
 
         //given
+        SurveyResponseDto surveyResponseDto = SurveyResponseDto.builder()
+                .surveyId(1L)
+                .question("question")
+                .choices("choice")
+                .build();
+
         //when
         when(surveyService.createSurvey(any(SurveyRequestDto.class), any(User.class)))
-                .thenReturn(new MessageDto("작성이 완료되었습니다"));
+                .thenReturn(surveyResponseDto);
 
         //then
         mockMvc.perform(post("/api/survey")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto))
+                        .content(objectMapper.writeValueAsString(surveyResponseDto))
                         .content(objectMapper.writeValueAsString(authenticateUser(user)))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.msg").value("작성이 완료되었습니다"));
+                .andExpect(jsonPath("$.surveyId").value(1L))
+                .andExpect(jsonPath("$.question").value("question"))
+                .andExpect(jsonPath("$.choices").value("choice"))
+                .andDo(print());
     }
 
     @Test

@@ -24,6 +24,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,6 +37,7 @@ public class AnswerControllerTest {
 
     @MockBean
     private AnswerService answerService;
+
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,6 +48,7 @@ public class AnswerControllerTest {
                 .answer(1L)
                 .surveyId(1L)
                 .build();
+
         User user = User.builder()
                 .userId(1L)
                 .role(UserRoleEnum.USER)
@@ -53,19 +56,26 @@ public class AnswerControllerTest {
                 .username("username")
                 .build();
 
+
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
         MessageDto msg =  MessageDto.builder()
                 .msg("작성이 완료되었습니다.")
                 .build();
 
-        when(answerService.createAnswer(any(AnswerRequestDto.class),any(User.class))).thenReturn(msg);
+        when(answerService.createAnswer(any(AnswerRequestDto.class),any(User.class))).thenReturn(AnswerResponseDto.builder()
+                        .answer(1L).surveyId(1L).answer(1L).build()
+        );
+
         mockMvc.perform(post("/api/answer")
                 .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.msg").value("작성이 완료되었습니다."));
+                .andExpect(jsonPath("$.answer").value(1L))
+                .andExpect(jsonPath("$.surveyId").value(1L))
+                .andExpect(jsonPath("$.answer").value(1L))
+                .andDo(print());
 
     }
 
