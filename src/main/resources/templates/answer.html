@@ -8,6 +8,29 @@
 <!-- 헤더 레이아웃 적용 -->
 <div th:replace="~{layout :: header}"></div>
 <style>
+  .container-container1 {
+    gap: 24px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
   .list-container {
     width: 100%;
     display: flex;
@@ -211,53 +234,31 @@
 <div class="index-contents">
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
-  <div>
-    <span class="container-text"><span>My Answer</span></span>
-  </div>
+  <div class="container-container1">
+    <span class="container-text"><span>Answer Survey</span></span>
 
-  <div>
-      <div class="list-list">
-        <div class="list-card">
-          <div class="list-textcontent">
-            <span class="list-text"><span>Survey 1</span></span>
-            <span class="list-text02"><span>Question</span></span>
-            <div class="list-textfield">
-            <span class="list-text04">
-              <span>
-                <span>Present Question...</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <span class="list-text09"><span>Choice</span></span>
-            <div class="list-textfield1">
-            <span class="list-text11">
-              <span>
-                <span>My Answer</span>
-                <br />
-                <span></span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <button class="list-button">
-              <div class="list-seconday">
-                <span class="list-text18"><span>Answer Survey</span></span>
-              </div>
-            </button>
-          </div>
-        </div>
-        <button class="list-button1">
-          <div class="list-seconday1">
-            <a href="/answerList">
-             <span class="list-text20"><span>My Answers</span></span>
-            </a>
-          </div>
-        </button>
+    <form accept-charset="UTF-8" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="surveyId">SurveyID(HIDDEN)</label>
+        <input class="form-control" type="text" placeholder="SurveyId from selection(PathVariable)" name="surveyId" id="surveyId" readonly/>
       </div>
-    </div>
+      <div class="mb-3">
+        <label class="form-label" for="question">Question(READONLY)</label>
+        <input class="form-control" type="text" placeholder="Question from selection(by surveyId)" name="question" id="question" readonly />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="choices">Choices</label>
+        <input class="form-control" type="text" placeholder="choices" name="Answer your choice" id="choices" />
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-danger" onclick="createAnswer()">Answer Survey</button>
+        <button type="button" class="btn btn-outline-warning" onclick="moveAnswerListView()">Manage Your Answers</button>
+      </div>
+
+    </form>
+
+  </div>
 
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
 
