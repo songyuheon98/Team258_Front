@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+<body>
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+<style>
+  .container-container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    min-height: 100vh;
+    align-items: center;
+    flex-direction: column;
+  }
+  .container-container1 {
+    gap: 24px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-input {
+    gap: 4px;
+    width: 600px;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-start;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .container-text02 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 14px;
+    align-self: stretch;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-textfield {
+    gap: 4px;
+    display: flex;
+    padding: 8px 12px;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .container-text04 {
+    color: rgba(0, 0, 0, 0.5);
+    height: auto;
+    flex-grow: 1;
+    font-size: 14px;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-input1 {
+    gap: 4px;
+    width: 600px;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-start;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .container-text06 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 14px;
+    align-self: stretch;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-textfield1 {
+    gap: 4px;
+    display: flex;
+    padding: 8px 12px;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .container-text08 {
+    color: rgba(0, 0, 0, 0.5);
+    height: auto;
+    flex-grow: 1;
+    font-size: 14px;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-button {
+    gap: 12px;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .container-primary {
+    width: 160px;
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 1);
+  }
+  .container-text10 {
+    color: rgba(255, 255, 255, 1);
+    height: auto;
+    font-size: 16px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .container-primary1 {
+    width: 160px;
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 128, 128, 1);
+  }
+  .container-text12 {
+    color: rgba(255, 255, 255, 1);
+    height: auto;
+    font-size: 16px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+
+
+
+</style>
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="container-container1">
+    <span class="container-text"><span>Survey Creation</span></span>
+
+    <form accept-charset="UTF-8" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="question">Question</label>
+        <input class="form-control" type="text" placeholder="Enter your question" name="question" id="question" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="choices">Choices</label>
+        <input class="form-control" type="text" placeholder="choices" name="choices" id="choices" />
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-danger" onclick="createSurvey()">Create Survey</button>
+        <button type="button" class="btn btn-outline-warning" onclick="moveSurveyListView()">Manage Your Surveys</button>
+      </div>
+
+    </form>
+
+  </div>
+  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
+</div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

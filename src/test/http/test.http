@@ -1,0 +1,94 @@
+### signUp
+POST localhost:8080/api/user/signup
+Content-Type: application/json
+
+{
+"username" : "bin7779",
+"password1" : "Bin@12345",
+"password2" : "Bin@12345",
+  "admin": true,
+  "adminToken": "adminadminadminadminadmin"
+}
+
+### login
+POST localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+  "username" : "bin7778",
+  "password" : "Bin@12345"
+}
+
+### escape
+DELETE localhost:8080/api/user/escape
+
+
+
+### selectMember
+GET localhost:8080/api/admin
+
+### adminDeleteUser
+DELETE localhost:8080/api/admin/1
+
+
+### CreateSurvey
+POST localhost:8080/api/survey
+Content-Type: application/json
+
+{
+  "question" : "좋아하는음식은?",
+  "choices" : "1. 치킨, 2. 피자, 3. 족발",
+  "maxchoice" : 3,
+  "deadline" : "2023-10-15T13:00:00"
+}
+
+### ReadSurvey
+GET localhost:8080/api/survey
+Content-Type: application/json
+
+### ChoiceReadSurvey
+GET localhost:8080/api/survey/1
+
+### Updateurvey
+PUT localhost:8080/api/survey/1
+Content-Type: application/json
+
+{
+  "question" : "좋아하는음식은?",
+  "choices" : "1. 치킨, 2. 피자",
+  "maxchoice" : 2,
+  "deadline" : "2023-10-15T13:00:00"
+}
+
+### DeleteSurvey
+DELETE localhost:8080/api/survey/1
+
+
+### CreateAnswer
+POST localhost:8080/api/answer
+Content-Type: application/json
+
+{
+  "surveyId" : 1,
+  "answer" : 1
+}
+
+### ReadAnswer
+GET localhost:8080/api/answer
+
+
+### UpdateAnswer
+PUT localhost:8080/api/answer/1
+Content-Type: application/json
+
+{
+  "surveyId" : 1,
+  "answer" : 2
+}
+
+### DeleteAnswer
+DELETE localhost:8080/api/answer/1
+
+
+
+

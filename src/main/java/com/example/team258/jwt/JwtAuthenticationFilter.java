@@ -1,6 +1,7 @@
 package com.example.team258.jwt;
 
 import com.example.team258.dto.LoginRequestDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.exception.UserNotFoundException;
 import com.example.team258.security.UserDetailsImpl;
@@ -60,6 +61,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = jwtUtil.createToken(username, role);
         jwtUtil.addJwtToCookie(token, response);
+
+        MessageDto messageDto = new MessageDto("로그인 성공");
+        String jsonResponse = new ObjectMapper().writeValueAsString(messageDto);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonResponse);
     }
 
     @Override

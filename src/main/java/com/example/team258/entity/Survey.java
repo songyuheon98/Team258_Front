@@ -53,6 +53,9 @@ public class Survey extends Timestamped{
     public void addUser(User user){
         this.user = user;
     }
+    public void addAnswer(Answer answer){
+        this.answers.add(answer);
+    }
 
     public void update(SurveyRequestDto requestDto) {
         this.question = requestDto.getQuestion();
@@ -60,4 +63,7 @@ public class Survey extends Timestamped{
         this.maxChoice = requestDto.getMaxChoice();
         this.deadline = requestDto.getDeadline();
     }
+
+    @Version
+    private int version;
 }

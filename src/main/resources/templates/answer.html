@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+<body>
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+<style>
+  .container-container1 {
+    gap: 24px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+  .container-text {
+    color: rgba(0, 0, 0, 1);
+    width: 520px;
+    height: auto;
+    font-size: 40px;
+    font-style: Bold;
+    text-align: center;
+    font-family: Roboto;
+    font-weight: 700;
+    line-height: 48px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-container {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    min-height: 100vh;
+    align-items: center;
+    flex-direction: column;
+  }
+  .list-list {
+    gap: 40px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    z-index: 1;
+    flex-grow: 1;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .list-card {
+    display: flex;
+    overflow: hidden;
+    align-self: stretch;
+    align-items: center;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    flex-direction: column;
+  }
+  .list-textcontent {
+    gap: 4px;
+    display: flex;
+    padding: 12px;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .list-text {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 16px;
+    align-self: stretch;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text02 {
+    color: rgba(0, 0, 0, 1);
+    width: 118px;
+    height: auto;
+    font-size: 20px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 28px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-textfield {
+    gap: 4px;
+    width: 496px;
+    display: flex;
+    padding: 8px 12px;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .list-text04 {
+    color: rgba(0, 0, 0, 0.5);
+    height: auto;
+    flex-grow: 1;
+    font-size: 14px;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-text09 {
+    color: rgba(0, 0, 0, 1);
+    width: 118px;
+    height: auto;
+    font-size: 20px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 28px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-textfield1 {
+    gap: 4px;
+    display: flex;
+    padding: 8px 12px;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 0.10000000149011612);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  .list-text11 {
+    color: rgba(0, 0, 0, 0.5);
+    height: auto;
+    flex-grow: 1;
+    font-size: 14px;
+    font-style: Regular;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 400;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-button {
+    gap: 12px;
+    width: 160px;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .list-seconday {
+    width: 160px;
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .list-text18 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 16px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+  .list-button1 {
+    gap: 12px;
+    width: 160px;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .list-seconday1 {
+    width: 160px;
+    display: flex;
+    padding: 12px;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(0, 0, 0, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .list-text20 {
+    color: rgba(0, 0, 0, 1);
+    height: auto;
+    font-size: 16px;
+    font-style: Medium;
+    text-align: left;
+    font-family: Roboto;
+    font-weight: 500;
+    line-height: 24px;
+    font-stretch: normal;
+    text-decoration: none;
+  }
+
+
+</style>
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="container-container1">
+    <span class="container-text"><span>Answer Survey</span></span>
+
+    <form accept-charset="UTF-8" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="surveyId">SurveyID(HIDDEN)</label>
+        <input class="form-control" type="text" placeholder="SurveyId from selection(PathVariable)" name="surveyId" id="surveyId" readonly/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="question">Question(READONLY)</label>
+        <input class="form-control" type="text" placeholder="Question from selection(by surveyId)" name="question" id="question" readonly />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="choices">Choices</label>
+        <input class="form-control" type="text" placeholder="choices" name="Answer your choice" id="choices" />
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-danger" onclick="createAnswer()">Answer Survey</button>
+        <button type="button" class="btn btn-outline-warning" onclick="moveAnswerListView()">Manage Your Answers</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
+
+</div>
+
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

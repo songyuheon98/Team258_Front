@@ -1,17 +1,21 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.UserSignupRequestDto;
-import com.example.team258.entity.MessageDto;
+import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.exception.DuplicateUsernameException;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Optional;
 
@@ -23,7 +27,7 @@ public class UserService {
 
     private final String ADMIN_TOKEN = "adminadminadminadminadmin";
 
-    public static void passwordCheck(UserSignupRequestDto requestDto) {
+    public void passwordCheck(UserSignupRequestDto requestDto) {
         if(!requestDto.getPassword1().equals(requestDto.getPassword2())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
@@ -70,6 +74,18 @@ public class UserService {
     public ResponseEntity<MessageDto> escape() {
         String username = SecurityUtil.getPrincipal().get().getUsername();
         userRepository.delete(userRepository.findByUsername(username).orElse(null));
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = attributes.getResponse();
+
+        /**
+         * 쿠키 삭제 기능 추가
+         */
+        Cookie cookie = new Cookie("Authorization", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         return new ResponseEntity<>(new MessageDto("회원탈퇴가 완료되었습니다"), null, HttpStatus.OK);
     }
 }

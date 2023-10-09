@@ -38,6 +38,8 @@ public class Answer extends Timestamped {
         this.answerNum = answerNum;
         this.survey = survey;
         this.user = user;
+        survey.addAnswer(this);
+        user.addAnswer(this);
     }
 
     public void addUser(User user){
@@ -47,4 +49,7 @@ public class Answer extends Timestamped {
     public void update(Long answerNum) {
         this.answerNum = answerNum;
     }
+
+    @Version
+    private int version;
 }
