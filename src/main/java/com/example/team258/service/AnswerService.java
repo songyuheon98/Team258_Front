@@ -26,13 +26,10 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final SurveyRepository surveyRepository;
 
-    private final Semaphore semaphore = new Semaphore(1); // 동시에 3개의 스레드만 허용
-
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto createAnswer(AnswerRequestDto requestDto, User user) throws InterruptedException {
-        semaphore.acquire(); // Semaphore 획득
-        try {
-            Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
+
+            Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(() -> new IllegalArgumentException("예외가 발생하였습니다."));
             if (answerRepository.findByUserAndSurvey(user, survey).isPresent()) {
                 throw new IllegalArgumentException("예외가 발생하였습니다.");
             } // 이미 선택한 설문지를 중복 응답 시 에러 출력
@@ -48,28 +45,21 @@ public class AnswerService {
 
             MessageDto message = new MessageDto("작성이 완료되었습니다.");
             return message;
-
-        } finally {
-            semaphore.release(); // Semaphore 해제
-        }
-
-
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public List<AnswerResponseDto> getAnswers(User user) {
         List<Answer> answerList = answerRepository.findAllByUser(user);
         return answerList.stream().map(i -> new AnswerResponseDto(i)).collect(Collectors.toList());
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto updateAnswer(AnswerRequestDto requestDto, Long answerId, User user) throws InterruptedException {
-        semaphore.acquire(); // Semaphore 획득
-        try {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 업데이트 시작");
                 Answer answer;
 
-                answer = answerRepository.findById(answerId).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
+                answer = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("예외가 발생하였습니다."));
 
 //        Answer answer = answerRepository.findByIdForUpdate(answerId)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 ID에 대한 답변을 찾을 수 없습니다."));
@@ -90,22 +80,14 @@ public class AnswerService {
                 PerformanceLoggingUtil.logPerformanceError(AnswerService.class, "설문지 응답 업데이트 중 오류 발생", e);
                 throw e;
             }
-        } finally {
-            semaphore.release(); // Semaphore 해제
-        }
-
-
     }
-
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto deleteAnswer(Long answerId, User user) throws InterruptedException {
-        semaphore.acquire(); // Semaphore 획득
-        try {
             try {
                 PerformanceLoggingUtil.logPerformanceInfo(AnswerService.class, "설문지 응답 삭제 시작");
                 Answer answer;
 
-                answer = answerRepository.findById(answerId).orElseThrow(() -> new NullPointerException("예외가 발생하였습니다."));
+                answer = answerRepository.findById(answerId).orElseThrow(() -> new IllegalArgumentException("예외가 발생하였습니다."));
 
 //         Pessimistic Locking 적용
 //        Answer answer = answerRepository.findByIdForUpdate(answerId)
@@ -125,10 +107,5 @@ public class AnswerService {
                 PerformanceLoggingUtil.logPerformanceError(AnswerService.class, "설문지 응답 업데이트 중 오류 발생", e);
                 throw e;
             }
-        } finally {
-            semaphore.release(); // Semaphore 해제
-        }
-
-
     }
 }
