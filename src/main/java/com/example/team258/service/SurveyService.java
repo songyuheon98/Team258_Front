@@ -27,10 +27,10 @@ public class SurveyService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public MessageDto createSurvey(SurveyRequestDto requestDto, User user) {
         Survey survey = new Survey(requestDto, user);
-        surveyRepository.save(survey);
+        Survey savedSurvey = surveyRepository.save(survey);
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("(임시) 일치하는 유저 없음"));
-        savedUser.addSurvey(survey);
+        savedUser.addSurvey(savedSurvey);
         return new MessageDto("작성이 완료되었습니다");
     }
 
@@ -65,7 +65,6 @@ public class SurveyService {
         return new MessageDto("삭제가 완료되었습니다");
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
     private Survey getSurveyById(Long surveyId) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(()-> new IllegalArgumentException("(임시) 설문을 찾을 수 없음"));
