@@ -6,10 +6,12 @@ import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.*;
 import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
+import com.example.team258.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class AnswerServiceTest {
@@ -31,12 +35,14 @@ public class AnswerServiceTest {
     private AnswerService answerService;
     private AnswerRepository answerRepository;
     private SurveyRepository surveyRepository;
+    @MockBean
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
         answerRepository = new AnswerRepositoryStub();
         surveyRepository = new SurveyRepositoryStub();
-        answerService = new AnswerService(answerRepository, surveyRepository);
+        answerService = new AnswerService(answerRepository, surveyRepository,userRepository);
     }
 
     @Test
@@ -48,7 +54,9 @@ public class AnswerServiceTest {
                 .username("username")
                 .password("password")
                 .role(UserRoleEnum.USER)
+                .answers(new ArrayList<>())
                 .build();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
                 .question("질문질문")
@@ -56,6 +64,7 @@ public class AnswerServiceTest {
                 .deadline(LocalDateTime.of(2023,10,31,0,0))
                 .maxChoice(3L)
                 .user(user)
+                .answers(new ArrayList<>())
                 .build();
 
         surveyRepository.save(survey);
@@ -79,7 +88,9 @@ public class AnswerServiceTest {
                 .username("username")
                 .password("password")
                 .role(UserRoleEnum.USER)
+                .answers(new ArrayList<>())
                 .build();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
                 .question("질문질문")
@@ -87,6 +98,7 @@ public class AnswerServiceTest {
                 .deadline(LocalDateTime.of(2023,10,31,0,0))
                 .maxChoice(3L)
                 .user(user)
+                .answers(new ArrayList<>())
                 .build();
 
         surveyRepository.save(survey);
@@ -107,7 +119,9 @@ public class AnswerServiceTest {
                 .username("username")
                 .password("password")
                 .role(UserRoleEnum.USER)
+                .answers(new ArrayList<>())
                 .build();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
                 .question("질문질문")
@@ -115,6 +129,7 @@ public class AnswerServiceTest {
                 .deadline(LocalDateTime.of(2022,10,31,0,0))
                 .maxChoice(3L)
                 .user(user)
+                .answers(new ArrayList<>())
                 .build();
         surveyRepository.save(survey);
         AnswerRequestDto requestDto = AnswerRequestDto.builder()
@@ -134,6 +149,7 @@ public class AnswerServiceTest {
                 .password("password")
                 .role(UserRoleEnum.USER)
                 .build();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
                 .question("질문질문")
@@ -158,7 +174,9 @@ public class AnswerServiceTest {
                 .username("username")
                 .password("password")
                 .role(UserRoleEnum.USER)
+                .answers(new ArrayList<>())
                 .build();
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
                 .question("질문질문")
@@ -166,6 +184,7 @@ public class AnswerServiceTest {
                 .deadline(LocalDateTime.of(2024,10,31,0,0))
                 .maxChoice(3L)
                 .user(user)
+                .answers(new ArrayList<>())
                 .build();
         surveyRepository.save(survey);
         AnswerRequestDto requestDto = AnswerRequestDto.builder()
