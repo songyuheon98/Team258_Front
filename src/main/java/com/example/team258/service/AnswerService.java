@@ -8,6 +8,7 @@ import com.example.team258.entity.Survey;
 import com.example.team258.entity.User;
 import com.example.team258.repository.AnswerRepository;
 import com.example.team258.repository.SurveyRepository;
+import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -22,8 +23,11 @@ import java.util.stream.Collectors;
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final SurveyRepository surveyRepository;
+    private final UserRepository userRepository;
 
+    @Transactional//(isolation = Isolation.REPEATABLE_READ)
     public MessageDto createAnswer(AnswerRequestDto requestDto, User user) {
+        user = userRepository.findById(user.getUserId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         Survey survey = surveyRepository.findById(requestDto.getSurveyId()).orElseThrow(()->new NullPointerException("예외가 발생하였습니다."));
         if(answerRepository.findByUserAndSurvey(user,survey).isPresent()){
             throw new IllegalArgumentException("예외가 발생하였습니다.");
