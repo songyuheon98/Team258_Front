@@ -24,28 +24,28 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public MessageDto createSurvey(SurveyRequestDto requestDto, User user) {
+    @Transactional
+    public SurveyResponseDto createSurvey(SurveyRequestDto requestDto, User user) {
         Survey survey = new Survey(requestDto, user);
         Survey savedSurvey = surveyRepository.save(survey);
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("(임시) 일치하는 유저 없음"));
         savedUser.addSurvey(savedSurvey);
-        return new MessageDto("작성이 완료되었습니다");
+        return new SurveyResponseDto(survey);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
+    @Transactional
     public SurveyResponseDto getSurvey(Long surveyId) {
         Survey survey = getSurveyById(surveyId);
         return new SurveyResponseDto(survey);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ,readOnly = true)
+    @Transactional
     public List<SurveyResponseDto> getAllSurvey() {
         return surveyRepository.findAll().stream().map(SurveyResponseDto::new).toList();
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public MessageDto updateSurvey(Long surveyId, SurveyRequestDto requestDto, User user) {
         Survey survey = getSurveyById(surveyId);
         if (!survey.getUser().getUserId().equals(user.getUserId())&&user.getRole().equals(UserRoleEnum.USER)) {
@@ -55,7 +55,7 @@ public class SurveyService {
         return new MessageDto("수정이 완료되었습니다");
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public MessageDto deleteSurvey(Long surveyId, User user) {
         Survey survey = getSurveyById(surveyId);
         if (!survey.getUser().getUserId().equals(user.getUserId())&&user.getRole().equals(UserRoleEnum.USER)) {

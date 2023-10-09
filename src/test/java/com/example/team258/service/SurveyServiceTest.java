@@ -81,8 +81,10 @@ class SurveyServiceTest {
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user1));
 
         // then
-        MessageDto result = surveyService.createSurvey(requestDto, user1);
-        assertThat(result.getMsg()).isEqualTo("작성이 완료되었습니다");
+        SurveyResponseDto result = surveyService.createSurvey(requestDto, user1);
+        assertThat(result.getQuestion()).isEqualTo("테스트질문");
+        assertThat(result.getChoices()).isEqualTo("1. a, 2. b, 3. c");
+
     }
 
     @Test

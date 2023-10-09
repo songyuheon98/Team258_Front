@@ -56,6 +56,7 @@ public class AnswerServiceTest {
                 .role(UserRoleEnum.USER)
                 .answers(new ArrayList<>())
                 .build();
+
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
         Survey survey = Survey.builder()
                 .surveyId(1L)
@@ -74,10 +75,12 @@ public class AnswerServiceTest {
                 .answer(2L)
                 .build();
 
-        MessageDto response = answerService.createAnswer(requestDto, user);
+        AnswerResponseDto responseDto = answerService.createAnswer(requestDto, user);
 
 
-        assertEquals("작성이 완료되었습니다.", response.getMsg());
+        assertEquals( responseDto.getSurveyId(),1L);
+        assertEquals( responseDto.getAnswer(),2L);
+
     }
     @Test
     @DisplayName("응답 저장 - 선택지 없음")
@@ -191,8 +194,7 @@ public class AnswerServiceTest {
                 .surveyId(1L)
                 .answer(2L)
                 .build();
-
-        MessageDto response = answerService.createAnswer(requestDto, user);
+        answerService.createAnswer(requestDto, user);
 
         assertThrows(IllegalArgumentException.class,()->answerService.createAnswer(requestDto, user));
     }
@@ -265,7 +267,7 @@ public class AnswerServiceTest {
 
     @Test
     @DisplayName("응답 수정")
-    public void testUpdateAnswer() {
+    public void testUpdateAnswer() throws InterruptedException {
         User user = User.builder()
                 .userId(1L)
                 .username("username")
@@ -377,7 +379,7 @@ public class AnswerServiceTest {
     }
 
     @Test
-    public void testDeleteAnswer() {
+    public void testDeleteAnswer() throws InterruptedException {
         User user = User.builder()
                 .userId(1L)
                 .username("username")
