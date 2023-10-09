@@ -335,78 +335,48 @@
 <div class="index-contents">
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="container-container1">
+    <span class="container-text"><span>User List - ADMIN ONLY</span></span>
 
-  <div>
-    <span class="container-text"><span>User List</span></span>
-  </div>
-
-
-    <div class="list-container">
-      <div class="list-list">
-        <div class="list-card">
-          <div class="list-textcontent">
-            <span class="list-text"><span>User 1</span></span>
-            <span class="list-text02"><span>User ID</span></span>
-            <div class="list-textfield">
-            <span class="list-text04">
-              <span>
-                <span>READONLY</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <span class="list-text09"><span>User ROLE</span></span>
-            <div class="list-textfield1">
-            <span class="list-text11">
-              <span>
-                <span>READONLY</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <button class="list-button">
-              <div class="list-seconday">
-                <span class="list-text16"><span>Delete Account</span></span>
-              </div>
-            </button>
-          </div>
+    <div class="list-card">
+      <form accept-charset="UTF-8" action="" method="">
+        <div class="mb-3">
+          <label class="form-label">UserId</label>
+          <input class="form-control" type="text" placeholder="UserID" name="userId" readonly/>
         </div>
-        <div class="list-card1">
-          <div class="list-textcontent1">
-            <span class="list-text18"><span>User 2</span></span>
-            <span class="list-text20"><span>User ID</span></span>
-            <div class="list-textfield2">
-            <span class="list-text22">
-              <span>
-                <span>READONLY</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <span class="list-text27"><span>User ROLE</span></span>
-            <div class="list-textfield3">
-            <span class="list-text29">
-              <span>
-                <span>READONLY</span>
-                <br />
-                <span></span>
-              </span>
-            </span>
-            </div>
-            <button class="list-button1">
-              <div class="list-seconday1">
-                <span class="list-text34"><span>Delete Account</span></span>
-              </div>
-            </button>
-          </div>
+        <div class="mb-3">
+          <label class="form-label">User Name</label>
+          <input class="form-control" type="text" placeholder="User Name" name="username" readonly/>
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="form-label">User Role</label>
+          <input class="form-control" type="text" placeholder="role" name="role" />
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-outline-danger" onclick="deleteUser()">Delete User</button>
+        </div>
+      </form>
     </div>
 
-
+    <div class="list-card">
+      <form accept-charset="UTF-8" action="" method="">
+        <div class="mb-3">
+          <label class="form-label">UserId</label>
+          <input class="form-control" type="text" placeholder="UserID" name="userId" readonly/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">User Name</label>
+          <input class="form-control" type="text" placeholder="User Name" name="username" readonly/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">User Role</label>
+          <input class="form-control" type="text" placeholder="role" name="role"/>
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-outline-danger" onclick="deleteUser()">Delete User</button>
+        </div>
+      </form>
+    </div>
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
 
 </div>
