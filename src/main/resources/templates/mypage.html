@@ -198,34 +198,25 @@
 <div class="index-contents">
 
   <!-- 컨텐츠(여기부터 삽입 됩니다.) -->
+  <div class="container-container1">
+    <span class="container-text"><span>My Page</span></span>
 
-      <div class="container-container1">
-        <span class="container-text"><span>My Page</span></span>
-        <div class="container-input">
-          <span class="container-text02"><span>Nickname</span></span>
-          <div class="container-textfield">
-          <span class="container-text04">
-            <span>Enter a new nickname</span>
-          </span>
-          </div>
-        </div>
-        <div class="container-input1">
-          <span class="container-text06"><span>Password</span></span>
-          <div class="container-textfield1">
-          <span class="container-text08">
-            <span>Enter a new password</span>
-          </span>
-          </div>
-        </div>
-        <button class="container-button">
-          <div class="container-seconday">
-            <span class="container-text10"><span>Delete Account</span></span>
-          </div>
-          <div class="container-primary">
-            <span class="container-text12"><span>Save Changes</span></span>
-          </div>
-        </button>
+    <form accept-charset="UTF-8" action="" method="">
+
+      <div class="mb-3">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-control" type="text" placeholder="Enter your name(ID)" name="username" id="username" />
       </div>
+      <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" type="password" placeholder="Enter your password" name="password" id="password" />
+      </div>
+      <div class="">
+        <button type="button" class="btn btn-outline-primary" onclick="modifyUser()">Save Changes</button>
+        <button type="button" class="btn btn-outline-danger" onclick="escapeUser()">Leave Membership</button>
+      </div>
+
+    </form>
 
   <!-- 컨텐츠(여기까지 삽입 됩니다.) -->
 
