@@ -50,6 +50,4 @@ public class Answer extends Timestamped {
         this.answerNum = answerNum;
     }
 
-    @Version
-    private int version;
 }

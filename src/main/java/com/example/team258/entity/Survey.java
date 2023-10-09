@@ -64,6 +64,4 @@ public class Survey extends Timestamped{
         this.deadline = requestDto.getDeadline();
     }
 
-    @Version
-    private int version;
 }

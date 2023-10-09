@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/survey")
 @RequiredArgsConstructor
 public class SurveyController {
@@ -22,9 +22,9 @@ public class SurveyController {
 
 
     @PostMapping
-    public ResponseEntity<MessageDto> createSurvey(@RequestBody SurveyRequestDto requestDto,
+    public SurveyResponseDto createSurvey(@RequestBody SurveyRequestDto requestDto,
                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(surveyService.createSurvey(requestDto, userDetails.getUser()));
+        return surveyService.createSurvey(requestDto, userDetails.getUser());
     }
 
     @GetMapping("/{surveyId}")

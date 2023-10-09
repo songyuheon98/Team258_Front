@@ -49,7 +49,4 @@ public class User extends Timestamped{
         this.answers.add(answer);
     }
 
-
-    @Version
-    private int version;
 }
