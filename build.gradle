@@ -65,6 +65,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-websocket'
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+
+	// 231008 로깅 레벨 설정을 위한 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-logging'
+
 }
 
 tasks.named('test') {
