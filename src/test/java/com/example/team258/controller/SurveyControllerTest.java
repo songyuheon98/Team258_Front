@@ -92,7 +92,7 @@ class SurveyControllerTest {
                 .thenReturn(surveyResponseDto);
 
         //then
-        mockMvc.perform(post("/api/survey")
+        mockMvc.perform(post("/api/surveys")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(surveyResponseDto))
                         .content(objectMapper.writeValueAsString(authenticateUser(user)))
@@ -113,7 +113,7 @@ class SurveyControllerTest {
                 .thenReturn(new SurveyResponseDto(survey));
 
         //then
-        mockMvc.perform(get("/api/survey/{surveyId}", 1L))
+        mockMvc.perform(get("/api/surveys/{surveyId}", 1L))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -130,7 +130,7 @@ class SurveyControllerTest {
                 .thenReturn(list);
 
         //then
-        mockMvc.perform(get("/api/survey"))
+        mockMvc.perform(get("/api/surveys"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -144,7 +144,7 @@ class SurveyControllerTest {
                 .thenReturn(new MessageDto("수정이 완료되었습니다"));
 
         //then
-        mockMvc.perform(put("/api/survey/{surveyId}", 1L)
+        mockMvc.perform(put("/api/surveys/{surveyId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
                         .content(objectMapper.writeValueAsString(authenticateUser(user))))
@@ -161,7 +161,7 @@ class SurveyControllerTest {
                 .thenReturn(new MessageDto("삭제가 완료되었습니다"));
 
         //then
-        mockMvc.perform(delete("/api/survey/{surveyId}", 1L)
+        mockMvc.perform(delete("/api/surveys/{surveyId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authenticateUser(user))))
                 .andExpect(status().isOk())

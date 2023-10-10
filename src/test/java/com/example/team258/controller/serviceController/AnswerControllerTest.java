@@ -67,7 +67,7 @@ public class AnswerControllerTest {
                         .answer(1L).surveyId(1L).answer(1L).build()
         );
 
-        mockMvc.perform(post("/api/answer")
+        mockMvc.perform(post("/api/answers")
                 .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDto)))
@@ -110,7 +110,7 @@ public class AnswerControllerTest {
         answerResponseDtoList.add(new AnswerResponseDto(answer));
         when(answerService.getAnswers(any(User.class))).thenReturn(answerResponseDtoList);
 
-        mockMvc.perform(get("/api/answer")
+        mockMvc.perform(get("/api/answers")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails)))
                 .andExpect(status().isOk());
     }
@@ -145,7 +145,7 @@ public class AnswerControllerTest {
                 .build();
 
         when(answerService.updateAnswer(any(AnswerRequestDto.class),any(Long.class), any(User.class))).thenReturn(msg);
-        mockMvc.perform(put("/api/answer/1")
+        mockMvc.perform(put("/api/answers/1")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
@@ -178,7 +178,7 @@ public class AnswerControllerTest {
                 .build();
 
         when(answerService.deleteAnswer(any(Long.class), any(User.class))).thenReturn(msg);
-        mockMvc.perform(delete("/api/answer/1")
+        mockMvc.perform(delete("/api/answers/1")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.msg").value("삭제가 완료되었습니다."));

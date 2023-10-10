@@ -94,7 +94,7 @@ class AdminControllerTest {
                     .thenReturn(userList);
 
             // then
-            mockMvc.perform(get("/api/admin"))
+            mockMvc.perform(get("/api/admin/users"))
                     .andExpect(status().isOk())
                     .andDo(print());
         }
@@ -111,7 +111,7 @@ class AdminControllerTest {
             when(adminService.deleteUser(user1.getUserId(), user1)).thenReturn(msg);
 
             // then
-            mockMvc.perform(delete("/api/admin/{userId}", user1.getUserId())
+            mockMvc.perform(delete("/api/admin/users/{userId}", user1.getUserId())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(authenticateUser(user1))))
                     .andExpect(status().isOk())
@@ -141,7 +141,7 @@ class AdminControllerTest {
                     .thenReturn(userList);
 
             // then
-            mockMvc.perform(get("/api/admin"))
+            mockMvc.perform(get("/api/admin/users"))
                     .andExpect(status().isOk())
                     .andDo(print());
         }
@@ -163,7 +163,7 @@ class AdminControllerTest {
             when(adminService.deleteUser(user1.getUserId(), adminUser)).thenReturn(msg);
 
             // then
-            mockMvc.perform(delete("/api/admin/{userId}", 1L)
+            mockMvc.perform(delete("/api/admin/users/{userId}", 1L)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(authenticateUser(adminUser))))
                     .andExpect(status().isOk())
