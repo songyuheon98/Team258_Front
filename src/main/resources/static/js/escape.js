@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('#escape-button').on('click', function () {
         $.ajax({
             type: 'DELETE',
-            url: '/api/user/escape',
+            url: '/api/users/escape',
             success: function () {
                 alert('탈퇴가 완료되었습니다.');
                 window.location.href = '/';

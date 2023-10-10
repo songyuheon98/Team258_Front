@@ -52,7 +52,7 @@ class UserControllerTest {
 
         // when
         // then
-        mockMvc.perform(post("/api/user/signup")
+        mockMvc.perform(post("/api/users/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
@@ -67,7 +67,7 @@ class UserControllerTest {
 
         when(userService.escape()).thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
 
-        mockMvc.perform(delete("/api/user/escape"))
+        mockMvc.perform(delete("/api/users/escape"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.msg").value("회원 삭제 성공"));
     }

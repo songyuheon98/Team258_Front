@@ -3,7 +3,7 @@ function createSurvey(){
 }
 
 function moveSurveyListView(){
-    window.location.href = '/surveyList';
+    window.location.href = '/surveysList';
 }
 
 

@@ -1,5 +1,5 @@
 ### signUp
-POST localhost:8080/api/user/signup
+POST localhost:8080/api/users/signup
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### login
-POST localhost:8080/api/user/login
+POST localhost:8080/api/users/login
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### escape
-DELETE localhost:8080/api/user/escape
+DELETE localhost:8080/api/users/escape
 
 
 
@@ -32,7 +32,7 @@ DELETE localhost:8080/api/admin/1
 
 
 ### CreateSurvey
-POST localhost:8080/api/survey
+POST localhost:8080/api/surveys
 Content-Type: application/json
 
 {
@@ -43,14 +43,14 @@ Content-Type: application/json
 }
 
 ### ReadSurvey
-GET localhost:8080/api/survey
+GET localhost:8080/api/surveys
 Content-Type: application/json
 
 ### ChoiceReadSurvey
-GET localhost:8080/api/survey/1
+GET localhost:8080/api/surveys/1
 
 ### Updateurvey
-PUT localhost:8080/api/survey/1
+PUT localhost:8080/api/surveys/1
 Content-Type: application/json
 
 {
@@ -61,11 +61,11 @@ Content-Type: application/json
 }
 
 ### DeleteSurvey
-DELETE localhost:8080/api/survey/1
+DELETE localhost:8080/api/surveys/1
 
 
 ### CreateAnswer
-POST localhost:8080/api/answer
+POST localhost:8080/api/answers
 Content-Type: application/json
 
 {
@@ -74,11 +74,11 @@ Content-Type: application/json
 }
 
 ### ReadAnswer
-GET localhost:8080/api/answer
+GET localhost:8080/api/answers
 
 
 ### UpdateAnswer
-PUT localhost:8080/api/answer/1
+PUT localhost:8080/api/answers/1
 Content-Type: application/json
 
 {
@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ### DeleteAnswer
-DELETE localhost:8080/api/answer/1
+DELETE localhost:8080/api/answers/1
 
 
 
