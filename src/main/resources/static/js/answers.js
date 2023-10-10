@@ -3,7 +3,7 @@ function createAnswer(){
 }
 
 function moveAnswerListView(){
-    window.location.href = '/answerList';
+    window.location.href = '/answersList';
 }
 
 
