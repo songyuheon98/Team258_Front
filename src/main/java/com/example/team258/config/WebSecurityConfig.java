@@ -56,7 +56,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers(HttpMethod.POST,"/api/user/**").permitAll() // '/api/user/'로 시작하는 POST 요청 모두 접근 허가
+                        .requestMatchers(HttpMethod.POST,"/api/users/**").permitAll() // '/api/users/'로 시작하는 POST 요청 모두 접근 허가
 
                         // 조회 API는 비로그인 유저도 접근 가능.
                         .requestMatchers(HttpMethod.GET,"/**").permitAll()

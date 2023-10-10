@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AnswerViewController {
-    @GetMapping("/answer")
+    @GetMapping("/answers")
     public String answerView() {
-        return "answer";
+        return "answers";
     }
 
-    @GetMapping("/answerList")
+    @GetMapping("/answersList")
     public String answerListView() {
-        return "answerList";
+        return "answersList";
     }
 }

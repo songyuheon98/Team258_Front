@@ -20,12 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity<List<AdminResponseDto>> getAllUsers() {
         return ResponseEntity.ok(adminService.getAllUsers());
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/users/{userId}")
     public ResponseEntity<MessageDto> deleteUser(@PathVariable Long userId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(adminService.deleteUser(userId, userDetails.getUser()));

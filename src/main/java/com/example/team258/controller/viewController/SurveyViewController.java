@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SurveyViewController {
-    @GetMapping("/survey")
+    @GetMapping("/surveys")
     public String surveyView() {
-        return "survey";
+        return "surveys";
     }
 
-    @GetMapping("/surveyList")
+    @GetMapping("/surveysList")
     public String surveyListView(){
-        return "surveyList";
+        return "surveysList";
     }
 }
 
