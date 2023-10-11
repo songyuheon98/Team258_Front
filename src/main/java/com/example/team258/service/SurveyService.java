@@ -9,6 +9,7 @@ import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.SurveyRepository;
 import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;
@@ -25,10 +27,10 @@ public class SurveyService {
     @Transactional
     public SurveyResponseDto createSurvey(SurveyRequestDto requestDto, User user) {
         Survey survey = new Survey(requestDto, user);
-        surveyRepository.save(survey);
+        Survey savedSurvey = surveyRepository.save(survey);
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("(임시) 일치하는 유저 없음"));
-        savedUser.addSurvey(survey);
+        savedUser.addSurvey(savedSurvey);
         return new SurveyResponseDto(survey);
     }
 
@@ -63,7 +65,6 @@ public class SurveyService {
         return new MessageDto("삭제가 완료되었습니다");
     }
 
-    @Transactional
     private Survey getSurveyById(Long surveyId) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(()-> new IllegalArgumentException("(임시) 설문을 찾을 수 없음"));
