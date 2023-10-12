@@ -1,5 +1,6 @@
 package com.example.team258.entity;
 
+import com.example.team258.dto.AdminBooksRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,21 +19,22 @@ public class Book {
     @Column(name="book_id")
     private Long bookId;
 
-    @Column
+    @Column(name = "book_name", nullable = false)
     private String bookName;
 
-    @Column
+    @Column(name = "book_info", nullable = false)
     private String bookInfo;
 
-    @Column
+    @Column(name = "book_author", nullable = false)
     private String bookAuthor;
 
-    @Column
+    @Column(name = "book_publish", nullable = false)
     private LocalDateTime bookPublish;
 
-    @Column
+    @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookStatus bookStatus;
+    private BookStatusEnum bookStatus;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="apply_id")
@@ -53,6 +55,20 @@ public class Book {
     public void changeStatus(BookStatus bookStatus) {
         this.bookStatus = bookStatus;
     }
+
+
+    public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory){
+        this.bookName = requestDto.getBookName();
+        this.bookInfo = requestDto.getBookInfo();
+        this.bookAuthor = requestDto.getBookAuthor();
+        this.bookPublish = requestDto.getBookPublish();
+        this.bookCategory = bookCategory;
+    }
+
+    //public void addBookRent(BookRent bookRent){
+    //    this.bookRent = bookRent;
+    //    bookRent.addBook(this);
+    //}
 
     public void addBookReservation(BookReservation bookReservation) {
         this.bookReservations.add(bookReservation);

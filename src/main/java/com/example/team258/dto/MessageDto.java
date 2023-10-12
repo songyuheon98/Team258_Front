@@ -9,5 +9,4 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MessageDto {
     private String msg;
-
 }

@@ -1,7 +1,9 @@
 package com.example.team258.entity;
 
+import com.example.team258.dto.BookDonationEventRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class BookDonationEvent {
     @Id @GeneratedValue
     @Column(name="donation_id")
@@ -27,4 +30,14 @@ public class BookDonationEvent {
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name="donation_id")
     private List<BookApplyDonation> bookApplyDonations;
+
+    public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){
+        this.createdAt = bookDonationEventRequestDto.getCreatedAt();
+        this.closedAt = bookDonationEventRequestDto.getClosedAt();
+    }
+
+    public void update(BookDonationEventRequestDto bookDonationEventRequestDto) {
+        this.createdAt = bookDonationEventRequestDto.getCreatedAt();
+        this.closedAt = bookDonationEventRequestDto.getClosedAt();
+    }
 }
