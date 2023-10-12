@@ -1,6 +1,7 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.BookDonationEventRequestDto;
+import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.entity.User;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +50,11 @@ public class AdminDonationEventService {
         );
         adminDonationEventRepository.delete(bookDonationEvent);
         return ResponseEntity.ok(new MessageDto("이벤트 삭제가 완료되었습니다"));
+    }
+
+    public List<BookDonationEventResponseDto> getDonationEvent() {
+        return adminDonationEventRepository.findAll().stream()
+                .map(BookDonationEventResponseDto::new)
+                .toList();
     }
 }

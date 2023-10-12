@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class BookDonationEvent {
     @Id @GeneratedValue
     @Column(name="donation_id")
