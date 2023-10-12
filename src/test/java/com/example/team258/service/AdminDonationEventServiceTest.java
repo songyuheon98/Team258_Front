@@ -1,6 +1,7 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.BookDonationEventRequestDto;
+import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.entity.User;
@@ -21,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -153,4 +157,49 @@ class AdminDonationEventServiceTest {
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(result.getBody().getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
     }
+
+
+    @Test
+    void getDonationEvent() {
+        // given
+        List<BookDonationEvent> bookDonationEvents = new ArrayList<>();
+        bookDonationEvents.add(
+                BookDonationEvent.builder()
+                        .donatoinId(1L)
+                        .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
+                        .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
+                        .build()
+        );
+
+        when(adminDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
+
+
+        // when
+        List<BookDonationEventResponseDto> result = adminDonationEventService.getDonationEvent();
+
+        // then
+        assertThat(result.get(0).getDonatoinId()).isEqualTo(1L);
+        assertThat(result.get(0).getCreatedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:01"));
+        assertThat(result.get(0).getClosedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:59"));
+    }
+
+    @Test
+    void getDonationEvent_NULL() {
+        // given
+        List<BookDonationEvent> bookDonationEvents = new ArrayList<>();
+        bookDonationEvents.add(
+                BookDonationEvent.builder()
+                        .build()
+        );
+
+        when(adminDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
+
+
+        // when
+        List<BookDonationEventResponseDto> result = adminDonationEventService.getDonationEvent();
+
+        // then
+        assertThat(result.get(0).getDonatoinId()).isNull();
+    }
+
 }

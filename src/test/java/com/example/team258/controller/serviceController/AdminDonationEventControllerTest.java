@@ -1,7 +1,9 @@
 package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.BookDonationEventRequestDto;
+import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.MessageDto;
+import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.service.AdminDonationEventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -16,9 +18,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,6 +98,34 @@ class AdminDonationEventControllerTest {
         mockMvc.perform(delete("/api/admin/donation/{donationId}",1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.msg").value("이벤트 삭제가 완료되었습니다"));
+
+    }
+
+    @Test
+    void selectDonationEvent() throws Exception {
+        // given
+        List<BookDonationEventResponseDto> bookDonationEventResponseDtos = new ArrayList<>();
+        bookDonationEventResponseDtos.add(
+                new BookDonationEventResponseDto(
+                        BookDonationEvent.builder()
+                        .donatoinId(1L)
+                        .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
+                        .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
+                        .build()
+                )
+        );
+
+        when(adminDonationEventService.getDonationEvent())
+                .thenReturn(bookDonationEventResponseDtos);
+
+        // when
+        // then
+        mockMvc.perform(get("/api/admin/donation"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].donatoinId").value(1L))
+                .andExpect(jsonPath("$[0].createdAt").value("2023-10-12T19:16:01"))
+                .andExpect(jsonPath("$[0].closedAt").value("2023-10-12T19:16:59"))
+                .andDo(print());
 
     }
 }
