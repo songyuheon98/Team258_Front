@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,18 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "user")
-    private List<Survey> surveys = new ArrayList<>();
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "user")
-    private List<Answer> answers = new ArrayList<>();
+    @OneToMany(orphanRemoval = true,mappedBy = "user")
+    private List<BookReservation> bookReservations = new ArrayList<>();
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<BookRent> bookRents = new ArrayList<>();
+
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<BookApplyDonation> bookApplyDonations = new ArrayList<>();
+
 
     public User(String username, String password, UserRoleEnum role) {
         this.username=username;
@@ -42,11 +50,9 @@ public class User extends Timestamped{
         this.role=role;
     }
 
-    public void addSurvey(Survey survey) {
-        this.surveys.add(survey);
-    }
-    public void addAnswer(Answer answer) {
-        this.answers.add(answer);
-    }
+    //public void addBookReservation(BookReservation bookReservation){
+    //    this.bookReservations.add(bookReservation);
+    //    bookReservation.addUser(this);
+    //}
 
 }
