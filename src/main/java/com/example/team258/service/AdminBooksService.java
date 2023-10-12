@@ -37,4 +37,32 @@ public class AdminBooksService {
 
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
+
+    @Transactional
+    public ResponseEntity<MessageDto> updateBook(AdminBooksRequestDto requestDto, Long bookId, User loginUser) {
+        Book book = checkExistingBook(bookId);
+
+        // 로그인한 사용자 관리자 확인
+        if (!loginUser.getRole().equals(UserRoleEnum.ADMIN)){
+            throw new IllegalArgumentException("도서를 수정할 권한이 없습니다.");
+        }
+        // 수정할 도서 조회
+        adminBooksRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("수정할 도서를 찾을 수 없습니다."));
+
+        // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
+        BookCategory bookCategory = bookCategoryRepository.findById(requestDto.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+
+
+        book.update(requestDto, bookCategory);
+
+        return new ResponseEntity<>(new MessageDto("도서 정보가 수정되었습니다."), null, HttpStatus.OK);
+    }
+
+    private Book checkExistingBook(Long bookId) {
+        return adminBooksRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
+    }
+
 }

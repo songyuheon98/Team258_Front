@@ -1,5 +1,6 @@
 package com.example.team258.dto;
 
+import com.example.team258.entity.BookStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,5 @@ public class AdminBooksRequestDto {
     private String bookAuthor;
     private LocalDateTime bookPublish;
     private Long categoryId;
+    private BookStatusEnum bookStatus;
 }

@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/admin/books")
@@ -22,5 +20,12 @@ public class AdminBooksController {
     public ResponseEntity<MessageDto> createBook(@RequestBody AdminBooksRequestDto requestDto,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return adminBooksService.createBook(requestDto, userDetails.getUser());
+    }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<MessageDto> updateBook(@RequestBody AdminBooksRequestDto requestDto,
+                                                 @PathVariable Long bookId,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminBooksService.updateBook(requestDto, bookId, userDetails.getUser());
     }
 }

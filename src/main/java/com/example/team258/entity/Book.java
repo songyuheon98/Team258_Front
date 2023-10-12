@@ -16,7 +16,7 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="book_id")
+    @Column(name = "book_id")
     private Long bookId;
 
     @Column(name = "book_name", nullable = false)
@@ -37,24 +37,23 @@ public class Book {
 
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="apply_id")
+    @JoinColumn(name = "apply_id")
     private BookApplyDonation bookApplyDonation;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="rent_id")
+    @JoinColumn(name = "rent_id")
     private BookRent bookRent;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="book_reservation_id")
+    @JoinColumn(name = "book_reservation_id")
     private List<BookReservation> bookReservations;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="book_category_id")
+    @JoinColumn(name = "book_category_id")
     private BookCategory bookCategory;
 
 
-
-    public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory){
+    public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
         this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
@@ -63,6 +62,14 @@ public class Book {
         this.bookStatus = BookStatusEnum.POSSIBLE; // 기본값은 대여 가능 상태로 설정
     }
 
+    public void update(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
+        this.bookName = requestDto.getBookName();
+        this.bookInfo = requestDto.getBookInfo();
+        this.bookAuthor = requestDto.getBookAuthor();
+        this.bookPublish = requestDto.getBookPublish();
+        this.bookCategory = bookCategory;
+        this.bookStatus = requestDto.getBookStatus(); // 기본값은 대여 가능 상태로 설정
+    }
     //public void addBookRent(BookRent bookRent){
     //    this.bookRent = bookRent;
     //    bookRent.addBook(this);
