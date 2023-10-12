@@ -31,6 +31,7 @@ public class BookDonationEvent {
     @JoinColumn(name="donation_id")
     private List<BookApplyDonation> bookApplyDonations;
 
+
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
         this.closedAt = bookDonationEventRequestDto.getClosedAt();
@@ -40,4 +41,6 @@ public class BookDonationEvent {
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
         this.closedAt = bookDonationEventRequestDto.getClosedAt();
     }
+
+
 }

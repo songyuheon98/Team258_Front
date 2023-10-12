@@ -67,5 +67,9 @@ public class Book {
     //    bookRent.addBook(this);
     //}
 
+    public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
+        this.bookApplyDonation = bookApplyDonation;
+    }
+
 
 }

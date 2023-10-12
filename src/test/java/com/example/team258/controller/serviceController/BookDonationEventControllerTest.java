@@ -4,7 +4,7 @@ import com.example.team258.dto.BookDonationEventRequestDto;
 import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.BookDonationEvent;
-import com.example.team258.service.AdminDonationEventService;
+import com.example.team258.service.BookDonationEventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(addFilters = false)
-class AdminDonationEventControllerTest {
+class BookDonationEventControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AdminDonationEventService adminDonationEventService;
+    private BookDonationEventService bookDonationEventService;
 
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -49,7 +49,7 @@ class AdminDonationEventControllerTest {
                 .msg("이벤트추가가 완료되었습니다")
                 .build();
 
-        when(adminDonationEventService.createDonationEvent(any(BookDonationEventRequestDto.class)))
+        when(bookDonationEventService.createDonationEvent(any(BookDonationEventRequestDto.class)))
                 .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
 
         // when
@@ -70,7 +70,7 @@ class AdminDonationEventControllerTest {
                 .msg("이벤트 수정이 완료되었습니다")
                 .build();
 
-        when(adminDonationEventService.updateDonationEvent(any(Long.class),any(BookDonationEventRequestDto.class)))
+        when(bookDonationEventService.updateDonationEvent(any(Long.class),any(BookDonationEventRequestDto.class)))
                 .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
 
         // when
@@ -90,7 +90,7 @@ class AdminDonationEventControllerTest {
                 .msg("이벤트 삭제가 완료되었습니다")
                 .build();
 
-        when(adminDonationEventService.deleteDonationEvent(any(Long.class)))
+        when(bookDonationEventService.deleteDonationEvent(any(Long.class)))
                 .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
 
         // when
@@ -115,7 +115,7 @@ class AdminDonationEventControllerTest {
                 )
         );
 
-        when(adminDonationEventService.getDonationEvent())
+        when(bookDonationEventService.getDonationEvent())
                 .thenReturn(bookDonationEventResponseDtos);
 
         // when
