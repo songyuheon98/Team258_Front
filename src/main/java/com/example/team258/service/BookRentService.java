@@ -3,7 +3,7 @@ package com.example.team258.service;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookRent;
-import com.example.team258.entity.BookStatus;
+import com.example.team258.entity.BookStatusEnum;
 import com.example.team258.entity.User;
 import com.example.team258.repository.BookRentRepository;
 import com.example.team258.repository.BookRepository;
@@ -25,10 +25,10 @@ public class BookRentService {
                 .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
-        if (book.getBookStatus() != BookStatus.POSSIBLE) {
+        if (book.getBookStatus() != BookStatusEnum.POSSIBLE) {
             throw new IllegalArgumentException("책이 대여 가능한 상태가 아닙니다.");
         }
-        book.changeStatus(BookStatus.IMPOSSIBLE);
+        book.changeStatus(BookStatusEnum.IMPOSSIBLE);
         BookRent bookRent = bookRentRepository.save(new BookRent(book));
         savedUser.addBookRent(bookRent);
 
@@ -49,7 +49,7 @@ public class BookRentService {
             throw new IllegalArgumentException("해당 책을 대여중이 아닙니다.");
         }
         bookRentRepository.deleteById(bookRent.getBookRentId()); //이거만 삭제해도 되는지 확인필요
-        book.changeStatus(BookStatus.POSSIBLE);
+        book.changeStatus(BookStatusEnum.POSSIBLE);
 
         return new MessageDto("도서 반납이 완료되었습니다");
     }

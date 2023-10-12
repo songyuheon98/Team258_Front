@@ -52,7 +52,7 @@ public class Book {
     @JoinColumn(name="book_category_id")
     private BookCategory bookCategory;
 
-    public void changeStatus(BookStatus bookStatus) {
+    public void changeStatus(BookStatusEnum bookStatus) {
         this.bookStatus = bookStatus;
     }
 

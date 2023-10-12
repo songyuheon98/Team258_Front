@@ -3,7 +3,7 @@ package com.example.team258.service;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookReservation;
-import com.example.team258.entity.BookStatus;
+import com.example.team258.entity.BookStatusEnum;
 import com.example.team258.entity.User;
 import com.example.team258.repository.BookRepository;
 import com.example.team258.repository.BookReservationRepository;
@@ -25,7 +25,7 @@ public class BookReservationService {
                 .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
-        if (book.getBookStatus() == BookStatus.POSSIBLE) {
+        if (book.getBookStatus() == BookStatusEnum.POSSIBLE) {
             throw new IllegalArgumentException("책이 대여 가능한 상태입니다.");
         }
 
