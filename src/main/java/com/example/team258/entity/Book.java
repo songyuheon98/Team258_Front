@@ -60,6 +60,7 @@ public class Book {
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
+        this.bookStatus = BookStatusEnum.POSSIBLE; // 기본값은 대여 가능 상태로 설정
     }
 
     //public void addBookRent(BookRent bookRent){
