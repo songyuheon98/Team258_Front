@@ -50,6 +50,7 @@ class BookApplyDonationServiceTest {
     @MockBean
     private BookApplyDonationRepository bookApplyDonationRepository;
 
+
     @MockBean
     private BookRepository bookRepository;
 
