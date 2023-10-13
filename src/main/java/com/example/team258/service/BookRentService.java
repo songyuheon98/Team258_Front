@@ -48,8 +48,17 @@ public class BookRentService {
         if (!savedUser.getBookRents().contains(bookRent)) {
             throw new IllegalArgumentException("해당 책을 대여중이 아닙니다.");
         }
-        bookRentRepository.deleteById(bookRent.getBookRentId()); //이거만 삭제해도 되는지 확인필요
-        book.changeStatus(BookStatusEnum.POSSIBLE);
+        bookRentRepository.deleteById(bookRent.getBookRentId()); //확인필요
+
+        //예약자가 있는 경우 첫번째 예약자가 바로 대출
+        if (!book.getBookReservations().isEmpty()) {
+            User rsvUser = book.getBookReservations().get(0).getUser();
+            book.getBookReservations().remove(0);
+            BookRent bookRentRsv = bookRentRepository.save(new BookRent(book));
+            rsvUser.addBookRent(bookRentRsv);
+        } else {
+            book.changeStatus(BookStatusEnum.POSSIBLE);
+        }
 
         return new MessageDto("도서 반납이 완료되었습니다");
     }

@@ -31,7 +31,7 @@ public class BookReservationService {
 
         BookReservation bookReservation = bookReservationRepository.save(new BookReservation(savedUser, book));
         book.addBookReservation(bookReservation);
-        savedUser.addBookReservation(bookReservation);//추후 하나의 메소드로 통합하는 방안도 확인하겠음
+        savedUser.addBookReservation(bookReservation);//하나의 메소드로 통합하는 방안도 확인 필요
 
         return new MessageDto("도서 예약 신청이 완료되었습니다");
     }
