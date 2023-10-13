@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "book_donation_event")
@@ -29,7 +30,7 @@ public class BookDonationEvent {
     // 단 방향
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name="donation_id")
-    private List<BookApplyDonation> bookApplyDonations;
+    private List<BookApplyDonation> bookApplyDonations=new ArrayList<>();
 
 
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){

@@ -55,4 +55,8 @@ public class User extends Timestamped{
     //    bookReservation.addUser(this);
     //}
 
+    public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
+        this.bookApplyDonations.add(bookApplyDonation);
+    }
+
 }

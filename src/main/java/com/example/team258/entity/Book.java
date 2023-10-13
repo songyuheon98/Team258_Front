@@ -3,6 +3,7 @@ package com.example.team258.entity;
 import com.example.team258.dto.AdminBooksRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +35,13 @@ public class Book {
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookStatusEnum bookStatus;
+    private BookStatusEnum bookStatus=BookStatusEnum.POSSIBLE;
 
 
+    /**
+     * 도서가 삭제 되었을때 나눔 신청도 삭제
+     * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="apply_id")
     private BookApplyDonation bookApplyDonation;
@@ -69,6 +75,10 @@ public class Book {
 
     public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
         this.bookApplyDonation = bookApplyDonation;
+    }
+
+    public void removeBookApplyDonation(){
+        this.bookApplyDonation = null;
     }
 
 
