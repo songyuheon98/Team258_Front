@@ -30,6 +30,7 @@ public class BookRentService {
         }
         book.changeStatus(BookStatusEnum.IMPOSSIBLE);
         BookRent bookRent = bookRentRepository.save(new BookRent(book));
+        book.addBookRent(bookRent);
         savedUser.addBookRent(bookRent);
 
         return new MessageDto("도서 대출 신청이 완료되었습니다");
@@ -55,6 +56,7 @@ public class BookRentService {
             User rsvUser = book.getBookReservations().get(0).getUser();
             book.getBookReservations().remove(0);
             BookRent bookRentRsv = bookRentRepository.save(new BookRent(book));
+            book.addBookRent(bookRentRsv);
             rsvUser.addBookRent(bookRentRsv);
         } else {
             book.changeStatus(BookStatusEnum.POSSIBLE);

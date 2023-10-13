@@ -33,6 +33,7 @@ public class BookRentScheduler {
                     User rsvUser = book.getBookReservations().get(0).getUser();
                     book.getBookReservations().remove(0);
                     BookRent bookRentRsv = bookRentRepository.save(new BookRent(book));
+                    book.addBookRent(bookRentRsv);
                     rsvUser.addBookRent(bookRentRsv);
                 } else {
                     book.changeStatus(BookStatusEnum.POSSIBLE);
