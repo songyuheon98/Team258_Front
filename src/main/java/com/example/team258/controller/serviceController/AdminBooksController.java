@@ -19,23 +19,27 @@ import java.util.List;
 public class AdminBooksController {
     private final AdminBooksService adminBooksService;
 
+    // CREATE
     @PostMapping
     public ResponseEntity<MessageDto> createBook(@RequestBody AdminBooksRequestDto requestDto,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return adminBooksService.createBook(requestDto, userDetails.getUser());
     }
 
+    // READ ALL
     @GetMapping
     public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(){
         return ResponseEntity.ok(adminBooksService.getAllBooks());
     }
 
+    // READ SELECT
     @GetMapping("/{bookId}")
     public ResponseEntity<AdminBooksResponseDto> getBook(@PathVariable Long bookId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(adminBooksService.getBookById(bookId, userDetails.getUser()));
     }
 
+    // UPDATE SELECT
     @PutMapping("/{bookId}")
     public ResponseEntity<MessageDto> updateBook(@RequestBody AdminBooksRequestDto requestDto,
                                                  @PathVariable Long bookId,
@@ -43,6 +47,7 @@ public class AdminBooksController {
         return adminBooksService.updateBook(requestDto, bookId, userDetails.getUser());
     }
 
+    // DELETE SELECT
     @DeleteMapping("/{bookId}")
     public ResponseEntity<MessageDto> deleteBook(@PathVariable Long bookId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {

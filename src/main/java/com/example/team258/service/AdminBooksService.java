@@ -9,16 +9,12 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
-
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,11 +29,11 @@ public class AdminBooksService {
         validateUserAuthority(loginUser);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = bookCategoryRepository.findById(requestDto.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+        BookCategory bookCategory = checkExistingCategory(requestDto.getCategoryId());
 
         // 새로운 도서 생성
         Book newBook = new Book(requestDto, bookCategory);
+
         adminBooksRepository.save(newBook);
 
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
@@ -53,6 +49,7 @@ public class AdminBooksService {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
+        // 도서의 ID를 이용해서 책 조회
         Book book = checkExistingBook(bookId);
 
         return new AdminBooksResponseDto(book);
@@ -60,29 +57,29 @@ public class AdminBooksService {
 
     @Transactional
     public ResponseEntity<MessageDto> updateBook(AdminBooksRequestDto requestDto, Long bookId, User loginUser) {
-        Book book = checkExistingBook(bookId);
-
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        // 수정할 도서 조회
-        adminBooksRepository.findById(bookId)
-                .orElseThrow(() -> new IllegalArgumentException("수정할 도서를 찾을 수 없습니다."));
+        // 도서의 ID를 이용해서 책 조회
+        Book book = checkExistingBook(bookId);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = bookCategoryRepository.findById(requestDto.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
-
+        BookCategory bookCategory = checkExistingCategory(requestDto.getCategoryId());
 
         book.update(requestDto, bookCategory);
 
         return new ResponseEntity<>(new MessageDto("도서 정보가 수정되었습니다."), null, HttpStatus.OK);
     }
 
-    public ResponseEntity<MessageDto> deleteBook(Long bookId, User user) {
+    public ResponseEntity<MessageDto> deleteBook(Long bookId, User loginUser) {
+        // 로그인한 사용자 관리자 확인
+        validateUserAuthority(loginUser);
+
+        // 도서의 ID를 이용해서 책 조회
         Book book = checkExistingBook(bookId);
-        validateUserAuthority(user);
+
         adminBooksRepository.delete(book);
+
         return new ResponseEntity<>(new MessageDto("도서가 삭제되었습니다."), null, HttpStatus.OK);
     }
 
@@ -95,5 +92,10 @@ public class AdminBooksService {
     private Book checkExistingBook(Long bookId) {
         return adminBooksRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
+    }
+
+    private BookCategory checkExistingCategory(Long categoryId) {
+        return bookCategoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
     }
 }
