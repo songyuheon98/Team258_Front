@@ -26,7 +26,8 @@ public class BookRent {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public void addBook(Book book){
+    public BookRent(Book book) {
         this.book = book;
+        this.returnDate = LocalDateTime.now().plusDays(7);
     }
 }
