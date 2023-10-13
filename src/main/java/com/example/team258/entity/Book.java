@@ -87,4 +87,8 @@ public class Book {
     public void addBookReservation(BookReservation bookReservation) {
         this.bookReservations.add(bookReservation);
     }
+
+    public void updateBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
+    }
 }

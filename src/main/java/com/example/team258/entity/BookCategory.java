@@ -1,5 +1,6 @@
 package com.example.team258.entity;
 
+import com.example.team258.dto.AdminCategoriesRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +21,12 @@ public class BookCategory {
     @Column(name="book_category_id")
     private Long bookCategoryId;
 
+    @Column(name="book_category_name")
+    private String bookCategoryName;
+
+
     @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "bookCategory")
     private List<Book> books = new ArrayList<>();
-
-    @Column(name="category_name")
-    private String categoryName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
@@ -33,8 +35,9 @@ public class BookCategory {
     @OneToMany(mappedBy = "parentCategory")
     private List<BookCategory> childCategories;
 
-    public void addBook(Book book) {
-        this.books.add(book);
+
+    public BookCategory(AdminCategoriesRequestDto requestDto) {
+        this.bookCategoryName = requestDto.getBookCategoryName();
     }
 
     public void addChildCategory(BookCategory childCategory) {
@@ -44,6 +47,10 @@ public class BookCategory {
 
     private void setParentCategory(BookCategory bookCategory) {
         this.parentCategory = bookCategory;
+    }
+
+    public void changeBookCategoryName(String newBookCategoryName) {
+        this.bookCategoryName = newBookCategoryName;
     }
 }
 

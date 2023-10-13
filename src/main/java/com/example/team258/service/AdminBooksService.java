@@ -29,7 +29,7 @@ public class AdminBooksService {
         validateUserAuthority(loginUser);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = checkExistingCategory(requestDto.getCategoryId());
+        BookCategory bookCategory = checkExistingCategory(requestDto.getBookCategoryId());
 
         // 새로운 도서 생성
         Book newBook = new Book(requestDto, bookCategory);
@@ -64,7 +64,7 @@ public class AdminBooksService {
         Book book = checkExistingBook(bookId);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = checkExistingCategory(requestDto.getCategoryId());
+        BookCategory bookCategory = checkExistingCategory(requestDto.getBookCategoryId());
 
         book.update(requestDto, bookCategory);
 

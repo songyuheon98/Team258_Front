@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AdminBooksResponseDto {
     private Long bookId;
+    private String bookName;
     private String bookInfo;
     private String bookAuthor;
     private LocalDateTime bookPublish;
