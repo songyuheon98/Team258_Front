@@ -42,4 +42,10 @@ public class AdminBooksController {
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return adminBooksService.updateBook(requestDto, bookId, userDetails.getUser());
     }
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<MessageDto> deleteBook(@PathVariable Long bookId,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminBooksService.deleteBook(bookId, userDetails.getUser());
+    }
 }
