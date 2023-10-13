@@ -35,9 +35,13 @@ public class Book {
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookStatusEnum bookStatus;
+    private BookStatusEnum bookStatus=BookStatusEnum.POSSIBLE;
 
 
+    /**
+     * 도서가 삭제 되었을때 나눔 신청도 삭제
+     * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="apply_id")
     private BookApplyDonation bookApplyDonation;
@@ -72,10 +76,17 @@ public class Book {
     //    bookRent.addBook(this);
     //}
 
+    public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
+        this.bookApplyDonation = bookApplyDonation;
+    }
+
+    public void removeBookApplyDonation(){
+        this.bookApplyDonation = null;
+    }
+
     public void addBookRent(BookRent bookRent){
         this.bookRent = bookRent;
     }
-
     public void addBookReservation(BookReservation bookReservation) {
         this.bookReservations.add(bookReservation);
     }
