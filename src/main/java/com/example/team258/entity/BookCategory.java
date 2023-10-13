@@ -31,15 +31,15 @@ public class BookCategory {
     private BookCategory parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
-    private List<BookCategory> subCategories = new ArrayList<>();
+    private List<BookCategory> childCategories;
 
     public void addBook(Book book) {
         this.books.add(book);
     }
 
-    public void addSubCategory(BookCategory subCategory) {
-        this.subCategories.add(subCategory);
-        subCategory.setParentCategory(this);
+    public void addChildCategory(BookCategory childCategory) {
+        this.childCategories.add(childCategory);
+        childCategory.setParentCategory(this);
     }
 
     private void setParentCategory(BookCategory bookCategory) {

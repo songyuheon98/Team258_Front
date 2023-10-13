@@ -1,6 +1,7 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.AdminBooksRequestDto;
+import com.example.team258.dto.AdminBooksResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookCategory;
@@ -8,11 +9,17 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
-import jakarta.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +43,23 @@ public class AdminBooksService {
         adminBooksRepository.save(newBook);
 
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminBooksResponseDto> getAllBooks() {
+        return adminBooksRepository.findAll().stream().map(AdminBooksResponseDto::new).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
+        // 로그인한 사용자 관리자 확인
+        if (!loginUser.getRole().equals(UserRoleEnum.ADMIN)){
+            throw new IllegalArgumentException("도서를 조회할 권한이 없습니다.");
+        }
+
+        Book book = checkExistingBook(bookId);
+
+        return new AdminBooksResponseDto(book);
     }
 
     @Transactional
@@ -64,5 +88,4 @@ public class AdminBooksService {
         return adminBooksRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
     }
-
 }
