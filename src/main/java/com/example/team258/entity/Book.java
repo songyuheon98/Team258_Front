@@ -3,6 +3,7 @@ package com.example.team258.entity;
 import com.example.team258.dto.AdminBooksRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +54,9 @@ public class Book {
     @JoinColumn(name = "book_category_id")
     private BookCategory bookCategory;
 
+    public void changeStatus(BookStatusEnum bookStatus) {
+        this.bookStatus = bookStatus;
+    }
 
     public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
@@ -75,5 +80,11 @@ public class Book {
     //    bookRent.addBook(this);
     //}
 
+    public void addBookRent(BookRent bookRent){
+        this.bookRent = bookRent;
+    }
 
+    public void addBookReservation(BookReservation bookReservation) {
+        this.bookReservations.add(bookReservation);
+    }
 }

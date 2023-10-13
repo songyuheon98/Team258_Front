@@ -50,6 +50,13 @@ public class User extends Timestamped{
         this.role=role;
     }
 
+    public void addBookRent(BookRent bookRent) {
+        this.bookRents.add(bookRent);
+    }
+
+    public void addBookReservation(BookReservation bookReservation) {
+        this.bookReservations.add(bookReservation);
+    }
     //public void addBookReservation(BookReservation bookReservation){
     //    this.bookReservations.add(bookReservation);
     //    bookReservation.addUser(this);
