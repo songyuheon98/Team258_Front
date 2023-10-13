@@ -43,7 +43,7 @@ public class BookReservationService {
         User savedUser = userRepository.findById(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         BookReservation bookReservation = bookReservationRepository.findByUserAndBook(savedUser, book)
-                .orElseThrow(()->new IllegalArgumentException("대여 기록을 찾을 수 없습니다"));
+                .orElseThrow(()->new IllegalArgumentException("예약 기록을 찾을 수 없습니다"));
 
         bookReservationRepository.deleteById(bookReservation.getBookReservationId());
 
