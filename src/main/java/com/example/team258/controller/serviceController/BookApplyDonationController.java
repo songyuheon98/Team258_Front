@@ -2,6 +2,7 @@ package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.BookApplyDonationRequestDto;
 import com.example.team258.dto.BookDonationEventResponseDto;
+import com.example.team258.dto.BookResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.service.BookApplyDonationService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,9 @@ public class BookApplyDonationController {
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
         return bookApplyDonationService.deleteBookApplyDonation(applyId);
     }
-//
+
     @GetMapping("/books")
-    public List<BookDonationEventResponseDto> getDonationBooks(@RequestParam String booksStatus){
+    public List<BookResponseDto> getDonationBooks(@RequestParam String booksStatus){
         return bookApplyDonationService.getDonationBooks(booksStatus);
     }
 
