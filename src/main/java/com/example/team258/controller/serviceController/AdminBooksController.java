@@ -54,3 +54,5 @@ public class AdminBooksController {
         return adminBooksService.deleteBook(bookId, userDetails.getUser());
     }
 }
+
+

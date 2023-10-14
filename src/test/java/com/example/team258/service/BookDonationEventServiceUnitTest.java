@@ -7,11 +7,14 @@ import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.jwt.SecurityUtil;
-import com.example.team258.repository.AdminDonationEventRepository;
+import com.example.team258.repository.BookDonationEventRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,30 +36,33 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@SpringBootTest
-@AutoConfigureTestDatabase
-@AutoConfigureMockMvc(addFilters = false)
-class AdminDonationEventServiceTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private AdminDonationEventRepository adminDonationEventRepository;
-
-    @MockBean
-    private SecurityUtil securityUtil;
-
-    @Autowired
-    private AdminDonationEventService adminDonationEventService;
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class BookDonationEventServiceUnitTest {
+    @Mock private BookDonationEventRepository bookDonationEventRepository;
+    @Mock private SecurityUtil securityUtil;
+    private BookDonationEventService bookDonationEventService;
     private static MockedStatic<SecurityUtil> mockedSecurityUtil;
+
     @BeforeAll
-    static void setUp() {
+    void setUp() {
+        /**
+         * Mockito 어노테이션을 활성화하여 Mock 객체 초기화
+         */
+        MockitoAnnotations.openMocks(this);
+
+        /**
+         * Mock 객체를 사용하여 UserService 객체 생성
+         */
         mockedSecurityUtil = mockStatic(SecurityUtil.class);
+
+        /**
+         * Mock 객체를 사용하여 UserService 객체 생성
+         */
+        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository);
+
     }
     @AfterAll
-    static void tearDown() {
+    void tearDown() {
         mockedSecurityUtil.close();
     }
 
@@ -67,10 +73,10 @@ class AdminDonationEventServiceTest {
                 .msg("이벤트추가가 완료되었습니다")
                 .build();
 
-        when(adminDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(new BookDonationEvent());
+        when(bookDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(new BookDonationEvent());
 
         // when
-        ResponseEntity<MessageDto> result = adminDonationEventService.createDonationEvent(new BookDonationEventRequestDto());
+        ResponseEntity<MessageDto> result = bookDonationEventService.createDonationEvent(new BookDonationEventRequestDto());
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -82,10 +88,10 @@ class AdminDonationEventServiceTest {
     void updateDonationEvent() {
         // given
 
-        when(adminDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
 
         // when
-        ResponseEntity<MessageDto> result = adminDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto());
+        ResponseEntity<MessageDto> result = bookDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto());
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -95,12 +101,12 @@ class AdminDonationEventServiceTest {
     @Test
     void updateDonationEvent_Event_is_Null() {
         // given
-        when(adminDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         // when
         // then
         assertThrows(IllegalArgumentException.class,
-                () -> adminDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto()));
+                () -> bookDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto()));
     }
 
 
@@ -112,11 +118,11 @@ class AdminDonationEventServiceTest {
                 .build();
 
         given(securityUtil.getPrincipal()).willReturn(Optional.ofNullable(user));
-        when(adminDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
-        doNothing().when(adminDonationEventRepository).delete(any(BookDonationEvent.class));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
+        doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
-        ResponseEntity<MessageDto> result = adminDonationEventService.deleteDonationEvent(1L);
+        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -131,12 +137,12 @@ class AdminDonationEventServiceTest {
                 .build();
 
         given(securityUtil.getPrincipal()).willReturn(Optional.ofNullable(user));
-        when(adminDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
-        doNothing().when(adminDonationEventRepository).delete(any(BookDonationEvent.class));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
         // then
-        assertThrows(IllegalArgumentException.class,()->adminDonationEventService.deleteDonationEvent(1L));
+        assertThrows(IllegalArgumentException.class,()-> bookDonationEventService.deleteDonationEvent(1L));
     }
 
     @Test
@@ -147,11 +153,11 @@ class AdminDonationEventServiceTest {
                 .build();
 
         given(securityUtil.getPrincipal()).willReturn(Optional.ofNullable(user));
-        when(adminDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
-        doNothing().when(adminDonationEventRepository).delete(any(BookDonationEvent.class));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
+        doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
-        ResponseEntity<MessageDto> result = adminDonationEventService.deleteDonationEvent(1L);
+        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -171,11 +177,11 @@ class AdminDonationEventServiceTest {
                         .build()
         );
 
-        when(adminDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
+        when(bookDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
 
 
         // when
-        List<BookDonationEventResponseDto> result = adminDonationEventService.getDonationEvent();
+        List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 
         // then
         assertThat(result.get(0).getDonatoinId()).isEqualTo(1L);
@@ -192,11 +198,11 @@ class AdminDonationEventServiceTest {
                         .build()
         );
 
-        when(adminDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
+        when(bookDonationEventRepository.findAll()).thenReturn(bookDonationEvents);
 
 
         // when
-        List<BookDonationEventResponseDto> result = adminDonationEventService.getDonationEvent();
+        List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 
         // then
         assertThat(result.get(0).getDonatoinId()).isNull();

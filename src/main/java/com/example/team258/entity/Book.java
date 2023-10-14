@@ -24,23 +24,21 @@ public class Book {
     @Column(name = "book_name", nullable = false)
     private String bookName;
 
-    //@Column(name = "book_info", nullable = false)
-    //private String bookInfo;
-
     @Column(name = "book_author", nullable = false)
     private String bookAuthor;
-
-    //@Column(name = "book_publish", nullable = false)
-    //private LocalDateTime bookPublish;
 
     @Column(name = "book_publish", nullable = false)
     private long bookPublish;
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookStatusEnum bookStatus;
+    private BookStatusEnum bookStatus=BookStatusEnum.POSSIBLE;
 
 
+    /**
+     * 도서가 삭제 되었을때 나눔 신청도 삭제
+     * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_id")
     private BookApplyDonation bookApplyDonation;
@@ -63,20 +61,25 @@ public class Book {
 
     public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
-        //this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
-        this.bookStatus = BookStatusEnum.POSSIBLE; // 기본값은 대여 가능 상태로 설정
     }
 
     public void update(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
-        //this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
         this.bookStatus = requestDto.getBookStatus(); // 기본값은 대여 가능 상태로 설정
+    }
+
+    public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
+        this.bookApplyDonation = bookApplyDonation;
+    }
+
+    public void removeBookApplyDonation(){
+        this.bookApplyDonation = null;
     }
 
     public void addBookRent(BookRent bookRent){

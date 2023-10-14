@@ -3,10 +3,9 @@ package com.example.team258.controller.serviceController;
 import com.example.team258.dto.BookDonationEventRequestDto;
 import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.MessageDto;
-import com.example.team258.service.AdminDonationEventService;
+import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,27 +13,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/donation")
 @RequiredArgsConstructor
-public class AdminDonationEventController {
+public class BookDonationEventController {
 
-    private final AdminDonationEventService adminDonationEventService;
+    private final BookDonationEventService bookDonationEventService;
     @PostMapping
     public ResponseEntity<MessageDto> createDonationEvent(@RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
-        return adminDonationEventService.createDonationEvent(bookDonationEventRequestDto);
+        return bookDonationEventService.createDonationEvent(bookDonationEventRequestDto);
     }
 
     @PutMapping("/{donationId}")
     public ResponseEntity<MessageDto> updateDonationEvent(@PathVariable Long donationId, @RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
-        return adminDonationEventService.updateDonationEvent(donationId,bookDonationEventRequestDto);
+        return bookDonationEventService.updateDonationEvent(donationId,bookDonationEventRequestDto);
     }
 
     @DeleteMapping("/{donationId}")
     public ResponseEntity<MessageDto> deleteDonationEvent(@PathVariable Long donationId){
-        return adminDonationEventService.deleteDonationEvent(donationId);
+        return bookDonationEventService.deleteDonationEvent(donationId);
     }
 
     @GetMapping
-    public List<BookDonationEventResponseDto> getDonationEvent(){
-        return adminDonationEventService.getDonationEvent();
+    public ResponseEntity<List<BookDonationEventResponseDto>> getDonationEvent(){
+        return ResponseEntity.ok().body(bookDonationEventService.getDonationEvent());
     }
 
 }

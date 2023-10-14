@@ -31,6 +31,17 @@ public class AdminBooksService {
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
         BookCategory bookCategory = checkExistingCategory(requestDto);
+        /**
+         * 카테고리 생성되면 테스트
+         */
+//        // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
+//        BookCategory bookCategory = bookCategoryRepository.findById(requestDto.getCategoryId())
+//                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+//
+        /**
+         * book 생성을 위한 샘플 카테고리 생성
+         */
+        bookCategoryRepository.save(bookCategory);
 
         // 새로운 도서 생성
         Book newBook = new Book(requestDto, bookCategory);

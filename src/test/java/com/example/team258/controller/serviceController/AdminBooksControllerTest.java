@@ -58,7 +58,6 @@ class AdminBooksControllerTest {
             // given
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
-                    .bookInfo("Test Book Info")
                     .bookAuthor("Test Author")
                     .bookPublish(LocalDateTime.now())
                     .bookCategoryId(1L)
@@ -100,7 +99,6 @@ class AdminBooksControllerTest {
             // given
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
-                    .bookInfo("Test Book Info")
                     .bookAuthor("Test Author")
                     .bookPublish(LocalDateTime.now())
                     .bookCategoryId(1L)
