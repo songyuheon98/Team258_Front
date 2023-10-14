@@ -114,7 +114,7 @@ public class BookApplyDonationService {
 
     public List<BookApplyDonationResponseDto> getBookApplyDonations() {
         return bookApplyDonationRepository.findAll().stream()
-                .map(BookApplyDonationResponseDto::new)
+                .map(bookApplyDonation -> new BookApplyDonationResponseDto(bookApplyDonation))
                 .toList();
     }
 }
