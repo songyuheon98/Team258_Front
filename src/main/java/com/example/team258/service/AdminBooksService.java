@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminBooksService {
     private final AdminBooksRepository adminBooksRepository;
     private final BookCategoryRepository bookCategoryRepository;
@@ -29,7 +30,7 @@ public class AdminBooksService {
         validateUserAuthority(loginUser);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = checkExistingCategory(requestDto.getBookCategoryId());
+        BookCategory bookCategory = checkExistingCategory(requestDto);
 
         // 새로운 도서 생성
         Book newBook = new Book(requestDto, bookCategory);
@@ -39,12 +40,12 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
     public List<AdminBooksResponseDto> getAllBooks() {
-        return adminBooksRepository.findAll().stream().map(AdminBooksResponseDto::new).toList();
+        return adminBooksRepository.findAll().stream()
+                .map(AdminBooksResponseDto::new)
+                .toList();
     }
 
-    @Transactional(readOnly = true)
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
@@ -64,7 +65,7 @@ public class AdminBooksService {
         Book book = checkExistingBook(bookId);
 
         // 도서의 카테고리 ID를 이용해서 실제 카테고리 조회
-        BookCategory bookCategory = checkExistingCategory(requestDto.getBookCategoryId());
+        BookCategory bookCategory = checkExistingCategory(requestDto);
 
         book.update(requestDto, bookCategory);
 
@@ -94,8 +95,8 @@ public class AdminBooksService {
                 .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
     }
 
-    private BookCategory checkExistingCategory(Long categoryId) {
-        return bookCategoryRepository.findById(categoryId)
+    private BookCategory checkExistingCategory(AdminBooksRequestDto requestDto) {
+        return bookCategoryRepository.findById(requestDto.getBookCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
     }
 }

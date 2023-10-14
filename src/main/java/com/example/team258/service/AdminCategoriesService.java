@@ -1,6 +1,7 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.AdminCategoriesRequestDto;
+import com.example.team258.dto.AdminCategoriesResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookCategory;
@@ -63,11 +64,11 @@ public class AdminCategoriesService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookCategory> getAllCategories(User loginUser) {
+    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        return bookCategoryRepository.findAll();
+        return ResponseEntity.ok(bookCategoryRepository.findAll().stream().map(AdminCategoriesResponseDto::new).toList());
     }
 
     @Transactional

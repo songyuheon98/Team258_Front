@@ -1,12 +1,11 @@
 package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.AdminCategoriesRequestDto;
+import com.example.team258.dto.AdminCategoriesResponseDto;
 import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.BookCategory;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -37,9 +36,9 @@ public class AdminCategoryController {
 
     // READ All Categories
     @GetMapping
-    public ResponseEntity<List<BookCategory>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<BookCategory> categories = adminCategoriesService.getAllCategories(userDetails.getUser());
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ResponseEntity<List<AdminCategoriesResponseDto>> categories = adminCategoriesService.getAllCategories(userDetails.getUser());
+        return categories;
     }
 
     // UPDATE Category Name

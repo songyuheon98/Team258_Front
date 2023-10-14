@@ -19,7 +19,8 @@ public class AdminBooksResponseDto {
     private String bookAuthor;
     private LocalDateTime bookPublish;
     private BookStatusEnum bookStatus;
-    private BookCategory bookCategory;
+    //private BookCategory bookCategory;
+    private Long bookCategoryId;
 
     public AdminBooksResponseDto(Book book) {
         this.bookId = book.getBookId();
@@ -27,6 +28,6 @@ public class AdminBooksResponseDto {
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();
-        this.bookCategory = book.getBookCategory();
+        this.bookCategoryId = book.getBookCategory().getBookCategoryId();
     }
 }
