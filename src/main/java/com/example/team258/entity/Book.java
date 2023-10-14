@@ -18,7 +18,7 @@ import java.util.List;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="book_id")
+    @Column(name = "book_id")
     private Long bookId;
 
     @Column(name = "book_name", nullable = false)
@@ -40,37 +40,39 @@ public class Book {
      * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="apply_id")
+    @JoinColumn(name = "apply_id")
     private BookApplyDonation bookApplyDonation;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="rent_id")
+    @JoinColumn(name = "rent_id")
     private BookRent bookRent;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="book_reservation_id")
+    @JoinColumn(name = "book_reservation_id")
     private List<BookReservation> bookReservations;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="book_category_id")
+    @JoinColumn(name = "book_category_id")
     private BookCategory bookCategory;
 
     public void changeStatus(BookStatusEnum bookStatus) {
         this.bookStatus = bookStatus;
     }
 
-
-    public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory){
+    public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
     }
 
-    //public void addBookRent(BookRent bookRent){
-    //    this.bookRent = bookRent;
-    //    bookRent.addBook(this);
-    //}
+    public void update(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
+        this.bookName = requestDto.getBookName();
+        this.bookAuthor = requestDto.getBookAuthor();
+        this.bookPublish = requestDto.getBookPublish();
+        this.bookCategory = bookCategory;
+        this.bookStatus = requestDto.getBookStatus(); // 기본값은 대여 가능 상태로 설정
+    }
 
     public void addBookApplyDonation(BookApplyDonation bookApplyDonation){
         this.bookApplyDonation = bookApplyDonation;
@@ -83,7 +85,12 @@ public class Book {
     public void addBookRent(BookRent bookRent){
         this.bookRent = bookRent;
     }
+
     public void addBookReservation(BookReservation bookReservation) {
         this.bookReservations.add(bookReservation);
+    }
+
+    public void updateBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
     }
 }
