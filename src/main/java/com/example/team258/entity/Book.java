@@ -24,14 +24,17 @@ public class Book {
     @Column(name = "book_name", nullable = false)
     private String bookName;
 
-    @Column(name = "book_info", nullable = false)
-    private String bookInfo;
+    //@Column(name = "book_info", nullable = false)
+    //private String bookInfo;
 
     @Column(name = "book_author", nullable = false)
     private String bookAuthor;
 
+    //@Column(name = "book_publish", nullable = false)
+    //private LocalDateTime bookPublish;
+
     @Column(name = "book_publish", nullable = false)
-    private LocalDateTime bookPublish;
+    private long bookPublish;
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -60,7 +63,7 @@ public class Book {
 
     public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
-        this.bookInfo = requestDto.getBookInfo();
+        //this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
@@ -69,16 +72,12 @@ public class Book {
 
     public void update(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
         this.bookName = requestDto.getBookName();
-        this.bookInfo = requestDto.getBookInfo();
+        //this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
         this.bookStatus = requestDto.getBookStatus(); // 기본값은 대여 가능 상태로 설정
     }
-    //public void addBookRent(BookRent bookRent){
-    //    this.bookRent = bookRent;
-    //    bookRent.addBook(this);
-    //}
 
     public void addBookRent(BookRent bookRent){
         this.bookRent = bookRent;

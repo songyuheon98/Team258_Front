@@ -15,16 +15,17 @@ import java.time.LocalDateTime;
 public class AdminBooksResponseDto {
     private Long bookId;
     private String bookName;
-    private String bookInfo;
+    //private String bookInfo;
     private String bookAuthor;
-    private LocalDateTime bookPublish;
+    //private LocalDateTime bookPublish;
+    private Long bookPublish;
     private BookStatusEnum bookStatus;
     //private BookCategory bookCategory;
     private Long bookCategoryId;
 
     public AdminBooksResponseDto(Book book) {
         this.bookId = book.getBookId();
-        this.bookInfo = book.getBookInfo();
+        //this.bookInfo = book.getBookInfo();
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();

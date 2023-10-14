@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Builder
 public class AdminBooksRequestDto {
     private String bookName;
-    private String bookInfo;
+    //private String bookInfo;
     private String bookAuthor;
-    private LocalDateTime bookPublish;
+    //private LocalDateTime bookPublish;
+    private long bookPublish;
     private Long bookCategoryId;
     private BookStatusEnum bookStatus;
 }
