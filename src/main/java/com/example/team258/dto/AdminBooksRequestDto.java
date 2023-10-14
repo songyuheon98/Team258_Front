@@ -1,15 +1,15 @@
 package com.example.team258.dto;
 
 import com.example.team258.entity.BookStatusEnum;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdminBooksRequestDto {
     private String bookName;
     private String bookAuthor;

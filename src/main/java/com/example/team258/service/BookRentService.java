@@ -1,21 +1,22 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookRent;
-import com.example.team258.entity.BookStatusEnum;
-import com.example.team258.entity.User;
+import com.example.team258.entity.*;
 import com.example.team258.repository.BookRentRepository;
 import com.example.team258.repository.BookRepository;
+import com.example.team258.repository.BookReservationRepository;
 import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookRentService {
     private final BookRentRepository bookRentRepository;
+    private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
@@ -49,19 +50,23 @@ public class BookRentService {
         if (!savedUser.getBookRents().contains(bookRent)) {
             throw new IllegalArgumentException("해당 책을 대여중이 아닙니다.");
         }
+
+        book.deleteRental();
         bookRentRepository.deleteById(bookRent.getBookRentId()); //확인필요
+
 
         //예약자가 있는 경우 첫번째 예약자가 바로 대출
         if (!book.getBookReservations().isEmpty()) {
             User rsvUser = book.getBookReservations().get(0).getUser();
-            book.getBookReservations().remove(0);
+            BookReservation bookReservation = book.getBookReservations().get(0);
+            bookReservationRepository.deleteById(bookReservation.getBookReservationId());
+
             BookRent bookRentRsv = bookRentRepository.save(new BookRent(book));
             book.addBookRent(bookRentRsv);
             rsvUser.addBookRent(bookRentRsv);
         } else {
             book.changeStatus(BookStatusEnum.POSSIBLE);
         }
-
         return new MessageDto("도서 반납이 완료되었습니다");
     }
 }

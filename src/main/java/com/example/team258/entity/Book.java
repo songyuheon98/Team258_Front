@@ -93,4 +93,8 @@ public class Book {
     public void updateBookCategory(BookCategory bookCategory) {
         this.bookCategory = bookCategory;
     }
+
+    public void deleteRental() {
+        this.bookRent = null;
+    }
 }

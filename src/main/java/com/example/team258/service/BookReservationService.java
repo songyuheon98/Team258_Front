@@ -1,16 +1,15 @@
 package com.example.team258.service;
 
 import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookReservation;
-import com.example.team258.entity.BookStatusEnum;
-import com.example.team258.entity.User;
+import com.example.team258.entity.*;
 import com.example.team258.repository.BookRepository;
 import com.example.team258.repository.BookReservationRepository;
 import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,16 @@ public class BookReservationService {
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         if (book.getBookStatus() == BookStatusEnum.POSSIBLE) {
             throw new IllegalArgumentException("책이 대여 가능한 상태입니다.");
+        }
+
+        BookRent bookRent = book.getBookRent();
+        if (savedUser.getBookRents().contains(bookRent)) {
+            throw new IllegalArgumentException("대여중인 책은 예약할 수 없습니다.");
+        }
+
+        Optional<BookReservation> savedBookReservation = bookReservationRepository.findByUserAndBook(savedUser, book);
+        if (savedBookReservation.isPresent()) {
+            throw new IllegalArgumentException("이미 이 책을 예약한 상태입니다.");
         }
 
         BookReservation bookReservation = bookReservationRepository.save(new BookReservation(savedUser, book));
