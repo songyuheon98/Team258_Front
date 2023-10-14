@@ -13,7 +13,6 @@ import java.util.List;
 public class BookResponseDto {
     private Long bookId;
     private String bookName;
-    private String bookInfo;
     private String bookAuthor;
     private LocalDateTime bookPublish;
     private BookStatusEnum bookStatus;
@@ -21,7 +20,6 @@ public class BookResponseDto {
     public BookResponseDto(Book book){
         this.bookId = book.getBookId();
         this.bookName = book.getBookName();
-        this.bookInfo = book.getBookInfo();
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();
