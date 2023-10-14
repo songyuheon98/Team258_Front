@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 public class AdminBooksRequestDto {
     private String bookName;
-    private String bookInfo;
     private String bookAuthor;
     private LocalDateTime bookPublish;
     private Long categoryId;

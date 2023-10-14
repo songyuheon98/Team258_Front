@@ -26,14 +26,19 @@ public class BookApplyDonationController {
         return bookApplyDonationService.deleteBookApplyDonation(applyId);
     }
 
+    /**
+     * 책 기부 신청 목록 조회
+     * @param bookStatus
+     * @return
+     */
     @GetMapping("/books")
-    public List<BookResponseDto> getDonationBooks(@RequestParam BookStatusEnum bookStatus){
-        return bookApplyDonationService.getDonationBooks(bookStatus);
+    public ResponseEntity<List<BookResponseDto>> getDonationBooks(@RequestParam BookStatusEnum bookStatus){
+        return ResponseEntity.ok().body(bookApplyDonationService.getDonationBooks(bookStatus));
     }
 
     @GetMapping
-    public List<BookApplyDonationResponseDto> getBookApplyDonations(){
-        return bookApplyDonationService.getBookApplyDonations();
+    public ResponseEntity<List<BookApplyDonationResponseDto>> getBookApplyDonations(){
+        return ResponseEntity.ok().body(bookApplyDonationService.getBookApplyDonations());
     }
 
 

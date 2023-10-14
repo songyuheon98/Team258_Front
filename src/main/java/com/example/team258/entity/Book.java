@@ -24,9 +24,6 @@ public class Book {
     @Column(name = "book_name", nullable = false)
     private String bookName;
 
-    @Column(name = "book_info", nullable = false)
-    private String bookInfo;
-
     @Column(name = "book_author", nullable = false)
     private String bookAuthor;
 
@@ -65,7 +62,6 @@ public class Book {
 
     public Book(AdminBooksRequestDto requestDto, BookCategory bookCategory){
         this.bookName = requestDto.getBookName();
-        this.bookInfo = requestDto.getBookInfo();
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;

@@ -32,8 +32,8 @@ public class BookDonationEventController {
     }
 
     @GetMapping
-    public List<BookDonationEventResponseDto> getDonationEvent(){
-        return bookDonationEventService.getDonationEvent();
+    public ResponseEntity<List<BookDonationEventResponseDto>> getDonationEvent(){
+        return ResponseEntity.ok().body(bookDonationEventService.getDonationEvent());
     }
 
 }
