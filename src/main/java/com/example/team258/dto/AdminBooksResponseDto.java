@@ -25,6 +25,7 @@ public class AdminBooksResponseDto {
 
     public AdminBooksResponseDto(Book book) {
         this.bookId = book.getBookId();
+        this.bookName = book.getBookName();
         //this.bookInfo = book.getBookInfo();
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
