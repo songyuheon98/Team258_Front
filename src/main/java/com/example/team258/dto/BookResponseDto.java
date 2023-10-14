@@ -14,7 +14,7 @@ public class BookResponseDto {
     private Long bookId;
     private String bookName;
     private String bookAuthor;
-    private long bookPublish;
+    private LocalDateTime bookPublish;
     private BookStatusEnum bookStatus;
 
     public BookResponseDto(Book book){

@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
 public class AdminBooksRequestDto {
     private String bookName;
     private String bookAuthor;
-    private long bookPublish;
+    private LocalDateTime bookPublish;
     private Long bookCategoryId;
     private BookStatusEnum bookStatus;
 }

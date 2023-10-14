@@ -4,6 +4,8 @@ import com.example.team258.entity.Book;
 import com.example.team258.entity.BookStatusEnum;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -13,7 +15,7 @@ public class AdminBooksResponseDto {
     private Long bookId;
     private String bookName;
     private String bookAuthor;
-    private Long bookPublish;
+    private LocalDateTime bookPublish;
     private BookStatusEnum bookStatus;
     private Long bookCategoryId;
 
