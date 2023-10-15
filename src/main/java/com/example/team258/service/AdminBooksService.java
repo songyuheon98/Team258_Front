@@ -51,7 +51,10 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    public List<AdminBooksResponseDto> getAllBooks() {
+    public List<AdminBooksResponseDto> getAllBooks(User loginUser) {
+        // 로그인한 사용자 관리자 확인
+        validateUserAuthority(loginUser);
+
         return adminBooksRepository.findAll().stream()
                 .map(AdminBooksResponseDto::new)
                 .toList();

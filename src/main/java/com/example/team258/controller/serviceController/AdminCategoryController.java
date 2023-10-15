@@ -37,8 +37,7 @@ public class AdminCategoryController {
     // READ All Categories
     @GetMapping
     public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        ResponseEntity<List<AdminCategoriesResponseDto>> categories = adminCategoriesService.getAllCategories(userDetails.getUser());
-        return categories;
+        return ResponseEntity.ok(adminCategoriesService.getAllCategories(userDetails.getUser()));
     }
 
     // UPDATE Category Name

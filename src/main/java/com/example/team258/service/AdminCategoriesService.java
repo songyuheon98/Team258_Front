@@ -64,11 +64,13 @@ public class AdminCategoriesService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(User loginUser) {
+    public List<AdminCategoriesResponseDto> getAllCategories(User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        return ResponseEntity.ok(bookCategoryRepository.findAll().stream().map(AdminCategoriesResponseDto::new).toList());
+        return bookCategoryRepository.findAll().stream()
+                .map(AdminCategoriesResponseDto::new)
+                .toList();
     }
 
     @Transactional
