@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookCategoryRepository extends JpaRepository<BookCategory, Long> {
-    Optional<BookCategory> findByCategoryName(String bookCategoryName);
+
     BookCategory findByBookCategoryName(String bookCategoryName);
 }

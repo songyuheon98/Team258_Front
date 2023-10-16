@@ -1,8 +1,8 @@
-package com.example.team258.search;
+package com.example.team258.service;
 
+import com.example.team258.dto.BookResponseDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookCategory;
-import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.BookCategoryRepository;
 import com.example.team258.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class SearchService {
         Sort sort = Sort.by(Sort.Direction.ASC,"bookId");
         Pageable pageable = PageRequest.of(page,20,sort);
 
-        BookCategory bookCategory = bookCategoryRepository.findByCategoryName(bookCategoryName).orElseThrow(()->new NullPointerException("오류"));
+        BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
         List<BookCategory> bookCategories = saveAllCategories(bookCategory);
 
         Page<Book> bookList = bookRepository.findAllByCategories(bookCategories,pageable);
@@ -61,7 +61,7 @@ public class SearchService {
         Sort sort = Sort.by(Sort.Direction.ASC,"bookId");
         Pageable pageable = PageRequest.of(page,20,sort);
 
-        BookCategory bookCategory = bookCategoryRepository.findByCategoryName(bookCategoryName).orElseThrow(()->new NullPointerException("오류"));
+        BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
         List<BookCategory> bookCategories = saveAllCategories(bookCategory);
 
         Page<Book> bookList = bookRepository.findAllByCategoriesAndBookNameContaining(bookCategories, keyword, pageable);
@@ -73,8 +73,8 @@ public class SearchService {
         BookCategory category = bookCategory;
         List<BookCategory> answer = new ArrayList<>();
         answer.add(category);
-        if (category.getSubCategories().isEmpty()) return answer;
-        for(BookCategory tmp : category.getSubCategories()){
+        if (category.getChildCategories().isEmpty()) return answer;
+        for(BookCategory tmp : category.getChildCategories()){
             answer.addAll(saveAllCategories(tmp));
         }
         return answer;

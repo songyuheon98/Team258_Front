@@ -1,5 +1,7 @@
-package com.example.team258.search;
+package com.example.team258.controller.serviceController;
 
+import com.example.team258.dto.BookResponseDto;
+import com.example.team258.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +35,14 @@ public class SearchController {
 //    }
 
     @GetMapping("/search")
-    public Page<BookResponseDto> getAllBooksByCategoryOrKeyword(@RequestParam("bookCategoryName") String bookCategoryName,
-                                                                @RequestParam("keyword") String keyword,
-                                                                @RequestParam("page") int page) {
-        if(keyword==null){
-            return searchService.getAllBooksByKeyword(keyword,page);
-        } else if(bookCategoryName == null){
-            return searchService.getAllBooksByCategory(keyword,page);
+    public Page<BookResponseDto> getAllBooksByCategoryOrKeyword(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                                                @RequestParam(value = "keyword", required = false) String keyword,
+                                                                @RequestParam(value = "page") int page) {
+        if(bookCategoryName==null){
+            return searchService.getAllBooksByKeyword(keyword,page-1);
+        } else if(keyword == null){
+            return searchService.getAllBooksByCategory(bookCategoryName,page-1);
         }
-        return searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page);
+        return searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page-1);
     }
 }
