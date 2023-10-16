@@ -4,6 +4,7 @@ import com.example.team258.dto.BookResponseDto;
 import com.example.team258.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,13 +14,13 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping
-    public Page<BookResponseDto> getAllBooks(@RequestParam("page") int page) {
-        return searchService.getAllBooks(page - 1);
+    public ResponseEntity<Page<BookResponseDto>> getAllBooks(@RequestParam("page") int page) {
+        return ResponseEntity.ok(searchService.getAllBooks(page - 1));
     }
 
     @GetMapping("/{bookId}")
-    public BookResponseDto getBookById(@PathVariable Long bookId) {
-        return searchService.getBookById(bookId);
+    public ResponseEntity<BookResponseDto> getBookById(@PathVariable Long bookId) {
+        return ResponseEntity.ok(searchService.getBookById(bookId));
     }
 
 //    @GetMapping("/search")
@@ -35,14 +36,14 @@ public class SearchController {
 //    }
 
     @GetMapping("/search")
-    public Page<BookResponseDto> getAllBooksByCategoryOrKeyword(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
-                                                                @RequestParam(value = "keyword", required = false) String keyword,
-                                                                @RequestParam(value = "page") int page) {
+    public ResponseEntity<Page<BookResponseDto>> getAllBooksByCategoryOrKeyword(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                                                                                @RequestParam(value = "keyword", required = false) String keyword,
+                                                                                @RequestParam(value = "page") int page) {
         if(bookCategoryName==null){
-            return searchService.getAllBooksByKeyword(keyword,page-1);
+            return ResponseEntity.ok(searchService.getAllBooksByKeyword(keyword,page-1));
         } else if(keyword == null){
-            return searchService.getAllBooksByCategory(bookCategoryName,page-1);
+            return ResponseEntity.ok(searchService.getAllBooksByCategory(bookCategoryName,page-1));
         }
-        return searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page-1);
+        return ResponseEntity.ok(searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page-1));
     }
 }
