@@ -28,8 +28,8 @@ public class AdminBooksController {
 
     // READ ALL
     @GetMapping
-    public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(){
-        return ResponseEntity.ok(adminBooksService.getAllBooks());
+    public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseEntity.ok(adminBooksService.getAllBooks(userDetails.getUser()));
     }
 
     // READ SELECT
