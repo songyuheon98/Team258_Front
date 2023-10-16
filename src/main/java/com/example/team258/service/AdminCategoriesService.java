@@ -31,13 +31,6 @@ public class AdminCategoriesService {
         // 새로운 카테고리 생성
         BookCategory newBookCategory = new BookCategory(requestDto);
 
-        // 이미 존재하는 카테고리인지 확인
-        BookCategory existingBookCategory = bookCategoryRepository.findByBookCategoryName(requestDto.getBookCategoryName());
-        if (existingBookCategory != null) {
-            // 이미 존재하는 경우, 존재하는 카테고리를 선택
-            newBookCategory = existingBookCategory;
-        }
-
         // 카테고리 저장
         bookCategoryRepository.save(newBookCategory);
 
@@ -130,14 +123,6 @@ public class AdminCategoriesService {
         return new ResponseEntity<>(new MessageDto("카테고리가 삭제되었습니다."), null, HttpStatus.OK);
     }
 
-    private void removeFromParentCategory(BookCategory category) {
-        BookCategory parentCategory = category.getParentCategory();
-        if (parentCategory != null) {
-            parentCategory.getChildCategories().remove(category);
-            bookCategoryRepository.save(parentCategory);
-        }
-    }
-
     private void validateUserAuthority(User loginUser) {
         if (!loginUser.getRole().equals(UserRoleEnum.ADMIN)){
             throw new IllegalArgumentException("해당 작업을 수행할 권한이 없습니다.");
@@ -148,15 +133,21 @@ public class AdminCategoriesService {
         return adminBooksRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("도서를 찾을 수 없습니다."));
     }
-
     private BookCategory checkExistingBookCategory(Long bookCategoryId) {
         return bookCategoryRepository.findById(bookCategoryId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
     }
-
-    private void updateParentCategoryName(BookCategory parentCategory, String newBookCategoryName) {
+    void updateParentCategoryName(BookCategory parentCategory, String newBookCategoryName) {
         if (parentCategory != null) {
             parentCategory.changeBookCategoryName(newBookCategoryName);
+            bookCategoryRepository.save(parentCategory);
+        }
+    }
+
+    void removeFromParentCategory(BookCategory category) {
+        BookCategory parentCategory = category.getParentCategory();
+        if (parentCategory != null) {
+            parentCategory.getChildCategories().remove(category);
             bookCategoryRepository.save(parentCategory);
         }
     }
