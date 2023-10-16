@@ -1,18 +1,19 @@
 package com.example.team258.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.example.team258.entity.BookStatusEnum;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdminBooksRequestDto {
     private String bookName;
-    private String bookInfo;
     private String bookAuthor;
     private LocalDateTime bookPublish;
-    private Long categoryId;
+    private Long bookCategoryId;
+    private BookStatusEnum bookStatus;
 }

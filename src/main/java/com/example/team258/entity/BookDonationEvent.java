@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "book_donation_event")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class BookDonationEvent {
     @Id @GeneratedValue
     @Column(name="donation_id")
@@ -28,7 +30,8 @@ public class BookDonationEvent {
     // 단 방향
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true)
     @JoinColumn(name="donation_id")
-    private List<BookApplyDonation> bookApplyDonations;
+    private List<BookApplyDonation> bookApplyDonations=new ArrayList<>();
+
 
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
@@ -39,4 +42,6 @@ public class BookDonationEvent {
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
         this.closedAt = bookDonationEventRequestDto.getClosedAt();
     }
+
+
 }

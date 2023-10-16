@@ -1,30 +1,27 @@
 package com.example.team258.dto;
 
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookStatusEnum;
-import lombok.*;
+import com.example.team258.entity.*;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class AdminBooksResponseDto {
+public class BookResponseDto {
     private Long bookId;
     private String bookName;
     private String bookAuthor;
     private LocalDateTime bookPublish;
     private BookStatusEnum bookStatus;
-    private Long bookCategoryId;
 
-    public AdminBooksResponseDto(Book book) {
+    public BookResponseDto(Book book){
         this.bookId = book.getBookId();
         this.bookName = book.getBookName();
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();
-        this.bookCategoryId = book.getBookCategory().getBookCategoryId();
     }
 }

@@ -169,5 +169,7 @@ class AdminControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.msg").value("관리자 권한 회원 삭제 성공"));
         }
+
+
     }
 }

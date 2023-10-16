@@ -18,7 +18,13 @@ public class BookReservation {
     @JoinColumn(name="user_id")
     private User user;
 
-    public void addUser(User user){
-        this.user=user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="book_id")
+    private Book book;
+
+    public BookReservation(User savedUser, Book book) {
+        this.user = savedUser;
+        this.book = book;
     }
+
 }
