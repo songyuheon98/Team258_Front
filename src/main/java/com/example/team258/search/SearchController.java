@@ -20,6 +20,27 @@ public class SearchController {
         return searchService.getBookById(bookId);
     }
 
+//    @GetMapping("/search")
+//    public Page<BookResponseDto> getAllBooksByCategory(@RequestParam("bookCategoryName") String bookCategoryName,
+//                                                       @RequestParam("page") int page) {
+//        return searchService.getAllBooksByCategory(bookCategoryName,page);
+//    }
+//
+//    @GetMapping("/search")
+//    public Page<BookResponseDto> getAllBooksByKeyword(@RequestParam("keyword") String keyword,
+//                                                      @RequestParam("page") int page) {
+//        return searchService.getAllBooksByKeyword(keyword,page);
+//    }
 
-
+    @GetMapping("/search")
+    public Page<BookResponseDto> getAllBooksByCategoryOrKeyword(@RequestParam("bookCategoryName") String bookCategoryName,
+                                                                @RequestParam("keyword") String keyword,
+                                                                @RequestParam("page") int page) {
+        if(keyword==null){
+            return searchService.getAllBooksByKeyword(keyword,page);
+        } else if(bookCategoryName == null){
+            return searchService.getAllBooksByCategory(keyword,page);
+        }
+        return searchService.getAllBooksByCategoryOrKeyword(bookCategoryName,keyword,page);
+    }
 }
