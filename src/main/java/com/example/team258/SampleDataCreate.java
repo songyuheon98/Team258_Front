@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,19 +31,15 @@ public class SampleDataCreate {
         private final BookRepository bookRepository;
         private final BookCategoryRepository bookCategoryRepository;
         private final BookDonationEventRepository bookDonationEventRepository;
+        private final PasswordEncoder passwordEncoder;
 
         public void userInit() {
-            User user1 = User.builder().username("user1").password("Bin@12345").role(UserRoleEnum.USER).build();
-
-            User user2 = User.builder().username("user2").password("Bin@12345").role(UserRoleEnum.USER).build();
-
-            User user3 = User.builder().username("user3").password("Bin@12345").role(UserRoleEnum.USER).build();
-
-            User user4 = User.builder().username("user4").password("Bin@12345").role(UserRoleEnum.ADMIN).build();
-
-            User user5 = User.builder().username("user5").password("Bin@12345").role(UserRoleEnum.ADMIN).build();
-
-            User user6 = User.builder().username("user6").password("Bin@12345").role(UserRoleEnum.ADMIN).build();
+            User user1 = User.builder().username("bin0001").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.USER).build();
+            User user2 = User.builder().username("bin0002").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.USER).build();
+            User user3 = User.builder().username("bin0003").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.USER).build();
+            User user4 = User.builder().username("bin0004").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.ADMIN).build();
+            User user5 = User.builder().username("bin0005").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.ADMIN).build();
+            User user6 = User.builder().username("bin0006").password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.ADMIN).build();
 
             userRepository.save(user1);
             userRepository.save(user2);
