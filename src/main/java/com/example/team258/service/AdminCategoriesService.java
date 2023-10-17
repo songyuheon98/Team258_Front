@@ -57,9 +57,9 @@ public class AdminCategoriesService {
     }
 
     @Transactional(readOnly = true)
-    public List<AdminCategoriesResponseDto> getAllCategories(User loginUser) {
+    public List<AdminCategoriesResponseDto> getAllCategories() {
         // 로그인한 사용자 관리자 확인
-        validateUserAuthority(loginUser);
+        //validateUserAuthority(loginUser);
 
         return bookCategoryRepository.findAll().stream()
                 .map(AdminCategoriesResponseDto::new)
@@ -67,23 +67,20 @@ public class AdminCategoriesService {
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> updateBookCategoryName(Long bookCategoryId, AdminCategoriesRequestDto requestDto, User loginUser) {
+    public ResponseEntity<MessageDto> updateBookCategory(Long bookCategoryId, AdminCategoriesRequestDto requestDto, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
         // 카테고리 확인
         BookCategory category = checkExistingBookCategory(bookCategoryId);
 
-        // 부모 카테고리에서도 업데이트
-        updateParentCategoryName(category.getParentCategory(), requestDto.getBookCategoryName());
-
-        // 카테고리 이름 업데이트
-        category.changeBookCategoryName(requestDto.getBookCategoryName());
+        // 카테고리 이름 및 ISBN 코드 업데이트
+        category.updateBookCategory(requestDto.getBookCategoryName(), requestDto.getBookCategoryIsbnCode());
 
         // 카테고리 저장
         bookCategoryRepository.save(category);
 
-        return new ResponseEntity<>(new MessageDto("카테고리 이름이 수정되었습니다."), null, HttpStatus.OK);
+        return new ResponseEntity<>(new MessageDto("카테고리가 수정되었습니다."), null, HttpStatus.OK);
     }
 
     /*
@@ -137,9 +134,9 @@ public class AdminCategoriesService {
         return bookCategoryRepository.findById(bookCategoryId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
     }
-    void updateParentCategoryName(BookCategory parentCategory, String newBookCategoryName) {
+    void updateParentCategory(BookCategory parentCategory, String newBookCategoryName, Long newBookCategoryIsbnCode) {
         if (parentCategory != null) {
-            parentCategory.changeBookCategoryName(newBookCategoryName);
+            parentCategory.updateBookCategory(newBookCategoryName, newBookCategoryIsbnCode);
             bookCategoryRepository.save(parentCategory);
         }
     }

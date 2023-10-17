@@ -30,10 +30,9 @@ public class Book {
     @Column(name = "book_publish", nullable = false)
     private LocalDateTime bookPublish;
 
-    @Builder.Default
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BookStatusEnum bookStatus=BookStatusEnum.POSSIBLE;
+    private BookStatusEnum bookStatus;
 
 
     /**
@@ -65,6 +64,7 @@ public class Book {
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
+        this.bookStatus = BookStatusEnum.POSSIBLE; // 기본값은 대여 가능 상태로 설정
     }
 
     public void update(AdminBooksRequestDto requestDto, BookCategory bookCategory) {
@@ -72,7 +72,7 @@ public class Book {
         this.bookAuthor = requestDto.getBookAuthor();
         this.bookPublish = requestDto.getBookPublish();
         this.bookCategory = bookCategory;
-        this.bookStatus = requestDto.getBookStatus(); // 기본값은 대여 가능 상태로 설정
+        this.bookStatus = requestDto.getBookStatus();
     }
 
     public void addBookApplyDonation(BookApplyDonation bookApplyDonation){

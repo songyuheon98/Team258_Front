@@ -172,7 +172,7 @@ class AdminCategoriesControllerTest {
             Authentication authentication = new UsernamePasswordAuthenticationToken(adminUserDetails, null, adminUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            when(adminCategoriesService.getAllCategories(adminUserDetails.getUser())).thenReturn(categoriesList);
+            when(adminCategoriesService.getAllCategories()).thenReturn(categoriesList);
 
             // when
             mockMvc.perform(get("/api/admin/categories")
@@ -180,13 +180,13 @@ class AdminCategoriesControllerTest {
                             .principal(authentication))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(2))) // 반환된 목록의 크기가 2여야 함
-                    .andExpect(jsonPath("$[0].categoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
+                    .andExpect(jsonPath("$[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
                     .andExpect(jsonPath("$[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
-                    .andExpect(jsonPath("$[1].categoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
                     .andExpect(jsonPath("$[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
 
             // then
-            verify(adminCategoriesService, times(1)).getAllCategories(adminUserDetails.getUser());
+            verify(adminCategoriesService, times(1)).getAllCategories();
         }
 
         @Test
@@ -225,7 +225,7 @@ class AdminCategoriesControllerTest {
             when(bookCategoryRepository.findById(bookCategoryId)).thenReturn(Optional.of(existingBookCategory));
 
             // when
-            when(adminCategoriesService.updateBookCategoryName(1L, requestDto, adminUser))
+            when(adminCategoriesService.updateBookCategory(1L, requestDto, adminUser))
                     .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
 
             // then

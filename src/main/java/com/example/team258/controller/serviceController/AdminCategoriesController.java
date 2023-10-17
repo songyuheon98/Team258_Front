@@ -37,7 +37,7 @@ public class AdminCategoriesController {
     // READ All Categories
     @GetMapping
     public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(adminCategoriesService.getAllCategories(userDetails.getUser()));
+        return ResponseEntity.ok(adminCategoriesService.getAllCategories());
     }
 
     // UPDATE Category Name
@@ -45,7 +45,7 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> updateBookCategoryName(@PathVariable Long bookCategoryId,
                                                              @RequestBody AdminCategoriesRequestDto requestDto,
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.updateBookCategoryName(bookCategoryId, requestDto, userDetails.getUser());
+        return adminCategoriesService.updateBookCategory(bookCategoryId, requestDto, userDetails.getUser());
     }
 
     // UPDATE Book's Category

@@ -24,6 +24,6 @@ public class AdminMixedController {
 
         model.addAttribute("users", userResponseDtos);
 
-        return "/admin/adminUsers";
+        return "admin";
     }
 }
