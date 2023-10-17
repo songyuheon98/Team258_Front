@@ -30,6 +30,8 @@
     <script src="/js/signup.js"></script>
     <!-- 회원정보수정및탈퇴 -->
     <script src="/js/mypage.js"></script>
+    <!-- 나의 도서 대여 및 예약 관련 -->
+    <script src="/js/myrentals.js"></script>
     <!-- 관리자회원삭제 -->
     <script src="/js/admin.js"></script>
     <!-- 설문지 관련 -->
@@ -63,9 +65,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                <!-- user private function-->
                 <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
-                <li class="nav-item"><a class="nav-link" id="escapebtn" href="/escape">Escape</a></li>
                 <li class="nav-item"><a class="nav-link" id="mypagebtn" href="/mypage">MyPage</a></li>
                 <li class="nav-item"><a class="nav-link" id="adminbtn" href="/admin/users">AdminPage</a></li>
                 <li class="nav-item"><a class="nav-link" id="surveybtn" href="/surveys">CreateSurvey</a></li>
@@ -74,9 +76,11 @@
                 <li class="nav-item"><a class="nav-link" id="chatbtn" href="/chatView">Chat</a></li>
                 <li class="nav-item"><a class="nav-link" id="donationbtn" href="/admin/donation">Admin Donation</a></li>
 
-                <li class="nav-item"><a class="nav-link active"
-                                        href="/about258">About
-                    Team 258</a></li>
+                <!-- Books All List + Searching -->
+                <li class="nav-item"><a class="nav-link" id="booksListBtn" href="/booksList">BooksList</a></li>
+
+                <!-- About us -->
+                <li class="nav-item"><a class="nav-link active" href="/about258">About Team 258</a></li>
             </ul>
         </div>
     </div>

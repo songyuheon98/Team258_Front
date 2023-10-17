@@ -1,4 +1,4 @@
-package com.example.team258.controller.viewController;
+package com.example.team258.controller.mixedController;
 
 import com.example.team258.dto.UserResponseDto;
 import com.example.team258.entity.User;
@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-
-public class AdminViewController {
+public class AdminMixedController {
     private final UserRepository userRepository;
 
     @GetMapping("/admin/users")
@@ -25,8 +24,6 @@ public class AdminViewController {
 
         model.addAttribute("users", userResponseDtos);
 
-        return "admin";
+        return "/admin/adminUsers";
     }
-
-
 }
