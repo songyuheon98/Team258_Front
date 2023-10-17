@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
+
 public class AdminViewController {
     private final UserRepository userRepository;
 
@@ -26,4 +27,6 @@ public class AdminViewController {
 
         return "admin";
     }
+
+
 }
