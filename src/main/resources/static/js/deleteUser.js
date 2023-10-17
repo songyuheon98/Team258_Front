@@ -1,5 +1,6 @@
 $(document).ready(function () {
     window.deleteUser = function(userId) {
+        console.log("Deleting user with ID:", userId);
         $.ajax({
             type: 'DELETE',
             url: '/api/admin/users/' + userId,
