@@ -67,4 +67,8 @@ public class User extends Timestamped{
         this.bookApplyDonations.add(bookApplyDonation);
     }
 
+    public void update(String passwordE){
+        this.password=passwordE;
+    }
+
 }

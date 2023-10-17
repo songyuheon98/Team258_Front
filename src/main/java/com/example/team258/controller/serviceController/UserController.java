@@ -27,4 +27,8 @@ public class UserController {
         return escape_result;
 
     }
+    @PutMapping("update")
+    public ResponseEntity<MessageDto> update(@Valid @RequestBody UserUpdateRequestDto requestDto){
+        return userService.update(requestDto);
+    }
 }
