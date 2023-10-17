@@ -129,10 +129,6 @@ class AdminCategoriesServiceTest {
         @DisplayName("모든 카테고리 조회 성공")
         void getAllCategories() {
             // Given
-            // 모의 유저(관리자) 생성
-            User adminUser = mock(User.class);
-            when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
-
             BookCategory category1 = mock(BookCategory.class);
             BookCategory category2 = mock(BookCategory.class);
             BookCategory category3 = mock(BookCategory.class);
@@ -157,22 +153,6 @@ class AdminCategoriesServiceTest {
 
             assertEquals(expectedResponse.size(), response.size()); // 추가된 부분
         }
-
-        @Test
-        @DisplayName("관리자가 아닌 사용자가 조회할 때 예외 발생")
-        void getAllCategoriesNonAdminUser() {
-            // Given
-            // 모의 유저(관리자가 아닌 경우) 생성
-            User nonAdminUser = mock(User.class);
-            when(nonAdminUser.getRole()).thenReturn(UserRoleEnum.USER);
-
-            // When, Then
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.getAllCategories();
-            });
-
-            assertEquals("해당 작업을 수행할 권한이 없습니다.", exception.getMessage());
-        }
     }
 
     @Nested
@@ -180,12 +160,13 @@ class AdminCategoriesServiceTest {
     class UpdateCategory {
 
         @Test
-        @DisplayName("카테고리 이름 업데이트 성공")
-        void updateCategoryName() {
+        @DisplayName("카테고리 업데이트 성공")
+        void updateCategory() {
             // Given
             Long categoryId = 1L;
             AdminCategoriesRequestDto adminCategoriesRequestDto = new AdminCategoriesRequestDto();
             adminCategoriesRequestDto.setBookCategoryName("UpdatedCategoryName");
+            adminCategoriesRequestDto.setBookCategoryIsbnCode(100L);
 
             // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
@@ -201,10 +182,10 @@ class AdminCategoriesServiceTest {
             // Then
             assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
             assertNotNull(response.getBody());
-            assertEquals("카테고리 이름이 수정되었습니다.", response.getBody().getMsg());
+            assertEquals("카테고리가 수정되었습니다.", response.getBody().getMsg());
 
-            // 부모 카테고리에도 올바른 메서드가 호출되었는지 확인
-            verify(category, times(1)).getParentCategory();
+            // 업데이트 메서드 호출 확인
+            verify(category, times(1)).updateBookCategory(eq("UpdatedCategoryName"), eq(100L));
             verify(bookCategoryRepository, times(1)).save(category);
         }
 

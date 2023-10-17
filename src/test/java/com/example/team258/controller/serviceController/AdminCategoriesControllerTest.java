@@ -180,9 +180,9 @@ class AdminCategoriesControllerTest {
                             .principal(authentication))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(2))) // 반환된 목록의 크기가 2여야 함
-                    .andExpect(jsonPath("$[0].categoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
+                    .andExpect(jsonPath("$[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
                     .andExpect(jsonPath("$[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
-                    .andExpect(jsonPath("$[1].categoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
                     .andExpect(jsonPath("$[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
 
             // then
