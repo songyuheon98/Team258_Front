@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 헤드 레이아웃 적용 -->
-<head th:replace="~{layout :: head}">
+<head th:insert="~{layout :: head}"></head>
+<head>
   <!-- 나의 도서 대여 및 예약 관련 -->
-  <script src="/js/myrentals.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+  <script src="/js/myrentals.js"></script>
 </head>
 <body>
 <!-- 네비게이션 메뉴 레이아웃 적용 -->
