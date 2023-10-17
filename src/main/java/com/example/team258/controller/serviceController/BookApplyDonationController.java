@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/bookApplyDonation")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class BookApplyDonationController {
 
     private final BookApplyDonationService bookApplyDonationService;
-    @PostMapping
+    @PostMapping("/bookApplyDonation")
     public ResponseEntity<MessageDto> createBookApplyDonation(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
         return bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto);
     }
 
-    @DeleteMapping("/{applyId}")
+    @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
         return bookApplyDonationService.deleteBookApplyDonation(applyId);
     }
@@ -31,16 +31,15 @@ public class BookApplyDonationController {
      * @param bookStatus
      * @return
      */
-    @GetMapping("/books")
+    @GetMapping("/bookApplyDonation/books")
     public ResponseEntity<List<BookResponseDto>> getDonationBooks(@RequestParam BookStatusEnum bookStatus){
         return ResponseEntity.ok().body(bookApplyDonationService.getDonationBooks(bookStatus));
     }
 
-    @GetMapping
+    @GetMapping("/bookApplyDonation")
     public ResponseEntity<List<BookApplyDonationResponseDto>> getBookApplyDonations(){
         return ResponseEntity.ok().body(bookApplyDonationService.getBookApplyDonations());
     }
-
 
 }
 
