@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <div class="container">
+    <div class="container-container1">
+      <span class="container-text"><span>Book Donation Event List - ADMIN ONLY</span></span>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Event ID</th>
+          <th>Event Start Time</th>
+          <th>Event End Time</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+          <td><input class="form-control" type="text" th:value="${event.donatoinId}" name="donationId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/></td>
+          <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
+          <td>
+            <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donatoinId} + '\')'">Update Event</button>
+            <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donatoinId} + '\')'">Delete Event</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input class="form-control" type="text" th:value="'*'" name="donationId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="' '" name="createdAt"/></td>
+          <td><input class="form-control" type="text" th:value="' '" name="closedAt"/></td>
+          <td>
+            <button type="button" class="btn btn-outline-dark" th:onclick="createDonationEvent()">Create Event</button>
+
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

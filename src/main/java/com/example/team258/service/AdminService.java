@@ -29,9 +29,12 @@ public class AdminService {
         if(loginUser.getRole().equals(UserRoleEnum.USER)) {
             throw new IllegalArgumentException("관리자가 아닙니다.");
         }
+
+
         if (loginUser.getUserId().equals(user.getUserId()) ) {
             throw new IllegalArgumentException("자기 자신은 삭제할 수 없습니다.");
         }
+
         userRepository.delete(user);
         return new MessageDto("삭제가 완료되었습니다");
     }

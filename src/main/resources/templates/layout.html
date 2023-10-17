@@ -33,7 +33,18 @@
     <!-- 나의 도서 대여 및 예약 관련 -->
     <script src="/js/myrentals.js"></script>
     <!-- 관리자회원삭제 -->
-    <script src="/js/adminUsers.js"></script>
+    <script src="/js/admin.js"></script>
+    <!-- 설문지 관련 -->
+    <script src="/js/surveys.js"></script>
+    <!-- 응답지 관련 -->
+    <script src="/js/answers.js"></script>
+    <!-- 결과보기 관련 -->
+    <script src="/js/results.js"></script>
+    <!-- 회원 탈퇴 보기 관련 -->
+    <script src="/js/escape.js"></script>
+<!--    책 나눔 이벤트 관리자 페이지-->
+    <script src="/js/admin/donation.js"></script>
+
 </head>
 
 <body class="index-body">
@@ -58,18 +69,12 @@
                 <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
                 <li class="nav-item"><a class="nav-link" id="mypagebtn" href="/mypage">MyPage</a></li>
-                <li class="nav-item"><a class="nav-link" id="myrentalsbtn" href="/myrentals">MyRentals</a></li>
-                <li class="nav-item"><a class="nav-link" id="myreservationsbtn" href="/myreservations">MyReservations</a></li>
-                <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
-
-                <!-- user Controller R,D-->
-                <li class="nav-item"><a class="nav-link" id="adminUserBtn" href="/admin/users">Admin Users</a></li>
-                <!-- admin book controller ( CRUD )-->
-                <li class="nav-item"><a class="nav-link" id="adminBooksBtn" href="/admin/books">Admin Books</a></li>
-                <!-- admin category controller ( CRUD ) -->
-                <li class="nav-item"><a class="nav-link" id="adminCategoriesBtn" href="/admin/categories">Admin Categories</a></li>
-                <!-- admin donation controller ( CRUD )-->
-                <li class="nav-item"><a class="nav-link" id="adminDonationBtn" href="/admin/donation">Admin Donation</a></li>
+                <li class="nav-item"><a class="nav-link" id="adminbtn" href="/admin/users">AdminPage</a></li>
+                <li class="nav-item"><a class="nav-link" id="surveybtn" href="/surveys">CreateSurvey</a></li>
+                <li class="nav-item"><a class="nav-link" id="answerbtn" href="/answers">AnswerSurvey</a></li>
+                <li class="nav-item"><a class="nav-link" id="resultbtn" href="/results">Results</a></li>
+                <li class="nav-item"><a class="nav-link" id="chatbtn" href="/chatView">Chat</a></li>
+                <li class="nav-item"><a class="nav-link" id="donationbtn" href="/admin/donation">Admin Donation</a></li>
 
                 <!-- Books All List + Searching -->
                 <li class="nav-item"><a class="nav-link" id="booksListBtn" href="/booksList">BooksList</a></li>

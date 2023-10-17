@@ -3,12 +3,8 @@ package com.example.team258.dto;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 public class UserResponseDto {
     private Long userId;
     private String username;
@@ -19,4 +15,5 @@ public class UserResponseDto {
         this.username = user.getUsername();
         this.role = user.getRole();
     }
+
 }
