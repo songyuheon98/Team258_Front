@@ -1,6 +1,6 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.AdminResponseDto;
+import com.example.team258.dto.AdminUsersResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
@@ -13,20 +13,24 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminUsersService {
 
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<AdminResponseDto> getAllUsers() {
-        return userRepository.findAll().stream().map(AdminResponseDto::new).toList();
+    public List<AdminUsersResponseDto> getAllUsers() {
+        return userRepository.findAll().stream().map(AdminUsersResponseDto::new).toList();
     }
 
     @Transactional
     public MessageDto deleteUser(Long userId, User loginUser) {
         User user = getUserById(userId);
-        if (!loginUser.equals(user) && loginUser.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new IllegalArgumentException("회원을 삭제할 권한이 없습니다.");
+
+        if(loginUser.getRole().equals(UserRoleEnum.USER)) {
+            throw new IllegalArgumentException("관리자가 아닙니다.");
+        }
+        if (loginUser.getUserId().equals(user.getUserId()) ) {
+            throw new IllegalArgumentException("자기 자신은 삭제할 수 없습니다.");
         }
         userRepository.delete(user);
         return new MessageDto("삭제가 완료되었습니다");

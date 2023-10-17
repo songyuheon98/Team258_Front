@@ -2,6 +2,7 @@ package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.UserSignupRequestDto;
 import com.example.team258.dto.MessageDto;
+import com.example.team258.dto.UserUpdateRequestDto;
 import com.example.team258.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
