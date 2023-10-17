@@ -1,6 +1,6 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.AdminUsersResponseDto;
+import com.example.team258.dto.AdminResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
@@ -13,13 +13,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AdminUsersService {
+public class AdminService {
 
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<AdminUsersResponseDto> getAllUsers() {
-        return userRepository.findAll().stream().map(AdminUsersResponseDto::new).toList();
+    public List<AdminResponseDto> getAllUsers() {
+        return userRepository.findAll().stream().map(AdminResponseDto::new).toList();
     }
 
     @Transactional

@@ -1,9 +1,9 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.AdminUsersResponseDto;
+import com.example.team258.dto.AdminResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
-import com.example.team258.service.AdminUsersService;
+import com.example.team258.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,16 +18,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class AdminUsersController {
-    private final AdminUsersService adminUsersService;
+public class AdminController {
+    private final AdminService adminService;
     @GetMapping("/users")
-    public ResponseEntity<List<AdminUsersResponseDto>> getAllUsers() {
-        return ResponseEntity.ok(adminUsersService.getAllUsers());
+    public ResponseEntity<List<AdminResponseDto>> getAllUsers() {
+        return ResponseEntity.ok(adminService.getAllUsers());
     }
 
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<MessageDto> deleteUser(@PathVariable Long userId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(adminUsersService.deleteUser(userId, userDetails.getUser()));
+        return ResponseEntity.ok(adminService.deleteUser(userId, userDetails.getUser()));
     }
 }

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-public class AdminUsersMixedController {
+public class AdminMixedController {
     private final UserRepository userRepository;
 
     @GetMapping("/admin/users")
