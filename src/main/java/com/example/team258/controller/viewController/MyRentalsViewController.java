@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ResultsViewController {
-    @GetMapping("/results")
-    public String resultsView() {
-        return "results";
+public class MyRentalsViewController {
+    @GetMapping("/myrentals")
+    public String myrentalsView() {
+        return "/users/myrentals";
     }
 }
