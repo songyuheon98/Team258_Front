@@ -18,22 +18,40 @@
   <div class="container-container1">
     <span class="container-text"><span>도서 등록</span></span>
 
-    <form accept-charset="UTF-8" id="signup-form" action="" method="">
+    <form accept-charset="UTF-8" id="register-book-form" action="" method="">
+      <div class="mb-3">
+        <label class="form-label" for="bookCategory">도서 대분류</label>
+        <select class="form-control" name="bookCategory" id="bookCategory">
+          <!-- 카테고리 옵션들 -->
+          <option value="800">문학</option>
+          <option value="900">역사</option>
+        </select>
+      </div>
 
       <div class="mb-3">
-        <label class="form-label" for="username">Username</label>
-        <input class="form-control" type="text" placeholder="Enter your name(ID)" name="username" id="username" />
+        <label class="form-label" for="subCategory">도서 소분류</label>
+        <select class="form-control" name="subCategory" id="subCategory">
+          <!-- 서브카테고리 옵션들 -->
+          <option value="1">한국문학</option>
+          <option value="1">중국문학</option>
+          <!-- 추가적인 서브카테고리들 -->
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="bookName">BookName</label>
+        <input class="form-control" type="text" placeholder="Enter BookName" name="bookName" id="bookName" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="password1">Password</label>
-        <input class="form-control" type="password" placeholder="Enter your password" name="password1" id="password1" />
+        <label class="form-label" for="BookAuthor">BookAuthor</label>
+        <input class="form-control" type="text" placeholder="Enter your BookAuthor" name="bookAuthor" id="bookAuthor" />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="password2">Confirm Password</label>
-        <input class="form-control" type="password" placeholder="Confirm your password" name="password2" id="password2" />
+        <label class="form-label" for="BookPublish">BookPublish Date</label>
+        <input class="form-control" type="date" placeholder="Confirm your password" name="bookPublish" id="bookPublish" />
       </div>
       <div class="">
-        <button type="button" id="signup-button" class="btn btn-outline-danger">SignUp</button>
+        <button type="button" id="register-book-button" class="btn btn-outline-danger">Regist Book</button>
       </div>
 
     </form>

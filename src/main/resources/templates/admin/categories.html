@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 헤드 레이아웃 적용 -->
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+
+<!-- 네비게이션 메뉴 레이아웃 적용 -->
+<div th:replace="~{layout :: nav}"></div>
+<!-- 헤더 레이아웃 적용 -->
+<div th:replace="~{layout :: header}"></div>
+
+<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<div class="index-contents">
+
+  <div class="container">
+    <div class="container-container1">
+      <span class="container-text"><span>Book Categories List - ADMIN ONLY</span></span>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Category ID</th>
+          <th>Category ISBN Code</th>
+          <th>Category Name</th>
+          <th>Parent Category ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 상위 카테고리 -->
+        <tr>
+          <td><input class="form-control" type="text" th:value="''" readonly/></td>
+          <td><input class="form-control" type="text" th:value="''" id="bookUpCategoryIsbnCode"/></td>
+          <td><input class="form-control" type="text" th:value="''" id="bookUpCategoryName"/></td>
+          <td><input class="form-control" type="text" th:value="''" readonly /></td>
+          <td>
+            <button type="button" class="btn btn-outline-dark" onclick="createMainCategory()">Create Main Category</button>
+          </td>
+        </tr>
+
+        <!-- 하위 카테고리 -->
+        <tr>
+          <td><input class="form-control" type="text" th:value="''" readonly/></td>
+          <td><input class="form-control" type="text" th:value="''" id="bookSubCategoryIsbnCode"/></td>
+          <td><input class="form-control" type="text" th:value="''" id="bookSubCategoryName"/></td>
+          <td><input class="form-control" type="text" th:value="''" id="parentCategoryId"/></td>
+          <td>
+            <button type="button" class="btn btn-outline-dark" onclick="createSubCategory()">Create Sub Category</button>
+          </td>
+        </tr>
+
+        <tr th:each="bookCategory : ${categories}">
+          <td><input class="form-control" type="text" th:value="${bookCategory.bookCategoryId}" name="bookCategoryId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${bookCategory.bookCategoryIsbnCode}" name="bookCategoryIsbnCode"/></td>
+          <td><input class="form-control" type="text" th:value="${bookCategory.bookCategoryName}" name="bookCategoryName"/></td>
+          <td><input class="form-control" type="text" th:value="${bookCategory.parentCategoryId}" name="parentCategoryId" readonly/></td>
+          <td>
+            <button type="button" class="btn btn-outline-warning" th:onclick="'updateBookCategory(\'' + ${bookCategory.bookCategoryId} + '\')'">Update Category</button>
+            <button type="button" class="btn btn-outline-danger" th:onclick="'deleteBookCategory(\'' + ${bookCategory.bookCategoryId} + '\')'">Delete Category</button>
+          </td>
+        </tr>
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<!-- 푸터 레이아웃 적용 -->
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

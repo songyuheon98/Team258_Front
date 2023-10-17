@@ -10,7 +10,6 @@ import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
 import com.example.team258.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -147,7 +145,7 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findAll()).thenReturn(mockCategories);
 
             // When
-            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories(adminUser);
+            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories();
 
             // Then
             assertNotNull(response);
@@ -170,7 +168,7 @@ class AdminCategoriesServiceTest {
 
             // When, Then
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.getAllCategories(nonAdminUser);
+                adminCategoriesService.getAllCategories();
             });
 
             assertEquals("해당 작업을 수행할 권한이 없습니다.", exception.getMessage());
@@ -198,7 +196,7 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, adminUser);
+            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
             assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
@@ -227,7 +225,7 @@ class AdminCategoriesServiceTest {
 
             // When, Then
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, adminUser);
+                adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
             });
 
             assertEquals("해당 카테고리를 찾을 수 없습니다.", exception.getMessage());
@@ -247,7 +245,7 @@ class AdminCategoriesServiceTest {
 
             // When, Then
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, nonAdminUser);
+                adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, nonAdminUser);
             });
 
             assertEquals("해당 작업을 수행할 권한이 없습니다.", exception.getMessage());
@@ -471,10 +469,10 @@ class AdminCategoriesServiceTest {
             BookCategory parentCategory = mock(BookCategory.class);
 
             // When
-            adminCategoriesService.updateParentCategoryName(parentCategory, "NewCategoryName");
+            adminCategoriesService.updateParentCategory(parentCategory, "NewCategoryName", 100L);
 
             // Then
-            verify(parentCategory, times(1)).changeBookCategoryName("NewCategoryName");
+            verify(parentCategory, times(1)).updateBookCategory("NewCategoryName", 100L);
             verify(bookCategoryRepository, times(1)).save(parentCategory);
         }
 
@@ -485,7 +483,7 @@ class AdminCategoriesServiceTest {
             BookCategory parentCategory = null;
 
             // When
-            adminCategoriesService.updateParentCategoryName(parentCategory, "NewCategoryName");
+            adminCategoriesService.updateParentCategory(parentCategory, "NewCategoryName",100L);
 
             // Then
             // 특별히 어떤 동작도 수행되지 않아야 합니다.

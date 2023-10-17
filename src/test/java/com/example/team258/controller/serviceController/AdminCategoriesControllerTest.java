@@ -172,7 +172,7 @@ class AdminCategoriesControllerTest {
             Authentication authentication = new UsernamePasswordAuthenticationToken(adminUserDetails, null, adminUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            when(adminCategoriesService.getAllCategories(adminUserDetails.getUser())).thenReturn(categoriesList);
+            when(adminCategoriesService.getAllCategories()).thenReturn(categoriesList);
 
             // when
             mockMvc.perform(get("/api/admin/categories")
@@ -186,7 +186,7 @@ class AdminCategoriesControllerTest {
                     .andExpect(jsonPath("$[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
 
             // then
-            verify(adminCategoriesService, times(1)).getAllCategories(adminUserDetails.getUser());
+            verify(adminCategoriesService, times(1)).getAllCategories();
         }
 
         @Test
@@ -225,7 +225,7 @@ class AdminCategoriesControllerTest {
             when(bookCategoryRepository.findById(bookCategoryId)).thenReturn(Optional.of(existingBookCategory));
 
             // when
-            when(adminCategoriesService.updateBookCategoryName(1L, requestDto, adminUser))
+            when(adminCategoriesService.updateBookCategory(1L, requestDto, adminUser))
                     .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
 
             // then

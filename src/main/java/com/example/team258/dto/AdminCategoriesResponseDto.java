@@ -9,12 +9,16 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminCategoriesResponseDto {
+    private Long bookCategoryId;
+    private Long bookCategoryIsbnCode;
     private String bookCategoryName;
-    private Long categoryId;
+    private Long parentCategoryId;
 
     public AdminCategoriesResponseDto(BookCategory bookCategory){
+        this.bookCategoryId = bookCategory.getBookCategoryId();
+        this.bookCategoryIsbnCode = bookCategory.getBookCategoryIsbnCode();
         this.bookCategoryName = bookCategory.getBookCategoryName();
-        this.categoryId = bookCategory.getBookCategoryId();
+        this.parentCategoryId = (bookCategory.getParentCategory() != null) ? bookCategory.getParentCategory().getBookCategoryId() : null;
     }
 }
 
