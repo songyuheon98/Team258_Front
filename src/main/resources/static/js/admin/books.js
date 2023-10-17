@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('#register-book-button').on('click', function() {
+$(document).ready(function () {
+    $('#register-book-button').on('click', function () {
         var form = $('#register-book-form');
 
         // input 태그로부터 날짜 값을 가져오기
@@ -23,23 +23,23 @@ $(document).ready(function() {
             bookName: form.find('input[name="bookName"]').val(),
             bookAuthor: form.find('input[name="bookAuthor"]').val(),
             bookPublish: formattedDate, // 변환된 날짜 문자열 사용
-            bookCategoryId: form.find('select[name="subCategory"] :selected').val()
+            bookCategoryId: form.find('select[name="bookCategoryId"] :selected').val()
         };
         console.log(data)
         console.log(data.bookPublish)
         $.ajax({
             type: 'POST',
-            url: '/api/users/books',
+            url: '/api/admin/books',
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: 'json',
-            success: function(response) {
+            success: function (response) {
                 alert('도서등록 성공!');
                 window.location.reload();
                 console.log(data)
 
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 alert('도서등록 실패!');
                 console.log(data)
 

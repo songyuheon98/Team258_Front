@@ -1,10 +1,8 @@
 package com.example.team258.controller.viewController.admin;
 
 import com.example.team258.dto.AdminCategoriesResponseDto;
-import com.example.team258.dto.UserResponseDto;
 import com.example.team258.entity.BookCategory;
 import com.example.team258.repository.BookCategoryRepository;
-import com.example.team258.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/categories")
 @RequiredArgsConstructor
-public class AdminCategoriesViewController {
+public class CategoriesViewController {
     private final BookCategoryRepository bookCategoryRepository;
 
 

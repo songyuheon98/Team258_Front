@@ -20,6 +20,9 @@ public class AdminCategoriesResponseDto {
         this.bookCategoryName = bookCategory.getBookCategoryName();
         this.parentCategoryId = (bookCategory.getParentCategory() != null) ? bookCategory.getParentCategory().getBookCategoryId() : null;
     }
+    public Long getParentCategory() {
+        return this.parentCategoryId;
+    }
 }
 
 
