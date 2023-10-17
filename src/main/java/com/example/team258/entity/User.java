@@ -30,14 +30,16 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-
+    @Builder.Default
     @OneToMany(orphanRemoval = true,mappedBy = "user")
     private List<BookReservation> bookReservations = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<BookRent> bookRents = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<BookApplyDonation> bookApplyDonations = new ArrayList<>();
