@@ -17,7 +17,7 @@ public class BookRent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookRent_id")
-    private long bookRentId;
+    private Long bookRentId;
 
     @Column
     private LocalDateTime returnDate;

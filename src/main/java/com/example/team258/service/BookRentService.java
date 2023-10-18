@@ -1,5 +1,6 @@
 package com.example.team258.service;
 
+import com.example.team258.dto.BookRentResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.*;
 import com.example.team258.repository.BookRentRepository;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,13 @@ public class BookRentService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    public List<BookRentResponseDto> getRental(User user) {
+        User savedUser = userRepository.findById(user.getUserId())
+                .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));;
+        return savedUser.getBookRents().stream().map(BookRentResponseDto::new).toList();
+    }
 
     @Transactional
     public MessageDto createRental(Long bookId, User user) {
