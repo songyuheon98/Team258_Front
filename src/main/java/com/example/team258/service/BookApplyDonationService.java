@@ -62,8 +62,6 @@ public class BookApplyDonationService {
         User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
-
-
         /**
          * 나눔 신청
          */
@@ -81,10 +79,12 @@ public class BookApplyDonationService {
         user.getBookApplyDonations().add(bookApplyDonation);
         bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
 
+        /**
+         * book의 상태 변경
+         */
+        book.changeStatus(BookStatusEnum.SOLD_OUT);
         return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 완료되었습니다."));
     }
-
-
 
     @Transactional
     public ResponseEntity<MessageDto> deleteBookApplyDonation(Long applyId) {
@@ -117,5 +117,7 @@ public class BookApplyDonationService {
                 .map(bookApplyDonation -> new BookApplyDonationResponseDto(bookApplyDonation))
                 .toList();
     }
+
+
 
 }

@@ -2,6 +2,7 @@ package com.example.team258.controller.serviceController;
 
 import com.example.team258.dto.BookDonationEventRequestDto;
 import com.example.team258.dto.BookDonationEventResponseDto;
+import com.example.team258.dto.BookDonationSettingRequestDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,11 @@ public class BookDonationEventController {
     @GetMapping
     public ResponseEntity<List<BookDonationEventResponseDto>> getDonationEvent(){
         return ResponseEntity.ok().body(bookDonationEventService.getDonationEvent());
+    }
+
+    @PutMapping("/setting")
+    public ResponseEntity<MessageDto> settingDonationEvent(@RequestBody BookDonationSettingRequestDto bookDonationSettingRequestDto){
+        return ResponseEntity.ok().body(bookDonationEventService.settingDonationEvent(bookDonationSettingRequestDto));
     }
 
 }
