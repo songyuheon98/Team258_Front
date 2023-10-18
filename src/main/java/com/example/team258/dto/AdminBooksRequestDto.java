@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AdminBooksRequestDto {
     private String bookName;
     private String bookAuthor;
-    private LocalDateTime bookPublish;
+    private String bookPublish;
     private Long bookCategoryId;
     private BookStatusEnum bookStatus;
 }

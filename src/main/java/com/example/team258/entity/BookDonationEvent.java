@@ -33,6 +33,11 @@ public class BookDonationEvent {
     @JoinColumn(name="donation_id")
     private List<BookApplyDonation> bookApplyDonations=new ArrayList<>();
 
+    /**
+     * 양방향
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookDonationEvent")
+    private List<Book> books = new ArrayList<>();
 
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
@@ -42,6 +47,11 @@ public class BookDonationEvent {
     public void update(BookDonationEventRequestDto bookDonationEventRequestDto) {
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
         this.closedAt = bookDonationEventRequestDto.getClosedAt();
+    }
+
+    public void addBook(Book book){
+        this.books.add(book);
+        book.addBookDonationEvent(this);
     }
 
 
