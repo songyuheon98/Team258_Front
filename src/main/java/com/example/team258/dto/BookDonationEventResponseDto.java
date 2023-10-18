@@ -18,6 +18,7 @@ public class BookDonationEventResponseDto {
         this.donationId = bookDonationEvent.getDonationId();
         this.createdAt = bookDonationEvent.getCreatedAt();
         this.closedAt = bookDonationEvent.getClosedAt();
-        this.bookResponseDtos = bookDonationEvent.getBooks().stream().map(BookResponseDto::new).toList();
+        if(bookDonationEvent.getBooks() != null)
+            this.bookResponseDtos = bookDonationEvent.getBooks().stream().map(BookResponseDto::new).toList();
     }
 }

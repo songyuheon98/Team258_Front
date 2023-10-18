@@ -111,6 +111,7 @@ class BookDonationEventControllerTest {
                         .donationId(1L)
                         .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
                         .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
+                                .books(new ArrayList<>())
                         .build()
                 )
         );
