@@ -87,6 +87,7 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 정보가 수정되었습니다."), null, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<MessageDto> deleteBook(Long bookId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);

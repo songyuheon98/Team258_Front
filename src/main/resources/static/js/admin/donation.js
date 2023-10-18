@@ -66,64 +66,75 @@ $(document).ready(function() {
         }
     };
 
+    window.endDonationEvent = function(donationId) {
+        if(confirm('정말로 이 이벤트를 삭제하시겠습니까?')) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/admin/donation/end/' + donationId,
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                success: function(response) {
+                    alert('이벤트 종료 성공!');
+                    window.location.href = '/admin/donation';
+                },
+                error: function(xhr, status, error) {
+                    alert('이벤트 종료 실패!');
+                    window.location.href = '/admin/donation';
+                }
+            });
+        }
+    };
+
+    window.setDonationEvent = function() {
+        var selectedBooks = [];
+        $('.book-checkbox:checked').each(function() {
+            selectedBooks.push($(this).val());
+        });
+
+        if (selectedBooks.length === 0) {
+            alert('설정할 책을 선택해주세요.');
+            return;
+        }
+
+        var data = {
+            donationId: $('#donationId').val(),
+            bookIds: selectedBooks.map(Number)
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/admin/donation/setting',
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=UTF-8',
+            dataType: 'json',
+            success: function(response) {
+                alert('이벤트 설정 성공!');
+                window.location.href = '/admin/donation';
+            },
+            error: function(xhr, status, error) {
+                alert('이벤트 설정 실패!');
+            }
+        });
+    };
+    window.bookApplyCancle = function(donationId, bookId) {
+        const requestData = {
+            donationId: donationId,
+            bookId: bookId
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/admin/donation/settingCancel',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                alert('책 취소 설정이 완료되었습니다.');
+                window.location.reload();  // 현재 페이지 새로고침
+            },
+            error: function (error) {
+                alert('책 취소 설정에 실패하였습니다.');
+            }
+        });
+    };
 });
-
-
-
-
-//
-    // // 책 나눔 이벤트 업데이트
-    // function updateDonationEvent(donationId, eventData) {
-    //     $.ajax({
-    //         type: 'PUT',
-    //         url: '/api/admin/donation/' + donationId,
-    //         data: JSON.stringify(eventData),
-    //         contentType: 'application/json;charset=UTF-8',
-    //         dataType: 'json',
-    //         success: function(response) {
-    //             alert(response.message);
-    //             location.reload();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('책 나눔 이벤트 업데이트에 실패했습니다.');
-    //         }
-    //     });
-    // }
-    //
-    // // 책 나눔 이벤트 업데이트 버튼 클릭
-    // $(document).on('click', 'button.btn-outline-warning', function() {
-    //     const donationId = $(this).closest('tr').find("input[name='donationId']").val();
-    //     const row = $(this).closest('tr');
-    //     const createdAt = row.find("input[name='createdAt']").val();
-    //     const closedAt = row.find("input[name='closedAt']").val();
-    //
-    //     if (!createdAt || !closedAt) {
-    //         alert('시작 시간과 종료 시간을 입력해주세요.');
-    //         return;
-    //     }
-    //
-    //     const eventData = {
-    //         createdAt: createdAt,
-    //         closedAt: closedAt
-    //     };
-    //
-    //     updateDonationEvent(donationId, eventData);
-    // });
-    //
-    // // 책 나눔 이벤트 삭제 버튼 클릭
-    // $(document).on('click', 'button.btn-outline-danger', function() {
-    //     const donationId = $(this).closest('tr').find("input[name='donationId']").val();
-    //     $.ajax({
-    //         type: 'DELETE',
-    //         url: '/api/admin/donation/' + donationId,
-    //         success: function(response) {
-    //             alert(response.message);
-    //             location.reload();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             alert('책 나눔 이벤트 삭제에 실패했습니다.');
-    //         }
-    //     });
-    // });
-
 
