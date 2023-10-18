@@ -130,3 +130,4 @@ public class BookApplyDonationService {
         return new UserBookApplyCancelPageResponseDto(user);
     }
 }
+
