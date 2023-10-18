@@ -1,4 +1,3 @@
-// myrentals.js
 
 $(document).ready(function () {
     fetchAndDisplayBookRentals();
