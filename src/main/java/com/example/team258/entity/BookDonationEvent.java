@@ -36,7 +36,7 @@ public class BookDonationEvent {
     /**
      * 양방향
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookDonationEvent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookDonationEvent", cascade = CascadeType.REMOVE)
     private List<Book> books = new ArrayList<>();
 
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){

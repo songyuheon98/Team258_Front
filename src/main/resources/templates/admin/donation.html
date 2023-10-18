@@ -45,6 +45,7 @@
               <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '\''">Book Setting Event</button>
               <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donationId} + '\')'">Update Event</button>
               <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donationId} + '\')'">Delete Event</button>
+              <button type="button" class="btn btn-outline-danger" th:onclick="'endDonationEvent(\'' + ${event.donationId} + '\')'">End Event</button>
             </td>
           </tr>
           <!-- 책 정보 행 -->

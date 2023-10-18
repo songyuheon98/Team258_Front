@@ -65,6 +65,26 @@ $(document).ready(function() {
             });
         }
     };
+
+    window.endDonationEvent = function(donationId) {
+        if(confirm('정말로 이 이벤트를 삭제하시겠습니까?')) {
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/admin/donation/end/' + donationId,
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                success: function(response) {
+                    alert('이벤트 종료 성공!');
+                    window.location.href = '/admin/donation';
+                },
+                error: function(xhr, status, error) {
+                    alert('이벤트 종료 실패!');
+                    window.location.href = '/admin/donation';
+                }
+            });
+        }
+    };
+
     window.setDonationEvent = function() {
         var selectedBooks = [];
         $('.book-checkbox:checked').each(function() {

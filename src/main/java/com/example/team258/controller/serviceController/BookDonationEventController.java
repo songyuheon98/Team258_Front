@@ -44,4 +44,9 @@ public class BookDonationEventController {
         return ResponseEntity.ok().body(bookDonationEventService.settingCancelDonationEvent(bookDonationSettingCancelRequestDto));
     }
 
+    @DeleteMapping("/end/{donationId}")
+    public ResponseEntity<MessageDto> endDonationEvent(@PathVariable Long donationId){
+        return ResponseEntity.ok().body(bookDonationEventService.endDonationEvent(donationId));
+    }
+
 }
