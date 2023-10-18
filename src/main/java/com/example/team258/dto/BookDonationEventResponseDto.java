@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class BookDonationEventResponseDto {
-    private Long donatoinId;
+    private Long donationId;
     private LocalDateTime createdAt;
     private LocalDateTime closedAt;
 
     public BookDonationEventResponseDto(BookDonationEvent bookDonationEvent){
-        this.donatoinId = bookDonationEvent.getDonatoinId();
+        this.donationId = bookDonationEvent.getDonationId();
         this.createdAt = bookDonationEvent.getCreatedAt();
         this.closedAt = bookDonationEvent.getClosedAt();
     }

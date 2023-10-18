@@ -21,6 +21,8 @@ public class SampleDataCreate {
     public void init() {
         initService.userInit();
         initService.bookInit();
+        initService.categoryInit();
+        initService.bookEventDonationInit();
     }
     @Component
     @Transactional

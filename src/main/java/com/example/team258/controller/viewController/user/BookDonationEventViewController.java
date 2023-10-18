@@ -4,6 +4,7 @@ import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.BookResponseDto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookDonationEvent;
+import com.example.team258.entity.BookStatusEnum;
 import com.example.team258.repository.BookDonationEventRepository;
 import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class BookDonationEventViewController {
         BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
         );
-        List<Book> books = bookDonationEvent.getBooks();
+        List<Book> books = bookDonationEvent.getBooks().stream().filter(book -> book.getBookStatus().equals(BookStatusEnum.DONATION)).toList();
+
         List<BookResponseDto> bookResponseDtos = books.stream()
                 .map(BookResponseDto::new)
                 .toList();

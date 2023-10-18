@@ -33,13 +33,13 @@
         </thead>
         <tbody>
         <tr th:each="event : ${events}">
-          <td><input class="form-control" type="text" th:value="${event.donatoinId}" name="donationId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${event.donationId}" name="donationId" readonly/></td>
           <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/></td>
           <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
           <td>
-            <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donatoinId} + '\''">Book Setting Event</button>
-            <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donatoinId} + '\')'">Update Event</button>
-            <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donatoinId} + '\')'">Delete Event</button>
+            <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '\''">Book Setting Event</button>
+            <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donationId} + '\')'">Update Event</button>
+            <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donationId} + '\')'">Delete Event</button>
           </td>
         </tr>
         <tr>

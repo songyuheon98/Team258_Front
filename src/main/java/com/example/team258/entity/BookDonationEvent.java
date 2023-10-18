@@ -19,7 +19,7 @@ import java.util.List;
 public class BookDonationEvent {
     @Id @GeneratedValue
     @Column(name="donation_id")
-    private Long donatoinId;
+    private Long donationId;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,8 +52,8 @@ public class BookApplyDonationService {
         BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookApplyDonationRequestDto.getDonationId())
                 .orElseThrow(()->new IllegalArgumentException("해당 이벤트가 존재하지 않습니다."));
 
-        if(bookApplyDonationRequestDto.getApplyDate().isBefore(bookDonationEvent.getCreatedAt()) ||
-                bookApplyDonationRequestDto.getApplyDate().isAfter( bookDonationEvent.getClosedAt())){
+        if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
+                LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
             return ResponseEntity.ok().body(new MessageDto("책 나눔 이벤트 기간이 아닙니다."));
         }
 
