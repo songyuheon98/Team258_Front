@@ -1,5 +1,7 @@
 package com.example.team258.service;
 
+import com.example.team258.dto.BookRentResponseDto;
+import com.example.team258.dto.BookReservationResponseDto;
 import com.example.team258.dto.MessageDto;
 import com.example.team258.entity.*;
 import com.example.team258.repository.BookRepository;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,13 @@ public class BookReservationService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    public List<BookReservationResponseDto> getRental(User user) {
+        User savedUser = userRepository.findById(user.getUserId())
+                .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
+        return savedUser.getBookReservations().stream().map(BookReservationResponseDto::new).toList();
+    }
 
     @Transactional
     public MessageDto createReservation(Long bookId, User user) {
@@ -58,4 +68,5 @@ public class BookReservationService {
 
         return new MessageDto("도서 예약 취소가 완료되었습니다");
     }
+
 }
