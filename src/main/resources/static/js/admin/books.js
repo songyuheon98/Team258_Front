@@ -49,4 +49,7 @@ $(document).ready(function () {
             }
         });
     });
+    $('#manage-book-button').on('click', function () {
+        window.location.href = '/admin/booksManage';
+    })
 });
