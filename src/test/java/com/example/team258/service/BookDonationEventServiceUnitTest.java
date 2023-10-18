@@ -7,6 +7,7 @@ import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.jwt.SecurityUtil;
+import com.example.team258.repository.BookApplyDonationRepository;
 import com.example.team258.repository.BookDonationEventRepository;
 import com.example.team258.repository.BookRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -42,6 +43,7 @@ class BookDonationEventServiceUnitTest {
     @Mock private BookDonationEventRepository bookDonationEventRepository;
     @Mock private BookRepository bookRepository;
 
+    @Mock private BookApplyDonationRepository bookApplyDonationRepository;
     @Mock private SecurityUtil securityUtil;
     private BookDonationEventService bookDonationEventService;
     private static MockedStatic<SecurityUtil> mockedSecurityUtil;
@@ -61,7 +63,7 @@ class BookDonationEventServiceUnitTest {
         /**
          * Mock 객체를 사용하여 UserService 객체 생성
          */
-        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository,bookRepository);
+        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository,bookRepository,bookApplyDonationRepository);
 
     }
     @AfterAll
