@@ -1,9 +1,6 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.BookApplyDonationRequestDto;
-import com.example.team258.dto.BookApplyDonationResponseDto;
-import com.example.team258.dto.BookResponseDto;
-import com.example.team258.dto.MessageDto;
+import com.example.team258.dto.*;
 import com.example.team258.entity.*;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.BookDonationEventRepository;
@@ -54,7 +51,7 @@ public class BookApplyDonationService {
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
-            return ResponseEntity.ok().body(new MessageDto("책 나눔 이벤트 기간이 아닙니다."));
+            return ResponseEntity.badRequest().body(new MessageDto("책 나눔 이벤트 기간이 아닙니다."));
         }
 
         /**
@@ -79,11 +76,11 @@ public class BookApplyDonationService {
          */
         user.getBookApplyDonations().add(bookApplyDonation);
         bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
-
+        book.changeStatus(BookStatusEnum.SOLD_OUT);
         /**
          * book의 상태 변경
          */
-        book.changeStatus(BookStatusEnum.SOLD_OUT);
+
         return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 완료되었습니다."));
     }
 
@@ -91,6 +88,11 @@ public class BookApplyDonationService {
     public ResponseEntity<MessageDto> deleteBookApplyDonation(Long applyId) {
         BookApplyDonation bookApplyDonation = bookApplyDonationRepository.findById(applyId)
                 .orElseThrow(()->new IllegalArgumentException("해당 신청이 존재하지 않습니다."));
+
+        /**
+         * 책 상태 Donation으로 수정
+         */
+        bookApplyDonation.getBook().changeStatus(BookStatusEnum.DONATION);
 
         /**
          * 연관관계 해제 편의 메소드 사용
@@ -120,5 +122,11 @@ public class BookApplyDonationService {
     }
 
 
-
+    public UserBookApplyCancelPageResponseDto getDonationBooksCancel() {
+        Long userId = SecurityUtil.getPrincipal().get().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(
+                ()->new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
+        );
+        return new UserBookApplyCancelPageResponseDto(user);
+    }
 }
