@@ -17,12 +17,13 @@ $(document).ready(function () {
         var seconds = ('0' + dateObject.getSeconds()).slice(-2);
 
         // "YYYY-MM-DDTHH:mm:ss" 형식으로 조합
-        var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds;
+        // var formattedDate = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds;
 
         var data = {
             bookName: form.find('input[name="bookName"]').val(),
             bookAuthor: form.find('input[name="bookAuthor"]').val(),
-            bookPublish: formattedDate, // 변환된 날짜 문자열 사용
+            // bookPublish: formattedDate, // 변환된 날짜 문자열 사용
+            bookPublish: year, // 변환된 날짜 문자열 사용
             bookCategoryId: form.find('select[name="bookCategoryId"] :selected').val()
         };
         console.log(data)

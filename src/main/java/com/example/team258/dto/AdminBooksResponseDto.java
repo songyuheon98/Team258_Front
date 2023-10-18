@@ -15,7 +15,7 @@ public class AdminBooksResponseDto {
     private Long bookId;
     private String bookName;
     private String bookAuthor;
-    private LocalDateTime bookPublish;
+    private String bookPublish;
     private BookStatusEnum bookStatus;
     private Long bookCategoryId;
 

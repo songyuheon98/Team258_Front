@@ -28,7 +28,7 @@ public class Book {
     private String bookAuthor;
 
     @Column(name = "book_publish", nullable = false)
-    private LocalDateTime bookPublish;
+    private String bookPublish;
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)
