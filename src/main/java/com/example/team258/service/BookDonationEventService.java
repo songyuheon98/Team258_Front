@@ -1,9 +1,6 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.BookDonationEventRequestDto;
-import com.example.team258.dto.BookDonationEventResponseDto;
-import com.example.team258.dto.BookDonationSettingRequestDto;
-import com.example.team258.dto.MessageDto;
+import com.example.team258.dto.*;
 import com.example.team258.entity.*;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.BookApplyDonationRepository;
@@ -22,6 +19,8 @@ import java.util.List;
 public class BookDonationEventService {
     private final BookDonationEventRepository bookDonationEventRepository;
     private final BookRepository bookRepository;
+    private final BookApplyDonationRepository bookApplyDonationRepository;
+
     @Transactional
     public ResponseEntity<MessageDto> createDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto) {
         BookDonationEvent bookDonationEvent = new BookDonationEvent(bookDonationEventRequestDto);
@@ -48,6 +47,31 @@ public class BookDonationEventService {
         BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
         );
+        /**
+         * 연관 관계 삭제
+         * 도서와 나눔 이벤트 간의 연관 관계 삭제
+         */
+        int bookSize = bookDonationEvent.getBooks().size();
+        for (int i = bookSize - 1; i >= 0; i--) {
+            bookDonationEvent.getBooks().get(i).changeStatus(BookStatusEnum.POSSIBLE);
+            bookDonationEvent.removeBook(bookDonationEvent.getBooks().get(i));
+        }
+
+        /**
+         * 도서와 나눔 신청 간의 연관 관계 삭제
+         */
+        int applysize = bookDonationEvent.getBookApplyDonations().size();
+        for (int i = applysize - 1; i >= 0; i--) {
+            Book book = bookRepository.findById(bookDonationEvent.getBookApplyDonations().get(i).getBook().getBookId()).orElseThrow(
+                    () -> new IllegalArgumentException("해당 책이 존재하지 않습니다.")
+            );
+            BookApplyDonation bookApplyDonation = bookApplyDonationRepository.findById(bookDonationEvent.getBookApplyDonations().get(i).getApplyId()).orElseThrow(
+                    () -> new IllegalArgumentException("해당 신청이 존재하지 않습니다.")
+            );
+            bookApplyDonation.removeBook(book);
+            int a;
+        }
+
         bookDonationEventRepository.delete(bookDonationEvent);
         return ResponseEntity.ok(new MessageDto("이벤트 삭제가 완료되었습니다"));
     }
@@ -77,4 +101,31 @@ public class BookDonationEventService {
 
         return new MessageDto("이벤트 설정이 완료되었습니다");
     }
+
+    @Transactional
+    public MessageDto settingCancelDonationEvent(BookDonationSettingCancelRequestDto bookDonationSettingCancelRequestDto) {
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookDonationSettingCancelRequestDto.getDonationId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
+        );
+        Book book =bookRepository.findById(bookDonationSettingCancelRequestDto.getBookId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 책이 존재하지 않습니다.")
+        );
+        bookDonationEvent.removeBook(book);
+        book.changeStatus(BookStatusEnum.POSSIBLE);
+        return new MessageDto("해당 도서가 이벤트에서 삭제 완료되었습니다");
+    }
+
+    @Transactional
+    public MessageDto endDonationEvent(Long donationId) {
+        User user = SecurityUtil.getPrincipal().get();
+        if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
+            return new MessageDto("관리자만 이벤트를 종료할 수 있습니다.");
+        }
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
+                () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
+        );
+        bookDonationEventRepository.delete(bookDonationEvent);
+        return new MessageDto("이벤트 종료가 완료되었습니다");
+    }
+
 }

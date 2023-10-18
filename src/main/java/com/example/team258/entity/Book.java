@@ -108,4 +108,7 @@ public class Book {
     public void addBookDonationEvent(BookDonationEvent bookDonationEvent) {
         this.bookDonationEvent = bookDonationEvent;
     }
+    public void removeBookDonationEvent() {
+        this.bookDonationEvent = null;
+    }
 }

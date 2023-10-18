@@ -7,6 +7,7 @@ import com.example.team258.entity.BookDonationEvent;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.jwt.SecurityUtil;
+import com.example.team258.repository.BookApplyDonationRepository;
 import com.example.team258.repository.BookDonationEventRepository;
 import com.example.team258.repository.BookRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -42,6 +43,7 @@ class BookDonationEventServiceUnitTest {
     @Mock private BookDonationEventRepository bookDonationEventRepository;
     @Mock private BookRepository bookRepository;
 
+    @Mock private BookApplyDonationRepository bookApplyDonationRepository;
     @Mock private SecurityUtil securityUtil;
     private BookDonationEventService bookDonationEventService;
     private static MockedStatic<SecurityUtil> mockedSecurityUtil;
@@ -61,7 +63,7 @@ class BookDonationEventServiceUnitTest {
         /**
          * Mock 객체를 사용하여 UserService 객체 생성
          */
-        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository,bookRepository);
+        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository,bookRepository,bookApplyDonationRepository);
 
     }
     @AfterAll
@@ -174,7 +176,7 @@ class BookDonationEventServiceUnitTest {
         List<BookDonationEvent> bookDonationEvents = new ArrayList<>();
         bookDonationEvents.add(
                 BookDonationEvent.builder()
-                        .donatoinId(1L)
+                        .donationId(1L)
                         .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
                         .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
                         .build()
@@ -187,7 +189,7 @@ class BookDonationEventServiceUnitTest {
         List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 
         // then
-        assertThat(result.get(0).getDonatoinId()).isEqualTo(1L);
+        assertThat(result.get(0).getDonationId()).isEqualTo(1L);
         assertThat(result.get(0).getCreatedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:01"));
         assertThat(result.get(0).getClosedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:59"));
     }
@@ -208,7 +210,7 @@ class BookDonationEventServiceUnitTest {
         List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 
         // then
-        assertThat(result.get(0).getDonatoinId()).isNull();
+        assertThat(result.get(0).getDonationId()).isNull();
     }
 
 }

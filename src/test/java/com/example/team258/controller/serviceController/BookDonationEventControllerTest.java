@@ -108,9 +108,10 @@ class BookDonationEventControllerTest {
         bookDonationEventResponseDtos.add(
                 new BookDonationEventResponseDto(
                         BookDonationEvent.builder()
-                        .donatoinId(1L)
+                        .donationId(1L)
                         .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
                         .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
+                                .books(new ArrayList<>())
                         .build()
                 )
         );
@@ -122,7 +123,7 @@ class BookDonationEventControllerTest {
         // then
         mockMvc.perform(get("/api/admin/donation"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].donatoinId").value(1L))
+                .andExpect(jsonPath("$[0].donationId").value(1L))
                 .andExpect(jsonPath("$[0].createdAt").value("2023-10-12T19:16:01"))
                 .andExpect(jsonPath("$[0].closedAt").value("2023-10-12T19:16:59"))
                 .andDo(print());

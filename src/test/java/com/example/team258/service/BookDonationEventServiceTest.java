@@ -165,7 +165,7 @@
 //        List<BookDonationEvent> bookDonationEvents = new ArrayList<>();
 //        bookDonationEvents.add(
 //                BookDonationEvent.builder()
-//                        .donatoinId(1L)
+//                        .donationId(1L)
 //                        .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
 //                        .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
 //                        .build()
@@ -178,7 +178,7 @@
 //        List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 //
 //        // then
-//        assertThat(result.get(0).getDonatoinId()).isEqualTo(1L);
+//        assertThat(result.get(0).getdonationId()).isEqualTo(1L);
 //        assertThat(result.get(0).getCreatedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:01"));
 //        assertThat(result.get(0).getClosedAt()).isEqualTo(LocalDateTime.parse("2023-10-12T19:16:59"));
 //    }
@@ -199,7 +199,7 @@
 //        List<BookDonationEventResponseDto> result = bookDonationEventService.getDonationEvent();
 //
 //        // then
-//        assertThat(result.get(0).getDonatoinId()).isNull();
+//        assertThat(result.get(0).getdonationId()).isNull();
 //    }
 //
 //}

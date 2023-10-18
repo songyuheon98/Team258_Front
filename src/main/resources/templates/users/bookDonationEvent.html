@@ -28,11 +28,13 @@
                 </thead>
                 <tbody>
                 <tr th:each="event : ${events}">
-                    <td><input class="form-control" type="text" th:value="${event.donatoinId}" name="donationId" readonly/></td>
+                    <td><label>
+                        <input class="form-control" type="text" th:value="${event.donationId}" name="donationId" readonly/>
+                    </label></td>
                     <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/></td>
                     <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/users/bookDonationEvent/' + ${event.donatoinId} + '\''">Event Page</button>
+                        <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/users/bookDonationEvent/' + ${event.donationId} + '\''">Event Page</button>
                     </td>
                 </tr>
                 </tbody>
