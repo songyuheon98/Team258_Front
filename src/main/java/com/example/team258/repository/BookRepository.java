@@ -27,4 +27,6 @@ public interface BookRepository extends JpaRepository <Book,Long> {
 
     Optional<Book> findByBookRent(BookRent bookRent);
 
+    @Query("select count(b) FROM book b")
+    Long getMaxCount();
 }
