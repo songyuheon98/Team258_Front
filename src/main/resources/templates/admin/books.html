@@ -25,7 +25,7 @@
         <label class="form-label" for="bookCategoryId">Select Book's Category</label>
         <select class="form-control" name="bookCategoryId" id="bookCategoryId">
           <!-- 카테고리 옵션들 -->
-          <option th:each="category : ${categories}" th:value="${category.bookCategoryId}" th:text="${category.bookCategoryIsbnCode + ' - ' + category.bookCategoryName}"></option>
+          <option th:each="category : ${categories}" th:value="${category.bookCategoryId}" th:text="${category.getBookCategoryIsbnCodeAndName()}"></option>
         </select>
       </div>
 

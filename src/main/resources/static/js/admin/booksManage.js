@@ -6,7 +6,7 @@ $(document).ready(function() {
             bookName: row.find('input[name="bookName"]').val(),
             bookAuthor: row.find('input[name="bookAuthor"]').val(),
             bookPublish: row.find('input[name="bookPublish"]').val(),
-            bookStatus: row.find('input[name="bookStatus"]').val(),
+            bookStatus: row.find('select[name="bookStatus"]').val(), // 수정된 부분
             bookCategoryId: row.find('input[name="bookCategoryId"]').val()
         };
 

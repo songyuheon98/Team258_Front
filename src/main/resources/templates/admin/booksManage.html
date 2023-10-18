@@ -25,23 +25,38 @@
         <thead>
         <tr>
           <th>Book ID</th>
+          <th>Book Category ISBN</th>
+          <th>Book Category ID</th>
           <th>Book Name</th>
           <th>Book Author</th>
           <th>Book Publish</th>
           <th>Book Status</th>
-          <th>Book CategoryId</th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="book : ${books}">
           <td><input class="form-control" type="text" th:value="${book.bookId}" name="bookId" readonly/></td>
+          <td><input class="form-control" type="text" th:value="${book.getBookCategoryIsbnCodeAndName()}" name="bookCategoryIsbnCodeAndName" readonly/></td>
+
+          <td><input class="form-control" type="text" th:value="${book.bookCategoryId}" name="bookCategoryId"/></td>
           <td><input class="form-control" type="text" th:value="${book.bookName}" name="bookName"/></td>
           <td><input class="form-control" type="text" th:value="${book.bookAuthor}" name="bookAuthor"/></td>
           <td><input class="form-control" type="text" th:value="${book.bookPublish}" name="bookPublish"/></td>
-          <td><input class="form-control" type="text" th:value="${book.bookStatus}" name="bookStatus"/></td>
-          <td><input class="form-control" type="text" th:value="${book.bookCategoryId}" name="bookCategoryId"/></td>
           <td>
+            <select class="form-control" name="bookStatus" th:id="'bookStatus_' + ${book.bookId}">
+              <option value="POSSIBLE" th:text="POSSIBLE"></option>
+              <option value="IMPOSSIBLE" th:text="IMPOSSIBLE"></option>
+              <option value="DONATION" th:text="DONATION"></option>
+              <option value="SOLD_OUT" th:text="SOLD_OUT"></option>
+            </select>
+            <script th:inline="javascript">
+              /* 선택된 값 설정 */
+              var selectedStatus = /*[[${book.bookStatus}]]*/ '';
+              document.getElementById('bookStatus_' + /*[[${book.bookId}]]*/ '').value = selectedStatus;
+            </script>
+          </td>
+         <td>
             <button type="button" class="btn btn-outline-warning" th:onclick="'updateBook(\'' + ${book.bookId} + '\')'">Update Book</button>
             <button type="button" class="btn btn-outline-danger" th:onclick="'deleteBook(\'' + ${book.bookId} + '\')'">Delete Book</button>
           </td>

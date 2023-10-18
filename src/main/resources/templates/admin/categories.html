@@ -20,14 +20,14 @@
 
   <div class="container">
     <div class="container-container1">
-      <span class="container-text"><span>Book Categories List - ADMIN ONLY</span></span>
+      <span class="container-text"><span>Book Categories Creator</span></span>
 
       <table class="table table-striped">
         <thead>
         <tr>
           <th>Category ID</th>
           <th>Category ISBN Code</th>
-          <th>Category Name</th>
+          <th>Main Category Name</th>
           <th>Parent Category ID</th>
         </tr>
         </thead>
@@ -42,7 +42,14 @@
             <button type="button" class="btn btn-outline-dark" onclick="createMainCategory()">Create Main Category</button>
           </td>
         </tr>
-
+        <thead>
+        <tr>
+          <th>Category ID</th>
+          <th>Category ISBN Code</th>
+          <th>Sub Category Name</th>
+          <th>Parent Category ID</th>
+        </tr>
+        </thead>
         <!-- 하위 카테고리 -->
         <tr>
           <td><input class="form-control" type="text" th:value="''" readonly/></td>
@@ -53,7 +60,20 @@
             <button type="button" class="btn btn-outline-dark" onclick="createSubCategory()">Create Sub Category</button>
           </td>
         </tr>
+        </table>
 
+      <span class="container-text"><span>Book Categories List</span></span>
+
+      <table class="table table-striped">
+
+        <thead>
+        <tr>
+          <th>Category ID</th>
+          <th>Category ISBN Code</th>
+          <th>Category Name</th>
+          <th>Parent Category ID</th>
+        </tr>
+        </thead>
         <tr th:each="bookCategory : ${categories}">
           <td><input class="form-control" type="text" th:value="${bookCategory.bookCategoryId}" name="bookCategoryId" readonly/></td>
           <td><input class="form-control" type="text" th:value="${bookCategory.bookCategoryIsbnCode}" name="bookCategoryIsbnCode"/></td>
