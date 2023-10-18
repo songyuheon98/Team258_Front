@@ -80,4 +80,9 @@ public class SearchService {
         return answer;
     }
 
+    public Long getMaxCount() {
+        Long k = bookRepository.getMaxCount();
+        System.out.println(k);
+        return k;
+    }
 }
