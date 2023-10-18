@@ -57,7 +57,7 @@ public class SearchControllerTest {
                 .build();
         Book book = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -82,7 +82,7 @@ public class SearchControllerTest {
                 .build();
         Book book = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -106,7 +106,7 @@ public class SearchControllerTest {
                 .build();
         Book book = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -131,7 +131,7 @@ public class SearchControllerTest {
                 .build();
         Book book = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -156,7 +156,7 @@ public class SearchControllerTest {
                 .build();
         Book book = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")

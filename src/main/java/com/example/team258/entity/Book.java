@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "book")
@@ -28,7 +27,7 @@ public class Book {
     private String bookAuthor;
 
     @Column(name = "book_publish", nullable = false)
-    private LocalDateTime bookPublish;
+    private String bookPublish;
 
     @Column(name = "book_status", nullable = false)
     @Enumerated(EnumType.STRING)

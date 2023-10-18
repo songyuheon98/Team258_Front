@@ -49,15 +49,15 @@ public class SampleDataCreate {
             userRepository.save(user6);
         }
         public void bookInit() {
-            Book book1 = Book.builder().bookName("book1").bookAuthor("author1").bookAuthor("author1").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.POSSIBLE).build();
-            Book book2 = Book.builder().bookName("book2").bookAuthor("author2").bookAuthor("author2").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.POSSIBLE).build();
-            Book book3 = Book.builder().bookName("book3").bookAuthor("author3").bookAuthor("author3").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.POSSIBLE).build();
-            Book book4 = Book.builder().bookName("book4").bookAuthor("author4").bookAuthor("author4").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.IMPOSSIBLE).build();
-            Book book5 = Book.builder().bookName("book5").bookAuthor("author5").bookAuthor("author5").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.IMPOSSIBLE).build();
-            Book book6 = Book.builder().bookName("book6").bookAuthor("author6").bookAuthor("author6").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.IMPOSSIBLE).build();
-            Book book7 = Book.builder().bookName("book7").bookAuthor("author7").bookAuthor("author7").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.DONATION).build();
-            Book book8 = Book.builder().bookName("book8").bookAuthor("author8").bookAuthor("author8").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.DONATION).build();
-            Book book9 = Book.builder().bookName("book9").bookAuthor("author9").bookAuthor("author9").bookPublish(LocalDateTime.now()).bookStatus(BookStatusEnum.DONATION).build();
+            Book book1 = Book.builder().bookName("book1").bookAuthor("author1").bookAuthor("author1").bookPublish("2011").bookStatus(BookStatusEnum.POSSIBLE).build();
+            Book book2 = Book.builder().bookName("book2").bookAuthor("author2").bookAuthor("author2").bookPublish("2011").bookStatus(BookStatusEnum.POSSIBLE).build();
+            Book book3 = Book.builder().bookName("book3").bookAuthor("author3").bookAuthor("author3").bookPublish("2011").bookStatus(BookStatusEnum.POSSIBLE).build();
+            Book book4 = Book.builder().bookName("book4").bookAuthor("author4").bookAuthor("author4").bookPublish("2011").bookStatus(BookStatusEnum.IMPOSSIBLE).build();
+            Book book5 = Book.builder().bookName("book5").bookAuthor("author5").bookAuthor("author5").bookPublish("2011").bookStatus(BookStatusEnum.IMPOSSIBLE).build();
+            Book book6 = Book.builder().bookName("book6").bookAuthor("author6").bookAuthor("author6").bookPublish("2011").bookStatus(BookStatusEnum.IMPOSSIBLE).build();
+            Book book7 = Book.builder().bookName("book7").bookAuthor("author7").bookAuthor("author7").bookPublish("2011").bookStatus(BookStatusEnum.DONATION).build();
+            Book book8 = Book.builder().bookName("book8").bookAuthor("author8").bookAuthor("author8").bookPublish("2011").bookStatus(BookStatusEnum.DONATION).build();
+            Book book9 = Book.builder().bookName("book9").bookAuthor("author9").bookAuthor("author9").bookPublish("2011").bookStatus(BookStatusEnum.DONATION).build();
 
             bookRepository.save(book1);
             bookRepository.save(book2);

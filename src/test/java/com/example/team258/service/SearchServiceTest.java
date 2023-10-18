@@ -44,7 +44,7 @@ public class SearchServiceTest {
         for (int i = 0; i < 40; i++) {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookAuthor("작가"+i)
-                    .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .bookName("제목"+i)
                     .bookStatus(BookStatusEnum.POSSIBLE)
@@ -76,7 +76,7 @@ public class SearchServiceTest {
         for (int i = 0; i < 20; i++) {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookAuthor("작가"+i)
-                    .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .bookName("제목"+i)
                     .bookStatus(BookStatusEnum.POSSIBLE)
@@ -101,7 +101,7 @@ public class SearchServiceTest {
 
         Book book1 = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -136,7 +136,7 @@ public class SearchServiceTest {
 
         Book book1 = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
@@ -168,7 +168,7 @@ public class SearchServiceTest {
 
         Book book1 = Book.builder()
                 .bookId(1L)
-                .bookPublish(LocalDateTime.of(2023,10,01,0,0,0))
+                .bookPublish("2011")
                 .bookName("과학책")
                 .bookCategory(bookCategory)
                 .bookAuthor("과학작가")
