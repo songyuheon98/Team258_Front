@@ -9,4 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 public class AdminCategoriesRequestDto {
     private String bookCategoryName;
+    private Long bookCategoryIsbnCode;
 }

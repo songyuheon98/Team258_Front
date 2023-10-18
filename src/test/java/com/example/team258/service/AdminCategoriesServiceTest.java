@@ -10,7 +10,6 @@ import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
 import com.example.team258.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -131,10 +129,6 @@ class AdminCategoriesServiceTest {
         @DisplayName("모든 카테고리 조회 성공")
         void getAllCategories() {
             // Given
-            // 모의 유저(관리자) 생성
-            User adminUser = mock(User.class);
-            when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
-
             BookCategory category1 = mock(BookCategory.class);
             BookCategory category2 = mock(BookCategory.class);
             BookCategory category3 = mock(BookCategory.class);
@@ -147,7 +141,7 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findAll()).thenReturn(mockCategories);
 
             // When
-            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories(adminUser);
+            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories();
 
             // Then
             assertNotNull(response);
@@ -159,22 +153,6 @@ class AdminCategoriesServiceTest {
 
             assertEquals(expectedResponse.size(), response.size()); // 추가된 부분
         }
-
-        @Test
-        @DisplayName("관리자가 아닌 사용자가 조회할 때 예외 발생")
-        void getAllCategoriesNonAdminUser() {
-            // Given
-            // 모의 유저(관리자가 아닌 경우) 생성
-            User nonAdminUser = mock(User.class);
-            when(nonAdminUser.getRole()).thenReturn(UserRoleEnum.USER);
-
-            // When, Then
-            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.getAllCategories(nonAdminUser);
-            });
-
-            assertEquals("해당 작업을 수행할 권한이 없습니다.", exception.getMessage());
-        }
     }
 
     @Nested
@@ -182,12 +160,13 @@ class AdminCategoriesServiceTest {
     class UpdateCategory {
 
         @Test
-        @DisplayName("카테고리 이름 업데이트 성공")
-        void updateCategoryName() {
+        @DisplayName("카테고리 업데이트 성공")
+        void updateCategory() {
             // Given
             Long categoryId = 1L;
             AdminCategoriesRequestDto adminCategoriesRequestDto = new AdminCategoriesRequestDto();
             adminCategoriesRequestDto.setBookCategoryName("UpdatedCategoryName");
+            adminCategoriesRequestDto.setBookCategoryIsbnCode(100L);
 
             // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
@@ -198,15 +177,15 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, adminUser);
+            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
             assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
             assertNotNull(response.getBody());
-            assertEquals("카테고리 이름이 수정되었습니다.", response.getBody().getMsg());
+            assertEquals("카테고리가 수정되었습니다.", response.getBody().getMsg());
 
-            // 부모 카테고리에도 올바른 메서드가 호출되었는지 확인
-            verify(category, times(1)).getParentCategory();
+            // 업데이트 메서드 호출 확인
+            verify(category, times(1)).updateBookCategory(eq("UpdatedCategoryName"), eq(100L));
             verify(bookCategoryRepository, times(1)).save(category);
         }
 
@@ -227,7 +206,7 @@ class AdminCategoriesServiceTest {
 
             // When, Then
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, adminUser);
+                adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
             });
 
             assertEquals("해당 카테고리를 찾을 수 없습니다.", exception.getMessage());
@@ -247,7 +226,7 @@ class AdminCategoriesServiceTest {
 
             // When, Then
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-                adminCategoriesService.updateBookCategoryName(categoryId, adminCategoriesRequestDto, nonAdminUser);
+                adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, nonAdminUser);
             });
 
             assertEquals("해당 작업을 수행할 권한이 없습니다.", exception.getMessage());
@@ -471,10 +450,10 @@ class AdminCategoriesServiceTest {
             BookCategory parentCategory = mock(BookCategory.class);
 
             // When
-            adminCategoriesService.updateParentCategoryName(parentCategory, "NewCategoryName");
+            adminCategoriesService.updateParentCategory(parentCategory, "NewCategoryName", 100L);
 
             // Then
-            verify(parentCategory, times(1)).changeBookCategoryName("NewCategoryName");
+            verify(parentCategory, times(1)).updateBookCategory("NewCategoryName", 100L);
             verify(bookCategoryRepository, times(1)).save(parentCategory);
         }
 
@@ -485,7 +464,7 @@ class AdminCategoriesServiceTest {
             BookCategory parentCategory = null;
 
             // When
-            adminCategoriesService.updateParentCategoryName(parentCategory, "NewCategoryName");
+            adminCategoriesService.updateParentCategory(parentCategory, "NewCategoryName",100L);
 
             // Then
             // 특별히 어떤 동작도 수행되지 않아야 합니다.

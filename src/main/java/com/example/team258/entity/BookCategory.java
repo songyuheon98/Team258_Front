@@ -21,6 +21,9 @@ public class BookCategory {
     @Column(name="book_category_id")
     private Long bookCategoryId;
 
+    @Column(name="book_category_isbn_code")
+    private Long bookCategoryIsbnCode;
+
     @Column(name="book_category_name")
     private String bookCategoryName;
 
@@ -32,12 +35,13 @@ public class BookCategory {
     @JoinColumn(name = "parent_category_id")
     private BookCategory parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(orphanRemoval = true, mappedBy = "parentCategory")
     private List<BookCategory> childCategories;
 
 
     public BookCategory(AdminCategoriesRequestDto requestDto) {
         this.bookCategoryName = requestDto.getBookCategoryName();
+        this.bookCategoryIsbnCode = requestDto.getBookCategoryIsbnCode();
     }
 
     public void addChildCategory(BookCategory childCategory) {
@@ -49,8 +53,9 @@ public class BookCategory {
         this.parentCategory = bookCategory;
     }
 
-    public void changeBookCategoryName(String newBookCategoryName) {
+    public void updateBookCategory(String newBookCategoryName, Long newBookCategoryIsbnCode) {
         this.bookCategoryName = newBookCategoryName;
+        this.bookCategoryIsbnCode = newBookCategoryIsbnCode;
     }
 }
 
