@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "book")
@@ -55,6 +54,13 @@ public class Book {
     @JoinColumn(name = "book_category_id")
     private BookCategory bookCategory;
 
+    /**
+     * 양방향
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "book_donation_event_id")
+    private BookDonationEvent bookDonationEvent;
+
     public void changeStatus(BookStatusEnum bookStatus) {
         this.bookStatus = bookStatus;
     }
@@ -97,5 +103,9 @@ public class Book {
 
     public void deleteRental() {
         this.bookRent = null;
+    }
+
+    public void addBookDonationEvent(BookDonationEvent bookDonationEvent) {
+        this.bookDonationEvent = bookDonationEvent;
     }
 }

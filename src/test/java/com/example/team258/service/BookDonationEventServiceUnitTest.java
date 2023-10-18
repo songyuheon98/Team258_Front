@@ -8,6 +8,7 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.BookDonationEventRepository;
+import com.example.team258.repository.BookRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ import static org.mockito.Mockito.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookDonationEventServiceUnitTest {
     @Mock private BookDonationEventRepository bookDonationEventRepository;
+    @Mock private BookRepository bookRepository;
+
     @Mock private SecurityUtil securityUtil;
     private BookDonationEventService bookDonationEventService;
     private static MockedStatic<SecurityUtil> mockedSecurityUtil;
@@ -58,7 +61,7 @@ class BookDonationEventServiceUnitTest {
         /**
          * Mock 객체를 사용하여 UserService 객체 생성
          */
-        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository);
+        bookDonationEventService = new BookDonationEventService(bookDonationEventRepository,bookRepository);
 
     }
     @AfterAll
