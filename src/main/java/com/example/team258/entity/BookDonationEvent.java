@@ -53,6 +53,9 @@ public class BookDonationEvent {
         this.books.add(book);
         book.addBookDonationEvent(this);
     }
-
+    public void removeBook(Book book){
+        this.books.remove(book);
+        book.removeBookDonationEvent();
+    }
 
 }

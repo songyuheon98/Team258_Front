@@ -1,9 +1,6 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.BookDonationEventRequestDto;
-import com.example.team258.dto.BookDonationEventResponseDto;
-import com.example.team258.dto.BookDonationSettingRequestDto;
-import com.example.team258.dto.MessageDto;
+import com.example.team258.dto.*;
 import com.example.team258.entity.*;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.BookApplyDonationRepository;
@@ -76,5 +73,18 @@ public class BookDonationEventService {
         });
 
         return new MessageDto("이벤트 설정이 완료되었습니다");
+    }
+
+    @Transactional
+    public MessageDto settingCancelDonationEvent(BookDonationSettingCancelRequestDto bookDonationSettingCancelRequestDto) {
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(bookDonationSettingCancelRequestDto.getDonationId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
+        );
+        Book book =bookRepository.findById(bookDonationSettingCancelRequestDto.getBookId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 책이 존재하지 않습니다.")
+        );
+        bookDonationEvent.removeBook(book);
+        book.changeStatus(BookStatusEnum.POSSIBLE);
+        return new MessageDto("해당 도서가 이벤트에서 삭제 완료되었습니다");
     }
 }

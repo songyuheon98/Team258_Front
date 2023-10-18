@@ -1,9 +1,6 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.BookDonationEventRequestDto;
-import com.example.team258.dto.BookDonationEventResponseDto;
-import com.example.team258.dto.BookDonationSettingRequestDto;
-import com.example.team258.dto.MessageDto;
+import com.example.team258.dto.*;
 import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +37,11 @@ public class BookDonationEventController {
     @PutMapping("/setting")
     public ResponseEntity<MessageDto> settingDonationEvent(@RequestBody BookDonationSettingRequestDto bookDonationSettingRequestDto){
         return ResponseEntity.ok().body(bookDonationEventService.settingDonationEvent(bookDonationSettingRequestDto));
+    }
+
+    @PutMapping("/settingCancel")
+    public ResponseEntity<MessageDto> settingCancelDonationEvent(@RequestBody BookDonationSettingCancelRequestDto bookDonationSettingCancelRequestDto){
+        return ResponseEntity.ok().body(bookDonationEventService.settingCancelDonationEvent(bookDonationSettingCancelRequestDto));
     }
 
 }

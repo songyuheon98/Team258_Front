@@ -96,5 +96,25 @@ $(document).ready(function() {
             }
         });
     };
+    window.bookApplyCancle = function(donationId, bookId) {
+        const requestData = {
+            donationId: donationId,
+            bookId: bookId
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/admin/donation/settingCancel',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                alert('책 취소 설정이 완료되었습니다.');
+                window.location.reload();  // 현재 페이지 새로고침
+            },
+            error: function (error) {
+                alert('책 취소 설정에 실패하였습니다.');
+            }
+        });
+    };
 });
 
