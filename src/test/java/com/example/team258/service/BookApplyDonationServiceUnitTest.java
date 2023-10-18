@@ -86,10 +86,11 @@ class BookApplyDonationServiceUnitTest {
                 .build();
 
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
-                .donatoinId(1L)
+                .donationId(1L)
                 .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
                 .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
                 .build();
 
         User user = User.builder()
@@ -126,8 +127,8 @@ class BookApplyDonationServiceUnitTest {
         Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00")).books(new ArrayList<>())
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -152,8 +153,8 @@ class BookApplyDonationServiceUnitTest {
         Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).bookApplyDonation(new BookApplyDonation()).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00")).books(new ArrayList<>())
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -181,8 +182,8 @@ class BookApplyDonationServiceUnitTest {
         Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -207,7 +208,7 @@ class BookApplyDonationServiceUnitTest {
         Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
                 .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -226,7 +227,7 @@ class BookApplyDonationServiceUnitTest {
 
 
         //then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(result.getBody().getMsg()).isEqualTo("책 나눔 이벤트 기간이 아닙니다.");
     }
 
@@ -236,8 +237,8 @@ class BookApplyDonationServiceUnitTest {
         Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 

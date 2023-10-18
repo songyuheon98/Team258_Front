@@ -85,7 +85,7 @@
 //                .build();
 //
 //        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
-//                .donatoinId(1L)
+//                .donationId(1L)
 //                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00"))
 //                .bookApplyDonations(new ArrayList<>())
@@ -125,7 +125,7 @@
 //        Book book = Book.builder().bookId(1L).bookName("bookName").bookInfo("bookInfo").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
 //                .bookStatus(BookStatusEnum.POSSIBLE).build();
 //
-//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 //
 //        User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -151,7 +151,7 @@
 //        Book book = Book.builder().bookId(1L).bookName("bookName").bookInfo("bookInfo").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
 //                .bookStatus(BookStatusEnum.POSSIBLE).bookApplyDonation(new BookApplyDonation()).build();
 //
-//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 //
 //        User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -180,7 +180,7 @@
 //        Book book = Book.builder().bookId(1L).bookName("bookName").bookInfo("bookInfo").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
 //                .bookStatus(BookStatusEnum.POSSIBLE).build();
 //
-//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 //
 //        User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -206,7 +206,7 @@
 //        Book book = Book.builder().bookId(1L).bookName("bookName").bookInfo("bookInfo").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
 //                .bookStatus(BookStatusEnum.POSSIBLE).build();
 //
-//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 //
 //        User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -235,7 +235,7 @@
 //        Book book = Book.builder().bookId(1L).bookName("bookName").bookInfo("bookInfo").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
 //                .bookStatus(BookStatusEnum.POSSIBLE).build();
 //
-//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+//        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
 //                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 //
 //        User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();

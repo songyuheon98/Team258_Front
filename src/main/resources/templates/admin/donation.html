@@ -31,17 +31,53 @@
           <th>Action</th>
         </tr>
         </thead>
+
+
+
         <tbody>
-        <tr th:each="event : ${events}">
-          <td><input class="form-control" type="text" th:value="${event.donatoinId}" name="donationId" readonly/></td>
-          <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/></td>
-          <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
-          <td>
-            <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donatoinId} + '\''">Book Setting Event</button>
-            <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donatoinId} + '\')'">Update Event</button>
-            <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donatoinId} + '\')'">Delete Event</button>
-          </td>
-        </tr>
+        <th:block th:each="event : ${events}">
+          <!-- 이벤트 정보 행 -->
+          <tr>
+            <td><input class="form-control" type="text" th:value="${event.donationId}" name="donationId" readonly/></td>
+            <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/></td>
+            <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
+            <td>
+              <button type="button" class="btn btn-outline-success" th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '\''">Book Setting Event</button>
+              <button type="button" class="btn btn-outline-warning" th:onclick="'updateDonationEvent(\'' + ${event.donationId} + '\')'">Update Event</button>
+              <button type="button" class="btn btn-outline-danger" th:onclick="'deleteDonationEvent(\'' + ${event.donationId} + '\')'">Delete Event</button>
+              <button type="button" class="btn btn-outline-danger" th:onclick="'endDonationEvent(\'' + ${event.donationId} + '\')'">End Event</button>
+            </td>
+          </tr>
+          <!-- 책 정보 행 -->
+          <tr>
+            <td colspan="5">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>Book ID</th>
+                  <th>Book Name</th>
+                  <th>Author</th>
+                  <th>Publisher</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${event.bookResponseDtos}">
+                  <td th:text="${book.bookId}"></td>
+                  <td th:text="${book.bookName}"></td>
+                  <td th:text="${book.bookAuthor}"></td>
+                  <td th:text="${book.bookPublish}"></td>
+                  <td th:text="${book.bookStatus}"></td>
+                  <td>
+                    <button type="button" class="btn btn-outline-dark" th:onclick="'bookApplyCancle(\'' + ${event.donationId} + '\', \'' + ${book.bookId} + '\')'">Book Apply Cancel</button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </th:block>
         <tr>
           <td><input class="form-control" type="text" th:value="'*'" name="donationId" readonly/></td>
           <td><input class="form-control" type="text" th:value="' '" name="createdAt"/></td>
@@ -51,8 +87,11 @@
 
           </td>
         </tr>
-
         </tbody>
+
+
+
+
       </table>
     </div>
   </div>

@@ -1,9 +1,9 @@
 package com.example.team258.controller.viewController.user;
 
-import com.example.team258.dto.BookDonationEventResponseDto;
 import com.example.team258.dto.BookResponseDto;
-import com.example.team258.entity.Book;
+import com.example.team258.dto.UserBookApplyCancelPageResponseDto;
 import com.example.team258.entity.BookStatusEnum;
+import com.example.team258.repository.UserRepository;
 import com.example.team258.service.BookApplyDonationService;
 import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +18,23 @@ import java.util.List;
 @RequestMapping("/users/bookApplyDonation")
 @RequiredArgsConstructor
 public class BookApplyDonationViewController {
-        private final BookApplyDonationService bookApplyDonationService;
-        private final BookDonationEventService bookDonationEventService;
+    private final BookApplyDonationService bookApplyDonationService;
+    private final BookDonationEventService bookDonationEventService;
+    private final UserRepository userRepository;
 
+    @GetMapping("/cancel")
+    public String bookApplyDonationCancelPage(Model model) {
+        UserBookApplyCancelPageResponseDto userBookApplyCancelPageResponseDto = bookApplyDonationService.getDonationBooksCancel();
+        model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
+        return "/users/bookApplyDonationCancel";
+    }
 
+    @GetMapping
+    public String bookApplyDonation(Model model) {
+        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
 
-        @GetMapping
-        public String bookApplyDonation(Model model) {
-            List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
+        model.addAttribute("books", bookResponseDtos);
 
-            model.addAttribute("books", bookResponseDtos);
-
-            return "/users/bookApplyDonation";
-        }
+        return "/users/bookApplyDonation";
+    }
 }
