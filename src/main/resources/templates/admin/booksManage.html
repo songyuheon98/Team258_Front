@@ -21,7 +21,35 @@
     <div class="container-container1">
       <span class="container-text"><span>Books List - ADMIN ONLY</span></span>
 
+      <!-- 검색 폼 추가 -->
+      <form th:action="@{/admin/booksManage}" method="get">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search by book name" name="keyword">
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+      </form>
+
       <table class="table table-striped">
+
+        <!-- 페이지 번호 표시 -->
+        <div class="pagination">
+          <ul class="pagination d-inline">
+            <li th:if="${currentPage > 0}">
+              <a th:href="@{/admin/booksManage(page=${currentPage - 1}, keyword=${param.keyword})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'active' : ''">
+              <a th:href="@{/admin/booksManage(page=${i}, keyword=${param.keyword})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:if="${currentPage < totalPages - 1}">
+              <a th:href="@{/admin/booksManage(page=${currentPage + 1}, keyword=${param.keyword})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <thead>
         <tr>
           <th>Book ID</th>

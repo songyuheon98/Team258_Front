@@ -17,6 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -129,6 +134,13 @@ class AdminCategoriesServiceTest {
         @DisplayName("모든 카테고리 조회 성공")
         void getAllCategories() {
             // Given
+            User adminUser = User.builder()
+                    .userId(1L)
+                    .username("user1")
+                    .password("pass1")
+                    .role(UserRoleEnum.ADMIN)
+                    .build();
+
             BookCategory category1 = mock(BookCategory.class);
             BookCategory category2 = mock(BookCategory.class);
             BookCategory category3 = mock(BookCategory.class);
@@ -138,10 +150,15 @@ class AdminCategoriesServiceTest {
                     category1, category2, category3
             );
 
-            when(bookCategoryRepository.findAll()).thenReturn(mockCategories);
+            // 페이징 정보
+            Pageable pageable = PageRequest.of(0, 10);
+
+            // 페이징된 엔티티를 Dto로 변환하여 반환
+            when(bookCategoryRepository.findAll(any(Specification.class), eq(pageable)))
+                    .thenReturn(new PageImpl<>(mockCategories, pageable, mockCategories.size()));
 
             // When
-            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories();
+            Page<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategoriesPagedAndSearch(adminUser, null, pageable);
 
             // Then
             assertNotNull(response);
@@ -151,8 +168,11 @@ class AdminCategoriesServiceTest {
                     .map(AdminCategoriesResponseDto::new)
                     .collect(Collectors.toList());
 
-            assertEquals(expectedResponse.size(), response.size()); // 추가된 부분
+            assertEquals(expectedResponse.size(), response.getContent().size());
+            // 기존의 검증 로직 유지하거나 필요에 따라 수정
         }
+
+
     }
 
     @Nested
