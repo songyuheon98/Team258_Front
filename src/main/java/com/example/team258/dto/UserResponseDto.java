@@ -3,6 +3,7 @@ package com.example.team258.dto;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import lombok.Data;
+import org.springframework.data.domain.Pageable;
 
 @Data
 public class UserResponseDto {

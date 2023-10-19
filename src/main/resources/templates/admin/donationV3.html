@@ -15,9 +15,8 @@
 <!-- 헤더 레이아웃 적용 -->
 <div th:replace="~{layout :: header}"></div>
 
-<!-- 컨텐츠(이 부분이 변경 됩니다.) -->
+<!-- 컨텐츠 -->
 <div class="index-contents">
-
     <div class="container">
         <div class="container-container1">
             <span class="container-text"><span>Book Donation Event List - ADMIN ONLY</span></span>
@@ -44,7 +43,7 @@
                         <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
                         <td>
                             <button type="button" class="btn btn-outline-success"
-                                    th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '\''">
+                                    th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '/v2'+'\''">
                                 Book Setting Event
                             </button>
                             <button type="button" class="btn btn-outline-warning"
@@ -54,7 +53,7 @@
                                     th:onclick="'deleteDonationEvent(\'' + ${event.donationId} + '\')'">Delete Event
                             </button>
                             <button type="button" class="btn btn-outline-danger"
-                                    th:onclick="'endDonationEvent(\'' + ${event.donationId} + '\')'">End Event
+                                    th:onclick="'endDonationEvent(\'' + ${event.donationId} +'\')'">End Event
                             </button>
                         </td>
                     </tr>
@@ -88,6 +87,32 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div>
+                                <ul class="pagination">
+                                    <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
+
+                                    <li class="page-item" th:if="${(currentBookPage / 10 ) * 10 > 0}">
+                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage / 10 - 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">
+                                            <span aria-hidden="true">«</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 -->
+                                    <li th:each="pageNumber : ${#numbers.sequence((currentBookPage / 10) * 10, (currentBookPage / 10) * 10 + 9)}"
+                                        th:if="${pageNumber < totalPages}"
+                                        class="page-item"
+                                        th:class="${pageNumber == currentBookPage ? 'active' : ''}">
+                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${pageNumber},eventPage=${currentEventPage})}" th:text="${pageNumber + 1}"></a>
+                                    </li>
+
+                                    <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
+                                    <li class="page-item" th:if="${(currentBookPage / 10 + 1) * 10 < totalPages}">
+                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage / 10 + 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">
+                                            <span aria-hidden="true">»</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 </th:block>
@@ -104,11 +129,38 @@
                 </tr>
                 </tbody>
             </table>
+            <div>
+                <ul class="pagination">
+                    <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
+
+                    <li class="page-item" th:if="${(currentEventPage / 10 ) * 10 > 0}">
+                        <a class="page-link" th:href="@{/admin/donation/v3(eventPage=${(currentEventPage / 10 - 1) * 10},bookPage=${currentBookPage})}" aria-label="Go to the first page of the next group">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+
+                    <!-- 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 -->
+                    <li th:each="pageNumber : ${#numbers.sequence((currentEventPage / 10) * 10, (currentEventPage / 10) * 10 + 9)}"
+                        th:if="${pageNumber < totalPages}"
+                        class="page-item"
+                        th:class="${pageNumber == currentEventPage ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/admin/donation/v3(eventPage=${pageNumber},bookPage=${currentBookPage})}" th:text="${pageNumber + 1}"></a>
+                    </li>
+
+                    <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
+                    <li class="page-item" th:if="${(currentEventPage / 10 + 1) * 10 < totalPages}">
+                        <a class="page-link" th:href="@{/admin/donation/v3(eventPage=${(currentEventPage / 10 + 1) * 10},bookPage=${currentBookPage})}" aria-label="Go to the first page of the next group">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-
 </div>
+
 <!-- 푸터 레이아웃 적용 -->
 <div th:replace="~{layout :: footer}"></div>
+
 </body>
 </html>

@@ -3,6 +3,8 @@ package com.example.team258.controller.viewController.user;
 import com.example.team258.dto.BookResponseDto;
 import com.example.team258.dto.UserBookApplyCancelPageResponseDto;
 import com.example.team258.entity.BookStatusEnum;
+import com.example.team258.jwt.SecurityUtil;
+import com.example.team258.repository.BookApplyDonationRepository;
 import com.example.team258.repository.UserRepository;
 import com.example.team258.service.BookApplyDonationService;
 import com.example.team258.service.BookDonationEventService;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BookApplyDonationViewController {
     private final BookApplyDonationService bookApplyDonationService;
     private final BookDonationEventService bookDonationEventService;
+    private final BookApplyDonationRepository bookApplyDonationRepository;
     private final UserRepository userRepository;
 
     @GetMapping("/cancel")
@@ -28,6 +31,15 @@ public class BookApplyDonationViewController {
         model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
         return "/users/bookApplyDonationCancel";
     }
+
+//    @GetMapping("/cancel/v2")
+//    public String bookApplyDonationCancelPageV2(Model model) {
+//        Long userId =SecurityUtil.getPrincipal().get().getUserId();
+//        bookApplyDonationRepository.findPageByUserId()
+//
+//        model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
+//        return "/users/bookApplyDonationCancel";
+//    }
 
     @GetMapping
     public String bookApplyDonation(Model model) {

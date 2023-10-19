@@ -25,6 +25,16 @@ public interface BookRepository extends JpaRepository <Book,Long> {
 
     List<Book> findByBookStatus(BookStatusEnum bookStatus);
 
+    Page<Book>findPageByBookStatus(BookStatusEnum bookStatusEnum,Pageable pageable);
     Optional<Book> findByBookRent(BookRent bookRent);
+
+    @Query(value = "select b from book b" +
+            " where b.bookDonationEvent.donationId = :donationId and b.bookStatus = :status")
+    Page<Book> findBooksByDonationId(@Param("donationId") Long donationId, @Param("status") BookStatusEnum status, Pageable pageable);
+
+    @Query(value = "select b from book b" +
+            " where b.bookDonationEvent.donationId = :donationId")
+    Page<Book> findBooksNoStatusByDonationId(@Param("donationId") Long donationId , Pageable pageable);
+
 
 }
