@@ -48,7 +48,7 @@ class AdminBooksServiceTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
                     .bookAuthor("Test Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .build();
 
@@ -88,7 +88,7 @@ class AdminBooksServiceTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
                     .bookAuthor("Test Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .build();
 
@@ -124,14 +124,14 @@ class AdminBooksServiceTest {
                             .bookId(1L)
                             .bookName("Book1")
                             .bookAuthor("Author1")
-                            .bookPublish(LocalDateTime.now())
+                            .bookPublish("2011")
                             .bookCategory(bookCategory)
                             .build(),
                     Book.builder()
                             .bookId(2L)
                             .bookName("Book2")
                             .bookAuthor("Author2")
-                            .bookPublish(LocalDateTime.now())
+                            .bookPublish("2011")
                             .bookCategory(bookCategory)
                             .build()
             );
@@ -176,7 +176,7 @@ class AdminBooksServiceTest {
                     .bookId(bookId)
                     .bookName("Existing Book")
                     .bookAuthor("Existing Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
 
@@ -208,7 +208,7 @@ class AdminBooksServiceTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Updated Book")
                     .bookAuthor("Updated Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .build();
 
@@ -229,7 +229,7 @@ class AdminBooksServiceTest {
                     .bookId(bookId)
                     .bookName("Existing Book")
                     .bookAuthor("Existing Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
 

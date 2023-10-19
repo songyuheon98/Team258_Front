@@ -256,7 +256,7 @@ class AdminCategoriesControllerTest {
                     .bookId(bookId)
                     .bookName("Test Book")
                     .bookAuthor("Test Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(BookCategory.builder().bookCategoryId(1L).bookCategoryName("Old Category").build())
                     .build();
 

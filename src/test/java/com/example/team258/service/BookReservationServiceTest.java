@@ -56,7 +56,7 @@ class BookReservationServiceTest {
             .bookId(1L)
             .bookName("책1")
             .bookAuthor("작가1")
-            .bookPublish(LocalDateTime.parse("2020-08-11T19:16:01"))
+            .bookPublish("2011")
             .bookReservations(new ArrayList<BookReservation>())
             .bookStatus(BookStatusEnum.POSSIBLE)
             .build();
@@ -64,7 +64,7 @@ class BookReservationServiceTest {
             .bookId(2L)
             .bookName("책2")
             .bookAuthor("작가2")
-            .bookPublish(LocalDateTime.parse("2020-08-11T19:16:01"))
+            .bookPublish("2011")
             .bookReservations(new ArrayList<BookReservation>())
             .bookStatus(BookStatusEnum.IMPOSSIBLE)
             .build();

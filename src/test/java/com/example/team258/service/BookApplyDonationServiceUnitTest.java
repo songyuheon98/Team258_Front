@@ -81,15 +81,16 @@ class BookApplyDonationServiceUnitTest {
                 .bookId(1L)
                 .bookName("bookName")
                 .bookAuthor("bookAuthor")
-                .bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE)
                 .build();
 
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
-                .donatoinId(1L)
+                .donationId(1L)
                 .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
                 .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
                 .build();
 
         User user = User.builder()
@@ -123,11 +124,11 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void createBookApplyDonation_신청한_책이_존재하지_않을_때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00")).books(new ArrayList<>())
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -149,11 +150,11 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void createBookApplyDonation_이미_누군가_먼저_신청했을때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).bookApplyDonation(new BookApplyDonation()).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00")).books(new ArrayList<>())
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -178,11 +179,11 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void createBookApplyDonation_없는_이벤트를_찾을_때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -204,10 +205,10 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void createBookApplyDonation_이벤트_기간이_아님에도_신청했을때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
                 .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
@@ -226,18 +227,18 @@ class BookApplyDonationServiceUnitTest {
 
 
         //then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(result.getBody().getMsg()).isEqualTo("책 나눔 이벤트 기간이 아닙니다.");
     }
 
     @Test
     void createBookApplyDonation_해당_사용자가_도서관_사용자가_아닐_때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
 
-        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donatoinId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
-                .closedAt(LocalDateTime.parse("2021-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder().donationId(1L).createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00")).bookApplyDonations(new ArrayList<>()).build();
 
         User user = User.builder().userId(1L).username("username").password("password").role(UserRoleEnum.USER).bookApplyDonations(new ArrayList<>()).build();
 
@@ -259,7 +260,7 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void deleteBookApplyDonation() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L)
                 .applyDate(LocalDateTime.parse("2021-10-01T00:00:00")).build();
@@ -280,7 +281,7 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void deleteBookApplyDonation_취소할려는_신청이_존재하지_않을때() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L)
                 .applyDate(LocalDateTime.parse("2021-10-01T00:00:00")).build();
@@ -299,7 +300,7 @@ class BookApplyDonationServiceUnitTest {
     @Test
     void getDonationBooks() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
         List<BookResponseDto> bookResponseDtos = new ArrayList<>();
         bookResponseDtos.add(new BookResponseDto(book));
@@ -313,14 +314,14 @@ class BookApplyDonationServiceUnitTest {
         assertThat(result.get(0).getBookId()).isEqualTo(1L);
         assertThat(result.get(0).getBookName()).isEqualTo("bookName");
         assertThat(result.get(0).getBookAuthor()).isEqualTo("bookAuthor");
-        assertThat(result.get(0).getBookPublish()).isEqualTo("2021-10-01T00:00:00");
+        assertThat(result.get(0).getBookPublish()).isEqualTo("2011");
         assertThat(result.get(0).getBookStatus()).isEqualTo(BookStatusEnum.POSSIBLE);
     }
 
     @Test
     void getBookApplyDonations() {
         // given
-        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish(LocalDateTime.parse("2021-10-01T00:00:00"))
+        Book book = Book.builder().bookId(1L).bookName("bookName").bookAuthor("bookAuthor").bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE).build();
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder().applyId(1L)
                 .applyDate(LocalDateTime.parse("2021-10-01T00:00:00")).build();

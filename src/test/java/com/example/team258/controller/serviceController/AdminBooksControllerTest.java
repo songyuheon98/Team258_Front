@@ -66,7 +66,7 @@ class AdminBooksControllerTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
                     .bookAuthor("Test Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .build();
 
@@ -107,7 +107,7 @@ class AdminBooksControllerTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Test Book")
                     .bookAuthor("Test Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .build();
 
@@ -154,7 +154,7 @@ class AdminBooksControllerTest {
                     .bookId(1L)
                     .bookName("Book 1")
                     .bookAuthor("Author 1")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
 
@@ -162,7 +162,7 @@ class AdminBooksControllerTest {
                     .bookId(2L)
                     .bookName("Book 2")
                     .bookAuthor("Author 2")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
 
@@ -207,7 +207,7 @@ class AdminBooksControllerTest {
                     .bookId(1L)
                     .bookName("Selected Book")
                     .bookAuthor("Selected Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
 
@@ -251,7 +251,7 @@ class AdminBooksControllerTest {
                     .bookId(bookId)
                     .bookName("Existing Book")
                     .bookAuthor("Existing Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategory(bookCategory)
                     .build();
             adminBooksRepository.save(existingBook);
@@ -259,7 +259,7 @@ class AdminBooksControllerTest {
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Updated Book")
                     .bookAuthor("Updated Author")
-                    .bookPublish(LocalDateTime.now())
+                    .bookPublish("2011")
                     .bookCategoryId(1L)
                     .bookStatus(BookStatusEnum.IMPOSSIBLE)
                     .build();

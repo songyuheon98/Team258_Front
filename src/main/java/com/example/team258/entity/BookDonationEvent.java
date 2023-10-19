@@ -19,7 +19,7 @@ import java.util.List;
 public class BookDonationEvent {
     @Id @GeneratedValue
     @Column(name="donation_id")
-    private Long donatoinId;
+    private Long donationId;
 
     @Column(name="created_at")
     private LocalDateTime createdAt;
@@ -33,6 +33,11 @@ public class BookDonationEvent {
     @JoinColumn(name="donation_id")
     private List<BookApplyDonation> bookApplyDonations=new ArrayList<>();
 
+    /**
+     * 양방향
+     */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookDonationEvent", cascade = CascadeType.REMOVE)
+    private List<Book> books = new ArrayList<>();
 
     public BookDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto){
         this.createdAt = bookDonationEventRequestDto.getCreatedAt();
@@ -44,5 +49,13 @@ public class BookDonationEvent {
         this.closedAt = bookDonationEventRequestDto.getClosedAt();
     }
 
+    public void addBook(Book book){
+        this.books.add(book);
+        book.addBookDonationEvent(this);
+    }
+    public void removeBook(Book book){
+        this.books.remove(book);
+        book.removeBookDonationEvent();
+    }
 
 }

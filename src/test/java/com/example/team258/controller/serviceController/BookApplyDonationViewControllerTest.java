@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(addFilters = false)
-class BookApplyDonationControllerTest {
+class BookApplyDonationViewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -91,7 +91,7 @@ class BookApplyDonationControllerTest {
                         .bookId(1L)
                         .bookName("bookName")
                         .bookAuthor("bookAuthor")
-                        .bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+                        .bookPublish("2011")
                         .bookStatus(BookStatusEnum.POSSIBLE)
                         .build();
         bookResponseDtos.add(new BookResponseDto(book));
@@ -105,7 +105,7 @@ class BookApplyDonationControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookId").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookName").value("bookName"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookAuthor").value("bookAuthor"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookPublish").value("2021-08-01T00:00:00"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookPublish").value("2011"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].bookStatus").value("POSSIBLE"))
                 .andDo(print());
 
@@ -119,7 +119,7 @@ class BookApplyDonationControllerTest {
                 .bookId(1L)
                 .bookName("bookName")
                 .bookAuthor("bookAuthor")
-                .bookPublish(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .bookPublish("2011")
                 .bookStatus(BookStatusEnum.POSSIBLE)
                 .build();
         BookApplyDonation bookApplyDonation = BookApplyDonation.builder()

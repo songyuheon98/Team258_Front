@@ -23,6 +23,14 @@ public class AdminCategoriesResponseDto {
     public Long getParentCategory() {
         return this.parentCategoryId;
     }
+
+    public String getBookCategoryIsbnCodeAndName() {
+        if (parentCategoryId != null) {
+            return bookCategoryIsbnCode + " - " + bookCategoryName + " (PCID :" + parentCategoryId + ")";
+        } else {
+            return bookCategoryIsbnCode + " - " + bookCategoryName;
+        }
+    }
 }
 
 
