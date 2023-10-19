@@ -36,5 +36,6 @@ public interface BookRepository extends JpaRepository <Book,Long> {
             " where b.bookDonationEvent.donationId = :donationId")
     Page<Book> findBooksNoStatusByDonationId(@Param("donationId") Long donationId , Pageable pageable);
 
-
+    @Query("select count(b) FROM book b")
+    Long getMaxCount();
 }

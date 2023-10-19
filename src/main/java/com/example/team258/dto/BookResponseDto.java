@@ -1,12 +1,9 @@
 package com.example.team258.dto;
 
-import com.example.team258.entity.*;
-import jakarta.persistence.*;
+import com.example.team258.entity.Book;
+import com.example.team258.entity.BookStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
