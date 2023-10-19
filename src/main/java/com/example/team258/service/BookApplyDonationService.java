@@ -8,12 +8,15 @@ import com.example.team258.repository.BookRepository;
 import com.example.team258.repository.BookApplyDonationRepository;
 import com.example.team258.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -114,6 +117,14 @@ public class BookApplyDonationService {
                 .toList();
         return bookResponseDtos;
     }
+    public BookResponsePageDto getDonationBooksV2(BookStatusEnum bookStatus, Pageable pageable) {
+        Page<Book> pageBooks = bookRepository.findPageByBookStatus(bookStatus,pageable);
+        List<BookResponseDto> bookResponseDtos= pageBooks.stream()
+                .map(BookResponseDto::new)
+                .toList();
+
+        return new BookResponsePageDto(bookResponseDtos, pageBooks.getTotalPages());
+    }
 
     public List<BookApplyDonationResponseDto> getBookApplyDonations() {
         return bookApplyDonationRepository.findAll().stream()
@@ -129,4 +140,7 @@ public class BookApplyDonationService {
         );
         return new UserBookApplyCancelPageResponseDto(user);
     }
+
+
 }
+

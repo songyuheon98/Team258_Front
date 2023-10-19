@@ -3,6 +3,7 @@ package com.example.team258.controller.serviceController;
 import com.example.team258.dto.*;
 import com.example.team258.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

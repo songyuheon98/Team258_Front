@@ -29,11 +29,11 @@
                     <th>Book Status</th>
                 </tr>
                 </thead>
-                <input type="hidden" id="donationId" th:value="${donationId}" />
+                <input type="hidden" id="donationId" th:value="${donationId}"/>
 
                 <tbody>
                 <tr th:each="book : ${books}">
-                    <td><input type="checkbox" class="book-checkbox" th:value="${book.bookId}" /></td>
+                    <td><input type="checkbox" class="book-checkbox" th:value="${book.bookId}"/></td>
                     <td th:text="${book.bookId}"></td>
                     <td th:text="${book.bookName}"></td>
                     <td th:text="${book.bookAuthor}"></td>
