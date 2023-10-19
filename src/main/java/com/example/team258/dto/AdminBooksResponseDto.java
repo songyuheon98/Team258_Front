@@ -3,6 +3,7 @@ package com.example.team258.dto;
 import com.example.team258.entity.Book;
 import com.example.team258.entity.BookCategory;
 import com.example.team258.entity.BookStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class AdminBooksResponseDto {
     private Long bookCategoryId;
 
     // 추가: bookCategory 필드
+    @JsonIgnore
     private BookCategory bookCategory;
 
     public AdminBooksResponseDto(Book book) {

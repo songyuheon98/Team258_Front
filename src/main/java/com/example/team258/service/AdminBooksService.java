@@ -70,7 +70,11 @@ public class AdminBooksService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
 
-        return adminBooksRepository.findAll(spec, pageable).map(AdminBooksResponseDto::new);
+        // 페이징된 엔티티를 Dto로 변환하여 반환
+        Page<AdminBooksResponseDto> adminBooksPage = adminBooksRepository.findAll(spec, pageable)
+                .map(AdminBooksResponseDto::new);
+
+        return adminBooksPage;
     }
 
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {

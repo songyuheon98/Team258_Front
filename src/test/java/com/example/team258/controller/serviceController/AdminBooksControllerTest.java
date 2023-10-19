@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -174,19 +176,22 @@ class AdminBooksControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminBooksService.getAllBooks(adminUserDetails.getUser())).thenReturn(booksList);
+            when(adminBooksService.getAllBooksPagedAndSearched(any(), any(), any()))
+                    .thenReturn(new PageImpl<>(booksList, PageRequest.of(0, 10), booksList.size()));
 
             // then
             mockMvc.perform(get("/api/admin/books")
                             .contentType(MediaType.APPLICATION_JSON)
                             .principal(authentication))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(2))) // 반환된 목록의 크기가 2여야 함
-                    .andExpect(jsonPath("$[0].bookId").value(1L)) // 첫 번째 도서의 ID가 1L이어야 함
-                    .andExpect(jsonPath("$[0].bookName").value("Book 1")) // 첫 번째 도서의 이름이 "Book 1"이어야 함
-                    .andExpect(jsonPath("$[1].bookId").value(2L)) // 두 번째 도서의 ID가 2L이어야 함
-                    .andExpect(jsonPath("$[1].bookName").value("Book 2")); // 두 번째 도서의 이름이 "Book 2"이어야 함
+                    .andExpect(jsonPath("$.content", hasSize(2)))
+                    .andExpect(jsonPath("$.content[0].bookId").value(1L))
+                    .andExpect(jsonPath("$.content[0].bookName").value("Book 1"))
+                    .andExpect(jsonPath("$.content[1].bookId").value(2L))
+                    .andExpect(jsonPath("$.content[1].bookName").value("Book 2"));
         }
+
+
 
         @Test
         @DisplayName("READ SELECT - 도서 선택 조회 성공")

@@ -40,11 +40,11 @@ public class AdminCategoriesController {
 
     // READ All Categories with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPagedAndSearched(
+    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPagedAndSearch(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestParam(required = false) String keyword,
-            @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearched(userDetails.getUser(), keyword, pageable);
+            @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearch(userDetails.getUser(), keyword, pageable);
         return ResponseEntity.ok(categoryResponsePage);
     }
 

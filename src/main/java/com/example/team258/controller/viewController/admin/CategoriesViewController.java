@@ -31,7 +31,7 @@ public class CategoriesViewController {
             @RequestParam(name = "keyword", required = false) String keyword,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearched(userDetails.getUser(), keyword, PageRequest.of(page, 10));
+        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearch(userDetails.getUser(), keyword, PageRequest.of(page, 10));
         List<AdminCategoriesResponseDto> categoryResponseDtos = categoryResponsePage.getContent();
 
         model.addAttribute("categories", categoryResponseDtos);

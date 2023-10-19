@@ -25,6 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminCategoriesService {
     private final BookCategoryRepository bookCategoryRepository;
     private final AdminBooksRepository adminBooksRepository;
@@ -62,7 +63,6 @@ public class AdminCategoriesService {
         return new ResponseEntity<>(new MessageDto("하위 카테고리 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
     public List<AdminCategoriesResponseDto> getAllCategories() {
         // 로그인한 사용자 관리자 확인
         //validateUserAuthority(loginUser);
@@ -72,8 +72,7 @@ public class AdminCategoriesService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public Page<AdminCategoriesResponseDto> getAllCategoriesPagedAndSearched(User loginUser, String keyword, Pageable pageable) {
+    public Page<AdminCategoriesResponseDto> getAllCategoriesPagedAndSearch(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -86,7 +85,11 @@ public class AdminCategoriesService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
 
-        return bookCategoryRepository.findAll(spec, pageable).map(AdminCategoriesResponseDto::new);
+        // 페이징된 엔티티를 Dto로 변환하여 반환
+        Page<AdminCategoriesResponseDto> adminCategoriesPage = bookCategoryRepository.findAll(spec, pageable)
+                .map(AdminCategoriesResponseDto::new);
+
+        return adminCategoriesPage;
     }
 
     @Transactional
