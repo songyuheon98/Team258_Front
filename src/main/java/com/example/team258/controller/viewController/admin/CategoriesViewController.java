@@ -27,14 +27,15 @@ public class CategoriesViewController {
     @GetMapping("/admin/categories")
     public String categories(
             Model model,
-            @RequestParam(name = "page", defaultValue = "0") int page, // page 파라미터 추가
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "keyword", required = false) String keyword,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPaged(userDetails.getUser(), PageRequest.of(page, 10)); // 페이지 설정
+        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearched(userDetails.getUser(), keyword, PageRequest.of(page, 10));
         List<AdminCategoriesResponseDto> categoryResponseDtos = categoryResponsePage.getContent();
 
         model.addAttribute("categories", categoryResponseDtos);
-        model.addAttribute("currentPage", page); // 현재 페이지 추가
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", categoryResponsePage.getTotalPages());
 
         return "/admin/categories";

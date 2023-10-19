@@ -38,12 +38,13 @@ public class AdminCategoriesController {
         return adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser());
     }
 
-    // READ All Categories with Paging
+    // READ All Categories with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPaged(
+    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPagedAndSearched(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPaged(userDetails.getUser(), pageable);
+        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearched(userDetails.getUser(), keyword, pageable);
         return ResponseEntity.ok(categoryResponsePage);
     }
 

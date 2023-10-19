@@ -36,7 +36,7 @@ public class AdminBooksController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(value = "keyword", required = false) String keyword) {
-        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooks(userDetails.getUser(), keyword, pageable);
+        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooksPagedAndSearched(userDetails.getUser(), keyword, pageable);
         return ResponseEntity.ok(bookResponsePage);
     }
 
