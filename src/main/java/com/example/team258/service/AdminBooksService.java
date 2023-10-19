@@ -10,6 +10,8 @@ import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,13 +54,12 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    public List<AdminBooksResponseDto> getAllBooks(User loginUser) {
+    public Page<AdminBooksResponseDto> getAllBooks(User loginUser, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        return adminBooksRepository.findAll().stream()
-                .map(AdminBooksResponseDto::new)
-                .toList();
+        return adminBooksRepository.findAll(pageable)
+                .map(AdminBooksResponseDto::new);
     }
 
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {

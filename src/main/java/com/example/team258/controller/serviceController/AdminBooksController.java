@@ -6,6 +6,10 @@ import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.AdminBooksService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,10 +30,18 @@ public class AdminBooksController {
         return adminBooksService.createBook(requestDto, userDetails.getUser());
     }
 
-    // READ ALL
+    //// READ ALL
+    //@GetMapping
+    //public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    //    return ResponseEntity.ok(adminBooksService.getAllBooks(userDetails.getUser()));
+    //}
+    // READ ALL with Paging
     @GetMapping
-    public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseEntity.ok(adminBooksService.getAllBooks(userDetails.getUser()));
+    public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPaged(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooks(userDetails.getUser(), pageable);
+        return ResponseEntity.ok(bookResponsePage);
     }
 
     // READ SELECT
