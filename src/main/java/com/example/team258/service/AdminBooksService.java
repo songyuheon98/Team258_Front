@@ -9,13 +9,16 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +57,20 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    public Page<AdminBooksResponseDto> getAllBooks(User loginUser, Pageable pageable) {
+    public Page<AdminBooksResponseDto> getAllBooks(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
-        return adminBooksRepository.findAll(pageable)
-                .map(AdminBooksResponseDto::new);
+        // 검색어가 있을 경우 검색 조건을 추가
+        Specification<Book> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.hasText(keyword)) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("bookName")), "%" + keyword.toLowerCase() + "%"));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return adminBooksRepository.findAll(spec, pageable).map(AdminBooksResponseDto::new);
     }
 
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {

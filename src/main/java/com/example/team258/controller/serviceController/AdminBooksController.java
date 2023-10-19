@@ -30,12 +30,13 @@ public class AdminBooksController {
         return adminBooksService.createBook(requestDto, userDetails.getUser());
     }
 
-    // READ ALL with Paging
+    // READ ALL with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPaged(
+    public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPagedAndSearch(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooks(userDetails.getUser(), pageable);
+            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooks(userDetails.getUser(), keyword, pageable);
         return ResponseEntity.ok(bookResponsePage);
     }
 
