@@ -29,7 +29,6 @@ public class BookRentService {
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         return savedUser.getBookRents().stream().map(BookRentResponseDto::new).toList();
     }
-
     @Transactional
     public MessageDto createRental(Long bookId, User user) {
         Book book = bookRepository.findById(bookId)

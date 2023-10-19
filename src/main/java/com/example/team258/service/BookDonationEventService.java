@@ -7,6 +7,9 @@ import com.example.team258.repository.BookApplyDonationRepository;
 import com.example.team258.repository.BookDonationEventRepository;
 import com.example.team258.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +85,37 @@ public class BookDonationEventService {
                 .toList();
     }
 
+    public BookDonationEventPageResponseDto getDonationEventV2(Pageable pageable) {
+         Page<BookDonationEvent> bookDonationEvents =bookDonationEventRepository.findAll(pageable);
+         int totalPages = bookDonationEvents.getTotalPages();
+         List<BookDonationEventResponseDto> bookDonationEventResponseDtos = bookDonationEvents.stream().map(BookDonationEventResponseDto::new).toList();
+
+         return new BookDonationEventPageResponseDto(bookDonationEventResponseDtos, totalPages);
+    }
+
+
+    public BookDonationEventPageResponseDtoV3 getDonationEventV3(Pageable pageable) {
+        Page<BookDonationEvent> bookDonationEvents =bookDonationEventRepository.findAll(pageable);
+        int totalPages = bookDonationEvents.getTotalPages();
+        List<BookDonationEventResponseDtoV3> bookDonationEventResponseDtos = bookDonationEvents.stream().map((BookDonationEvent t) -> new BookDonationEventResponseDtoV3(t)).toList();
+
+        return new BookDonationEventPageResponseDtoV3(bookDonationEventResponseDtos, totalPages);
+    }
+
+
+    public BookDonationEventOnlyPageResponseDto getDonationEventOnlyV2(PageRequest pageRequest) {
+        Page<BookDonationEvent> bookDonationEvents =bookDonationEventRepository.findAll(pageRequest);
+        int totalPages = bookDonationEvents.getTotalPages();
+        List<BookDonationEventOnlyResponseDto> bookDonationEventResponseDtos = bookDonationEvents.stream().map(BookDonationEventOnlyResponseDto::new).toList();
+        return new BookDonationEventOnlyPageResponseDto(bookDonationEventResponseDtos, totalPages);
+
+    }
+
+    public List<BookDonationEventResponseDto> getDonationEventPage() {
+        return bookDonationEventRepository.findAll().stream()
+                .map(BookDonationEventResponseDto::new)
+                .toList();
+    }
 
     @Transactional
     public MessageDto settingDonationEvent(BookDonationSettingRequestDto bookDonationSettingRequestDto) {
@@ -127,5 +161,6 @@ public class BookDonationEventService {
         bookDonationEventRepository.delete(bookDonationEvent);
         return new MessageDto("이벤트 종료가 완료되었습니다");
     }
+
 
 }
