@@ -30,6 +30,19 @@ $(document).ready(function () {
     if (rangeEnd < maxCount) {
         pagination.innerHTML += `<a href="${url}${rangeEnd+1}">Next</a>`;
     }
+
+    // 대출하기 버튼 클릭 시 이벤트 핸들러 설정
+    $(document).on('click', '.rent-button', function () {
+        const bookId = $(this).data('book-id');
+        rentBook(bookId);
+    });
+
+
+    // 예약하기 버튼 클릭 시 이벤트 핸들러 설정
+    $(document).on('click', '.reserve-button', function () {
+        const bookId = $(this).data('book-id');
+        reserveBook(bookId);
+    });
 })
 
 function search() {
@@ -46,4 +59,36 @@ function search() {
         url = "/search?page=1"
 
     window.location.href = url;
+}
+
+function rentBook(bookId) {
+    $.ajax({
+        url: `/api/books/${bookId}/rental`,
+        type: "POST",
+        success: function (response) {
+            alert("대여가 완료되었습니다.");
+            //현재 성능상 문제로 reload는 안함
+        },
+        error: function (error) {
+            alert("대여에 실패했습니다.");
+            console.error(error);
+            //추후 오류 문구 전달 필요?
+        },
+    });
+}
+
+function reserveBook(bookId) {
+    $.ajax({
+        url: `/api/books/${bookId}/reservation`,
+        type: "POST",
+        success: function (response) {
+            alert("예약이 완료되었습니다.");
+            //현재 성능상 문제로 reload는 안함
+        },
+        error: function (error) {
+            alert("예약에 실패했습니다.");
+            console.error(error);
+            //추후 오류 문구 전달 필요?
+        },
+    });
 }
