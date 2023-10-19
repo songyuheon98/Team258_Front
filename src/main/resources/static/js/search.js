@@ -6,8 +6,7 @@ $(document).ready(function () {
     let pagination = document.getElementById('paging');
     let rangeStart = Math.floor((currentPage-1) / 10) * 10+1;
 
-    let rangeEnd = Math.min(rangeStart + 10, maxCount)
-    console.log(rangeStart, rangeEnd, maxCount)
+    let rangeEnd = Math.min(rangeStart + 9, maxCount);
 
     let url = ""
     if(currentKeyword != null & currentCategory !=null)
@@ -22,14 +21,14 @@ $(document).ready(function () {
         pagination.innerHTML += `<a href="${url}${rangeStart - 1}">Prev</a> `;
     }
 
-    for (var i = rangeStart; i < rangeEnd; i++) {
+    for (var i = rangeStart; i <= rangeEnd; i++) {
         if (i!=currentPage)
             pagination.innerHTML += `<a href="${url}${i}">${i}</a> `;
         else
             pagination.innerHTML += `<a>${i}</a> `;
     }
-    if (rangeEnd <= maxCount) {
-        pagination.innerHTML += `<a href="${url}${rangeEnd}">Next</a>`;
+    if (rangeEnd < maxCount) {
+        pagination.innerHTML += `<a href="${url}${rangeEnd+1}">Next</a>`;
     }
 
     // 대출하기 버튼 클릭 시 이벤트 핸들러 설정
