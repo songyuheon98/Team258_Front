@@ -24,14 +24,6 @@ public class CategoriesViewController {
     private final BookCategoryRepository bookCategoryRepository;
     private final AdminCategoriesService adminCategoriesService;
 
-    //@GetMapping
-    //public String categories(Model model) {
-    //    List<BookCategory> bookCategories = bookCategoryRepository.findAll();
-    //    List<AdminCategoriesResponseDto> adminCategoriesResponseDtos = bookCategories.stream().
-    //            map(AdminCategoriesResponseDto::new).collect(Collectors.toList());
-    //    model.addAttribute("categories", adminCategoriesResponseDtos);
-    //    return "admin/categories";
-    //}
     @GetMapping("/admin/categories")
     public String categories(
             Model model,

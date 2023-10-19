@@ -32,12 +32,6 @@ public class BooksViewController {
         return "admin/books";
     }
 
-    //@GetMapping("/admin/booksManage")
-    //public String adminBooksManageView(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    //    List<AdminBooksResponseDto> bookResponseDtos = adminBooksService.getAllBooks(userDetails.getUser());
-    //    model.addAttribute("books", bookResponseDtos);
-    //    return "/admin/booksManage";
-    //}
     @GetMapping("/admin/booksManage")
     public String adminBooksManageView(
             Model model,

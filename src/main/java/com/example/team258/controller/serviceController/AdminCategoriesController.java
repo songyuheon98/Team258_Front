@@ -38,11 +38,6 @@ public class AdminCategoriesController {
         return adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser());
     }
 
-    //// READ All Categories
-    //@GetMapping
-    //public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    //    return ResponseEntity.ok(adminCategoriesService.getAllCategories());
-    //}
     // READ All Categories with Paging
     @GetMapping
     public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPaged(

@@ -30,11 +30,6 @@ public class AdminBooksController {
         return adminBooksService.createBook(requestDto, userDetails.getUser());
     }
 
-    //// READ ALL
-    //@GetMapping
-    //public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks(@AuthenticationPrincipal UserDetailsImpl userDetails){
-    //    return ResponseEntity.ok(adminBooksService.getAllBooks(userDetails.getUser()));
-    //}
     // READ ALL with Paging
     @GetMapping
     public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPaged(
