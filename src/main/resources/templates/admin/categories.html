@@ -66,6 +66,25 @@
 
       <table class="table table-striped">
 
+        <!-- 페이지 번호 표시 -->
+        <div class="pagination">
+          <ul class="pagination d-inline">
+            <li th:if="${currentPage != null && currentPage > 0}">
+              <a th:href="@{/admin/categories(page=${currentPage - 1})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages != null ? totalPages - 1 : 0)}" th:class="${currentPage == i} ? 'active' : ''">
+              <a th:if="${currentPage != null}" th:href="@{/admin/categories(page=${i})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:if="${currentPage != null && currentPage < totalPages - 1}">
+              <a th:href="@{/admin/categories(page=${currentPage + 1})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <thead>
         <tr>
           <th>Category ID</th>

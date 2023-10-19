@@ -10,6 +10,8 @@ import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,15 @@ public class AdminCategoriesService {
         return bookCategoryRepository.findAll().stream()
                 .map(AdminCategoriesResponseDto::new)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminCategoriesResponseDto> getAllCategoriesPaged(User loginUser, Pageable pageable) {
+        // 로그인한 사용자 관리자 확인
+         validateUserAuthority(loginUser);
+
+        return bookCategoryRepository.findAll(pageable)
+                .map(AdminCategoriesResponseDto::new);
     }
 
     @Transactional

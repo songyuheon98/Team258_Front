@@ -6,6 +6,10 @@ import com.example.team258.dto.MessageDto;
 import com.example.team258.security.UserDetailsImpl;
 import com.example.team258.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -34,10 +38,18 @@ public class AdminCategoriesController {
         return adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser());
     }
 
-    // READ All Categories
+    //// READ All Categories
+    //@GetMapping
+    //public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    //    return ResponseEntity.ok(adminCategoriesService.getAllCategories());
+    //}
+    // READ All Categories with Paging
     @GetMapping
-    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(adminCategoriesService.getAllCategories());
+    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPaged(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPaged(userDetails.getUser(), pageable);
+        return ResponseEntity.ok(categoryResponsePage);
     }
 
     // UPDATE Category Name
