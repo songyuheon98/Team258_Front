@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,12 +49,12 @@ public class DonationViewController {
     }
 
     @GetMapping("/v3")
-    public String donationV3(@RequestParam(defaultValue = "0") int eventPage,@RequestParam(defaultValue = "0") int bookPage,Model model) {
+    public String donationV3(@RequestParam(defaultValue = "0") int eventPage,@RequestParam(defaultValue = "0") int[] bookPage,Model model) {
         int eventPagesize =3;
         int bookPagesize = 3;
 
         PageRequest eventPageRequest = PageRequest.of(eventPage, eventPagesize);  // page 파라미터로 받은 값을 사용
-        PageRequest bookPageRequest = PageRequest.of(bookPage, bookPagesize);  // page 파라미터로 받은 값을 사용
+//        PageRequest bookPageRequest = PageRequest.of(bookPage, bookPagesize);  // page 파라미터로 받은 값을 사용
 
 
         /**
@@ -62,13 +63,29 @@ public class DonationViewController {
         BookDonationEventPageResponseDtoV3 bookDonationEventPageResponseDtoV3 =
                 bookDonationEventService.getDonationEventV3(eventPageRequest);
 
+
+        int eventListSize = bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().size();
+        int bookPageTemp[] = new int[eventListSize];
+
+        for (int i = 0;i<bookPage.length;i++)
+            bookPageTemp[i] = bookPage[i];
+
+
         /**
          * 이벤트에 대한 도서들 페이징 리스트
          */
-        List<Page<Book>> bookPages = bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().stream()
-                .map(bookDonationEventResponseDtoV3 -> bookRepository
-                        .findBooksNoStatusByDonationId(bookDonationEventResponseDtoV3.getDonationId(),bookPageRequest))
-                .toList();
+//        List<Page<Book>> bookPages = bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().stream()
+//                .map(bookDonationEventResponseDtoV3 -> bookRepository
+//                        .findBooksNoStatusByDonationId(bookDonationEventResponseDtoV3.getDonationId(),bookPageRequest))
+//                .toList();
+        List<Page<Book>> bookPages = new ArrayList<>();
+        for (int i = 0; i <eventListSize; i++) {
+            PageRequest bookPageRequest = PageRequest.of(bookPageTemp[i], bookPagesize);
+            bookPages.add(bookRepository.findBooksNoStatusByDonationId(
+                    bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().get(i).getDonationId(),
+                    bookPageRequest));
+        }
+
 
         /**
          * 이벤트에 대한 도서들 페이징 리스트를 이벤트에 추가
@@ -81,7 +98,7 @@ public class DonationViewController {
 
         model.addAttribute("events", bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3());
         model.addAttribute("currentEventPage", eventPage);  // 현재 페이지 번호 추가
-        model.addAttribute("currentBookPage", bookPage);  // 현재 페이지 번호 추가
+        model.addAttribute("currentBookPage", bookPageTemp);  // 현재 페이지 번호 추가
         model.addAttribute("totalPages", bookDonationEventPageResponseDtoV3.getTotalPages());
 
         return "/admin/donationV3";

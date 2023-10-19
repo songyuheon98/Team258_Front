@@ -33,7 +33,7 @@
 
 
                 <tbody>
-                <th:block th:each="event : ${events}">
+                <th:block th:each="event, eventStatus : ${events}">
                     <!-- 이벤트 정보 행 -->
                     <tr>
                         <td><input class="form-control" type="text" th:value="${event.donationId}" name="donationId"
@@ -90,29 +90,59 @@
                             <div>
                                 <ul class="pagination">
                                     <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
-
-                                    <li class="page-item" th:if="${(currentBookPage / 10 ) * 10 > 0}">
-                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage / 10 - 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">
+                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 ) * 10 > 0}">
+                                        <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${(currentBookPage[eventStatus.index] / 10 - 1) * 10} + ', ' + ${currentEventPage} + ')'" aria-label="Go to the first page of the next group">
                                             <span aria-hidden="true">«</span>
                                         </a>
                                     </li>
 
                                     <!-- 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 -->
-                                    <li th:each="pageNumber : ${#numbers.sequence((currentBookPage / 10) * 10, (currentBookPage / 10) * 10 + 9)}"
+                                    <li th:each="pageNumber : ${#numbers.sequence((currentBookPage[eventStatus.index] / 10) * 10, (currentBookPage[eventStatus.index] / 10) * 10 + 9)}"
                                         th:if="${pageNumber < totalPages}"
                                         class="page-item"
-                                        th:class="${pageNumber == currentBookPage ? 'active' : ''}">
-                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${pageNumber},eventPage=${currentEventPage})}" th:text="${pageNumber + 1}"></a>
+                                        th:class="${pageNumber == currentBookPage[eventStatus.index] ? 'active' : ''}">
+                                        <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${pageNumber} + ', ' + ${currentEventPage} + ')'" th:text="${pageNumber + 1}"></a>
                                     </li>
 
                                     <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
-                                    <li class="page-item" th:if="${(currentBookPage / 10 + 1) * 10 < totalPages}">
-                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage / 10 + 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">
+                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalPages}">
+                                        <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${(currentBookPage[eventStatus.index] / 10 + 1) * 10} + ', ' + ${currentEventPage} + ')'" aria-label="Go to the first page of the next group">
                                             <span aria-hidden="true">»</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
+<!--                            <div>-->
+<!--                                <ul class="pagination">-->
+<!--                                    &lt;!&ndash; 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 &ndash;&gt;-->
+<!--                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 ) * 10 > 0}">-->
+<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage[eventStatus.index] / 10 - 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">-->
+<!--                                            <span aria-hidden="true">«</span>-->
+<!--                                        </a>-->
+
+<!--                                        <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${(currentBookPage[eventStatus.index] / 10 - 1) * 10} + ', ' + ${currentEventPage} + ')'" aria-label="Go to the first page of the next group">-->
+<!--                                            <span aria-hidden="true">«</span>-->
+<!--                                        </a>-->
+
+
+<!--                                    </li>-->
+
+<!--                                    &lt;!&ndash; 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 &ndash;&gt;-->
+<!--                                    <li th:each="pageNumber : ${#numbers.sequence((currentBookPage[eventStatus.index] / 10) * 10, (currentBookPage[eventStatus.index] / 10) * 10 + 9)}"-->
+<!--                                        th:if="${pageNumber < totalPages}"-->
+<!--                                        class="page-item"-->
+<!--                                        th:class="${pageNumber == currentBookPage[eventStatus.index] ? 'active' : ''}">-->
+<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${pageNumber},eventPage=${currentEventPage})}" th:text="${pageNumber + 1}"></a>-->
+<!--                                    </li>-->
+
+<!--                                    &lt;!&ndash; 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 &ndash;&gt;-->
+<!--                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalPages}">-->
+<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage[eventStatus.index] / 10 + 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">-->
+<!--                                            <span aria-hidden="true">»</span>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
                         </td>
                     </tr>
                 </th:block>
@@ -157,7 +187,23 @@
             </div>
         </div>
     </div>
+
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let currentBookPage = /*[[${currentBookPage}]]*/ [];
+    /*]]>*/
+</script>
+
+<script>
+    function modifyArrayAndRedirect(eventIndex, newValue, currentEventPage) {
+        currentBookPage[eventIndex] = newValue;
+        var updatedBookPageString = currentBookPage.join(',');
+
+        var newUrl = '/admin/donation/v3?bookPage=' + updatedBookPageString + '&eventPage=' + currentEventPage;
+        window.location.href = newUrl;
+    }
+</script>
 
 <!-- 푸터 레이아웃 적용 -->
 <div th:replace="~{layout :: footer}"></div>
