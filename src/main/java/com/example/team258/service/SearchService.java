@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public class SearchService {
     }
 
     //queryDsl 사용
+    @Transactional(readOnly = true)
     public Page<BookResponseDto> getAllBooksByCategoryOrKeyword2(String bookCategoryName, String keyword, int page) {
         Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
         Pageable pageable = PageRequest.of(page, 20, sort);
