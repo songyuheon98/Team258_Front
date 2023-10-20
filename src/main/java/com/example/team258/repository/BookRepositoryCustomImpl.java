@@ -12,10 +12,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import org.springframework.stereotype.Repository;
 
 import static com.example.team258.entity.QBook.book;
 
 @RequiredArgsConstructor
+@Repository
 public class BookRepositoryCustomImpl implements BookRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
