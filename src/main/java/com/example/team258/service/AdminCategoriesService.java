@@ -9,16 +9,23 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AdminCategoriesService {
     private final BookCategoryRepository bookCategoryRepository;
     private final AdminBooksRepository adminBooksRepository;
@@ -56,7 +63,6 @@ public class AdminCategoriesService {
         return new ResponseEntity<>(new MessageDto("하위 카테고리 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
     public List<AdminCategoriesResponseDto> getAllCategories() {
         // 로그인한 사용자 관리자 확인
         //validateUserAuthority(loginUser);
@@ -64,6 +70,26 @@ public class AdminCategoriesService {
         return bookCategoryRepository.findAll().stream()
                 .map(AdminCategoriesResponseDto::new)
                 .toList();
+    }
+
+    public Page<AdminCategoriesResponseDto> getAllCategoriesPagedAndSearch(User loginUser, String keyword, Pageable pageable) {
+        // 로그인한 사용자 관리자 확인
+        validateUserAuthority(loginUser);
+
+        // 검색어가 있을 경우 검색 조건을 추가
+        Specification<BookCategory> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.hasText(keyword)) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("bookCategoryName")), "%" + keyword.toLowerCase() + "%"));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+
+        // 페이징된 엔티티를 Dto로 변환하여 반환
+        Page<AdminCategoriesResponseDto> adminCategoriesPage = bookCategoryRepository.findAll(spec, pageable)
+                .map(AdminCategoriesResponseDto::new);
+
+        return adminCategoriesPage;
     }
 
     @Transactional

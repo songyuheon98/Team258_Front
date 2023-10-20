@@ -15,6 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -105,8 +110,8 @@ class AdminBooksServiceTest {
                     "도서를 추가할 권한이 없는 USER가 도서를 추가하려고 할 때 IllegalArgumentException이 발생해야 합니다.");
         }
         @Test
-        @DisplayName("GET - 도서 전체 목록 조회 성공")
-        void 도서_전체_목록_조회_테스트() {
+        @DisplayName("GET - 도서 전체 목록 조회 성공 (검색어 미사용)")
+        void 도서_전체_목록_조회_테스트_검색어_미사용() {
             // given
             User adminUser = User.builder()
                     .userId(1L)
@@ -137,24 +142,82 @@ class AdminBooksServiceTest {
             );
 
             // 모의 객체 설정
-            when(adminBooksRepository.findAll()).thenReturn(books);
+            when(adminBooksRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(books, PageRequest.of(0, 10), books.size()));
 
             // when
-            List<AdminBooksResponseDto> responseDtoList = adminBooksService.getAllBooks(adminUser);
+            Page<AdminBooksResponseDto> responseDtoPage = adminBooksService.getAllBooksPagedAndSearched(adminUser, null, PageRequest.of(0, 10));
 
             // then
             // 서비스가 기대한 대로 작동하는지 검증
-            verify(adminBooksRepository, times(1)).findAll();
+            verify(adminBooksRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
 
             // 응답이 기대한 대로 구성되어 있는지 확인
             assertAll(
-                    () -> assertNotNull(responseDtoList),
-                    () -> assertEquals(2, responseDtoList.size()), // 예제로 2개의 도서를 추가하였으므로
-                    () -> assertEquals("Book1", responseDtoList.get(0).getBookName()),
-                    () -> assertEquals("Book2", responseDtoList.get(1).getBookName())
+                    () -> assertNotNull(responseDtoPage),
+                    () -> assertEquals(2, responseDtoPage.getContent().size()), // 예제로 2개의 도서를 추가하였으므로
+                    () -> assertEquals("Book1", responseDtoPage.getContent().get(0).getBookName()),
+                    () -> assertEquals("Book2", responseDtoPage.getContent().get(1).getBookName())
                     // 나머지 필드들도 확인해보기
             );
         }
+
+        @Test
+        @DisplayName("GET - 도서 전체 목록 조회 성공 (검색어 사용)")
+        void 도서_전체_목록_조회_테스트_검색어_사용() {
+            // given
+            User adminUser = User.builder()
+                    .userId(1L)
+                    .username("user1")
+                    .password("pass1")
+                    .role(UserRoleEnum.ADMIN)
+                    .build();
+
+            BookCategory bookCategory = BookCategory.builder()
+                    .bookCategoryId(1L)
+                    .build();
+
+            List<Book> books = List.of(
+                    Book.builder()
+                            .bookId(1L)
+                            .bookName("Book1")
+                            .bookAuthor("Author1")
+                            .bookPublish("2011")
+                            .bookCategory(bookCategory)
+                            .build(),
+                    Book.builder()
+                            .bookId(2L)
+                            .bookName("Novel1")
+                            .bookAuthor("Author2")
+                            .bookPublish("2011")
+                            .bookCategory(bookCategory)
+                            .build()
+            );
+
+            // 검색어 설정
+            String keyword = "Book1";
+
+            // 모의 객체 설정
+            when(adminBooksRepository.findAll(any(Specification.class), any(Pageable.class)))
+                    .thenReturn(new PageImpl<>(books, PageRequest.of(0, 10), books.size()));
+
+            // when
+            Page<AdminBooksResponseDto> responseDtoPage = adminBooksService.getAllBooksPagedAndSearched(adminUser, keyword, PageRequest.of(0, 10));
+
+            // then
+            // 서비스가 기대한 대로 작동하는지 검증
+            verify(adminBooksRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
+
+            // 응답이 기대한 대로 구성되어 있는지 확인
+            assertAll(
+                    () -> assertNotNull(responseDtoPage),
+                    () -> assertEquals("Book1", responseDtoPage.getContent().get(0).getBookName())
+                    // 나머지 필드들도 확인해보기
+            );
+
+        }
+
+
 
         @Test
         @DisplayName("GET - 도서 선택 조회 성공")

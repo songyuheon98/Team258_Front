@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    // 검색 기능 추가
+    window.searchCategories = function() {
+        var keyword = $('input[name="keyword"]').val();
+        window.location.href = '/admin/categories?keyword=' + keyword;
+    };
+
+    // 검색 폼 제출 시 검색 기능 호출
+    $('form').submit(function(event) {
+        event.preventDefault();
+        searchCategories();
+    });
+
 
     window.createMainCategory = function() {
         var data = {
