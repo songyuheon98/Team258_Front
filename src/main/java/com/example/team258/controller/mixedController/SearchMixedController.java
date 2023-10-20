@@ -23,31 +23,39 @@ public class SearchMixedController {
                                Model model) {
         model.addAttribute("categories", adminCategoriesService.getAllCategories());
 
-        long startTime = System.currentTimeMillis();//실행시간 측정
+        if (page == null) page = 1;
+        if (bookCategoryName == null && keyword == null) {
+            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooks(page - 1);
+            model.addAttribute("books", bookResponseDtoPage.getContent());
+            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+        } else if (bookCategoryName == null && keyword != null) {
+            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByKeyword(keyword, page - 1);
+            model.addAttribute("books", bookResponseDtoPage.getContent());
+            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+        } else if (bookCategoryName != null && keyword == null) {
+            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategory(bookCategoryName, page - 1);
+            model.addAttribute("books", bookResponseDtoPage.getContent());
+            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+        } else if (bookCategoryName != null && keyword != null) {
+            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword(bookCategoryName, keyword, page - 1);
+            model.addAttribute("books", bookResponseDtoPage.getContent());
+            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+        }
+        return "search";
+    }
 
-//        if (page == null) page = 1;
-//        if (bookCategoryName == null && keyword == null) {
-//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooks(page - 1);
-//            model.addAttribute("books", bookResponseDtoPage.getContent());
-//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-//        } else if (bookCategoryName == null && keyword != null) {
-//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByKeyword(keyword, page - 1);
-//            model.addAttribute("books", bookResponseDtoPage.getContent());
-//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-//        } else if (bookCategoryName != null && keyword == null) {
-//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategory(bookCategoryName, page - 1);
-//            model.addAttribute("books", bookResponseDtoPage.getContent());
-//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-//        } else if (bookCategoryName != null && keyword != null) {
-//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword(bookCategoryName, keyword, page - 1);
-//            model.addAttribute("books", bookResponseDtoPage.getContent());
-//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-//        }
+    @GetMapping("/search2")
+    public String mySearchView2(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                               @RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                               Model model) {
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+
+        long startTime = System.currentTimeMillis();//실행시간 측정
 
         Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword2(bookCategoryName, keyword, page - 1);
         model.addAttribute("books", bookResponseDtoPage.getContent());
         model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-
 
         long endTime = System.currentTimeMillis();
         long durationTimeSec = endTime - startTime;
