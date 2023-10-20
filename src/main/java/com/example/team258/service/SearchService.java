@@ -81,7 +81,7 @@ public class SearchService {
             bookCategories = saveAllCategories(bookCategory);
         }
 
-        Page<Book> bookList = bookRepository.findAllByCategoriesAndBookNameContaining2(bookCategories, keyword, pageable);
+        Page<Book> bookList = bookRepository.findAllByCategoriesAndBookNameContaining(bookCategories, keyword, pageable);
 
         return bookList.map(BookResponseDto::new);
 
