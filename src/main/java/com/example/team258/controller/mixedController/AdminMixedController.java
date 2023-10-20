@@ -3,6 +3,7 @@ package com.example.team258.controller.mixedController;
 import com.example.team258.dto.UserResponseDto;
 import com.example.team258.entity.User;
 import com.example.team258.repository.UserRepository;
+import com.example.team258.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminMixedController {
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/admin/users")
     /**
@@ -45,9 +47,8 @@ public class AdminMixedController {
      * @RequestParam(defaultValue = "0") int page : page 파라미터가 없으면 0으로 설정
      */
     public String adminViewV2(@RequestParam(defaultValue = "0") int page, Model model, @RequestParam(defaultValue = "") String userName,@RequestParam(defaultValue = "") String userRole ) {
-
         PageRequest pageRequest = PageRequest.of(page, 5);  // page 파라미터로 받은 값을 사용
-        Page<User> users = userRepository.findAll(pageRequest);
+        Page<User> users = userService.findUsersByUsernameAndRoleV1(userName, userRole, pageRequest);
         int totalPages = users.getTotalPages();
 
         List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());

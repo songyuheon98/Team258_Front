@@ -60,9 +60,16 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/books/search**").permitAll() //
                         .requestMatchers(HttpMethod.GET,"/api/books/{bookId}").permitAll() //
                         .requestMatchers(HttpMethod.GET,"/api/books").permitAll() //
+
+                        // swagger 관련 요청 허용
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+
                         // 조회 API는 비로그인 유저도 접근 가능.
                         .requestMatchers(HttpMethod.GET,"/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+
+
         );
 
         // 필터 관리
