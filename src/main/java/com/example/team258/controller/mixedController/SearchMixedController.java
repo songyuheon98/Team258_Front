@@ -23,24 +23,36 @@ public class SearchMixedController {
                                Model model) {
         model.addAttribute("categories", adminCategoriesService.getAllCategories());
 
-        if (page == null) page = 1;
-        if (bookCategoryName == null && keyword == null) {
-            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooks(page - 1);
-            model.addAttribute("books", bookResponseDtoPage.getContent());
-            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-        } else if (bookCategoryName == null && keyword != null) {
-            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByKeyword(keyword, page - 1);
-            model.addAttribute("books", bookResponseDtoPage.getContent());
-            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-        } else if (bookCategoryName != null && keyword == null) {
-            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategory(bookCategoryName, page - 1);
-            model.addAttribute("books", bookResponseDtoPage.getContent());
-            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-        } else if (bookCategoryName != null && keyword != null) {
-            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword(bookCategoryName, keyword, page - 1);
-            model.addAttribute("books", bookResponseDtoPage.getContent());
-            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
-        }
+        long startTime = System.currentTimeMillis();//실행시간 측정
+
+//        if (page == null) page = 1;
+//        if (bookCategoryName == null && keyword == null) {
+//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooks(page - 1);
+//            model.addAttribute("books", bookResponseDtoPage.getContent());
+//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+//        } else if (bookCategoryName == null && keyword != null) {
+//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByKeyword(keyword, page - 1);
+//            model.addAttribute("books", bookResponseDtoPage.getContent());
+//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+//        } else if (bookCategoryName != null && keyword == null) {
+//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategory(bookCategoryName, page - 1);
+//            model.addAttribute("books", bookResponseDtoPage.getContent());
+//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+//        } else if (bookCategoryName != null && keyword != null) {
+//            Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword(bookCategoryName, keyword, page - 1);
+//            model.addAttribute("books", bookResponseDtoPage.getContent());
+//            model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+//        }
+
+        Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword2(bookCategoryName, keyword, page - 1);
+        model.addAttribute("books", bookResponseDtoPage.getContent());
+        model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
         return "search";
     }
 }
