@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,23 @@ public class SearchService {
         return bookList.map(BookResponseDto::new);
     }
 
+    //queryDsl 사용
+    @Transactional(readOnly = true)
+    public Page<BookResponseDto> getAllBooksByCategoryOrKeyword2(String bookCategoryName, String keyword, int page) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "bookId");
+        Pageable pageable = PageRequest.of(page, 20, sort);
+
+        List<BookCategory> bookCategories = null;
+        if (bookCategoryName != null) {
+            BookCategory bookCategory = bookCategoryRepository.findByBookCategoryName(bookCategoryName);
+            bookCategories = saveAllCategories(bookCategory);
+        }
+
+        Page<Book> bookList = bookRepository.findAllByCategoriesAndBookNameContaining(bookCategories, keyword, pageable);
+
+        return bookList.map(BookResponseDto::new);
+
+    }
 
     private List<BookCategory> saveAllCategories(BookCategory bookCategory){
         BookCategory category = bookCategory;

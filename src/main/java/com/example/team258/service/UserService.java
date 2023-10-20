@@ -3,15 +3,19 @@ package com.example.team258.service;
 import com.example.team258.dto.UserUpdateRequestDto;
 import com.example.team258.dto.UserSignupRequestDto;
 import com.example.team258.dto.MessageDto;
+import com.example.team258.entity.QUser;
 import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.exception.DuplicateUsernameException;
 import com.example.team258.jwt.SecurityUtil;
 import com.example.team258.repository.UserRepository;
+import com.querydsl.core.BooleanBuilder;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 @Service
@@ -105,5 +110,22 @@ public class UserService {
         user.update(passwordE);
 
         return new ResponseEntity<>(new MessageDto("회원 정보 수정이 완료되었습니다"), null, HttpStatus.OK);
+    }
+
+    public Page<User> findUsersByUsernameAndRoleV1(String username, String userRole, Pageable pageable) {
+        QUser qUser = QUser.user;
+        BooleanBuilder builder = new BooleanBuilder();
+        /**
+         * 검색 형식에 맞지 않을 경우 생략
+         */
+        if(!userRole.isEmpty())
+            builder.and(qUser.role.eq(UserRoleEnum.valueOf(userRole)));
+
+        if(!username.isEmpty())
+            builder.and(qUser.username.contains(username));
+
+        Page<User> users = userRepository.findAll(builder,pageable);
+
+        return users;
     }
 }

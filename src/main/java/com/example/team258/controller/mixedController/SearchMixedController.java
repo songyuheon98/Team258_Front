@@ -43,4 +43,24 @@ public class SearchMixedController {
         }
         return "search";
     }
+
+    @GetMapping("/search2")
+    public String mySearchView2(@RequestParam(value = "bookCategoryName", required = false) String bookCategoryName,
+                               @RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+                               Model model) {
+        model.addAttribute("categories", adminCategoriesService.getAllCategories());
+
+        long startTime = System.currentTimeMillis();//실행시간 측정
+
+        Page<BookResponseDto> bookResponseDtoPage = searchService.getAllBooksByCategoryOrKeyword2(bookCategoryName, keyword, page - 1);
+        model.addAttribute("books", bookResponseDtoPage.getContent());
+        model.addAttribute("bookMaxCount", bookResponseDtoPage.getTotalPages());
+
+        long endTime = System.currentTimeMillis();
+        long durationTimeSec = endTime - startTime;
+        System.out.println(durationTimeSec + "m/s"); // 실행시간 측정
+
+        return "search";
+    }
 }
