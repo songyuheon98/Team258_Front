@@ -9,6 +9,7 @@ import com.example.team258.entity.User;
 import com.example.team258.entity.UserRoleEnum;
 import com.example.team258.repository.AdminBooksRepository;
 import com.example.team258.repository.BookCategoryRepository;
+//import com.querydsl.core.types.dsl.Expressions;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+//import com.querydsl.core.types.dsl.BooleanExpression;
+//import static com.example.QBook.book; // QBook 클래스의 정적 임포트
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +78,22 @@ public class AdminBooksService {
         Page<AdminBooksResponseDto> adminBooksPage = adminBooksRepository.findAll(spec, pageable)
                 .map(AdminBooksResponseDto::new);
 
+        //BooleanExpression predicate = Expressions.asBoolean(true).isTrue();
+        //
+        //if (StringUtils.hasText(keyword)) {
+        //    predicate = predicate.and(book.bookName.containsIgnoreCase(keyword));
+        //}
+        //
+        //Page<AdminBooksResponseDto> adminBooksPage = adminBooksRepository.findAll(predicate, pageable)
+        //        .map(AdminBooksResponseDto::new);
+
+        //    https://jojoldu.tistory.com/372
+        //    QueryDSL 의존성 주입이 안되는 상황 해결 필요
+
+
         return adminBooksPage;
+
+
     }
 
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
