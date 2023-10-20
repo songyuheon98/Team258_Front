@@ -1,11 +1,16 @@
 package com.example.team258.repository;
 
+import com.example.team258.config.QueryDslConfig;
 import com.example.team258.entity.UserRoleEnum;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import com.example.team258.entity.User;
+import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
@@ -16,11 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @DataJpaTest 어노테이션을 사용하여 JPA 관련 구성만 로드
  */
+@Import(QueryDslConfig.class)
 @DataJpaTest
 class UserRepositoryTest {
 
     @Autowired TestEntityManager em;
     @Autowired UserRepository userRepository;
+
     @Test
     void findByUsername() {
         //given
