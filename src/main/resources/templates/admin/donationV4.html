@@ -145,7 +145,7 @@
                                     <li class="page-item"
                                         th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalPages}">
                                         <a class="page-link"
-                                           th:onclick="|modifyArrayAndRedirect(${eventStatus.index}, ${(currentBookPage[eventStatus.index] / 10 + 1) * 10})|"
+                                           th:onclick="|modifyArrayAndRedirect(${eventStatus.index}, ${(currentBookPage[eventStatus.index] / 10 + 1) * 10},${eventId})|"
                                            aria-label="Go to the first page of the next group">
                                             <span aria-hidden="true">»</span>
                                         </a>
