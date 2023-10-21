@@ -14,11 +14,11 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 alert('이벤트 생성 성공!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             },
             error: function(xhr, status, error) {
                 alert('이벤트 생성 실패!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             }
         });
     };
@@ -38,11 +38,11 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 alert('이벤트 업데이트 성공!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             },
             error: function(xhr, status, error) {
                 alert('이벤트 업데이트 실패!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             }
         });
     };
@@ -56,11 +56,11 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     alert('이벤트 삭제 성공!');
-                    window.location.href = '/admin/donation/v2';
+                    window.location.href = '/admin/donation/v3';
                 },
                 error: function(xhr, status, error) {
                     alert('이벤트 삭제 실패!');
-                    window.location.href = '/admin/donation/v2';
+                    window.location.href = '/admin/donation/v3';
                 }
             });
         }
@@ -75,11 +75,11 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(response) {
                     alert('이벤트 종료 성공!');
-                    window.location.href = '/admin/donation/v2';
+                    window.location.href = '/admin/donation/v3';
                 },
                 error: function(xhr, status, error) {
                     alert('이벤트 종료 실패!');
-                    window.location.href = '/admin/donation/v2';
+                    window.location.href = '/admin/donation/v3';
                 }
             });
         }
@@ -109,10 +109,10 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 alert('이벤트 설정 성공!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             },
             error: function(xhr, status, error) {
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
                 alert('이벤트 설정 실패!');
             }
         });
