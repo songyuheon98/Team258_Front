@@ -11,7 +11,7 @@
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="../css/style.css" rel="stylesheet"/>
+    <link href="/css/style.css" rel="stylesheet"/>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -41,18 +41,27 @@
                 <!-- user private function-->
                 <li class="nav-item"><a class="nav-link" id="loginbtn" href="/login">Login</a></li>
                 <li class="nav-item"><a class="nav-link" id="signupbtn" href="/signup">SignUp</a></li>
-                <li class="nav-item"><a class="nav-link" id="mypagebtn" href="/mypage">MyPage</a></li>
-                <li class="nav-item"><a class="nav-link" id="myrentalsbtn" href="/myrentals">MyRentals</a></li>
-                <li class="nav-item"><a class="nav-link" id="myreservationsbtn" href="/myreservations">MyReservations</a></li>
-                <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
+                <!-- Search -->
+                <li class="nav-item"><a class="nav-link" href="/search">BookSearch</a></li>
+
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                    <li class="dropdown-item"><a class="dropdown-item" id="mypagebtn" href="/mypage">MyPage</a></li>
+                    <li class="dropdown-item"><a class="dropdown-item" id="myrentalsbtn" href="/myrentals">MyRentals</a></li>
+                    <li class="dropdown-item"><a class="dropdown-item" id="myreservationsbtn" href="/myreservations">MyReservations</a></li>
+                    <!-- 대출 목록이 나타나야하고, 반납 버튼이 거기도 있어야 함. -->
+                </ul>
+            </li>
 
 
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                <a class="nav-link dropdown-toggle" id="navbarDropdownAdmin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                         <!-- user Controller R,D-->
-                        <!--                <li class="nav-item"><a class="nav-link" id="adminUserBtn" href="/admin/users">Admin Users</a></li>-->
-                        <li class="nav-item"><a class="nav-link" id="adminUserBtn" href="/admin/users/v2">Admin Users</a></li>
+                        <!--                <li class="dropdown-item"><a class="dropdown-item" id="adminUserBtn" href="/admin/users">Admin Users</a></li>-->
+                        <li class="dropdown-item"><a class="dropdown-item" id="adminUserBtn" href="/admin/users/v2">Admin Users</a></li>
                         <!-- admin book controller ( CRUD )-->
                         <li class="dropdown-item"><a class="dropdown-item" id="adminBooksBtn" href="/admin/books">Admin Books</a></li>
                         <!-- admin category controller ( CRUD ) -->
@@ -62,18 +71,17 @@
                     </ul>
                 </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownDonation" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Donation</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+<!--                        <li class="nav-item"><a class="nav-link" id="userBookDonationEventBtn" href="/users/bookDonationEvent">Book Donation Event List</a></li>-->
+                        <li class="dropdown-item"><a class="dropdown-item" id="userBookDonationEventBtn" href="/users/bookDonationEvent/v2">Book Donation Event List</a></li>
+                        <!--                Book Apply Cancel 유저 책 나눔 신청 취소-->
+                        <li class="dropdown-item"><a class="dropdown-item" id="userBookApplyCancel" href="/users/bookApplyDonation/cancel">Book Apply Cancel</a></li>
+                    </ul>
+                </li>
 
-<!--                <li class="nav-item"><a class="nav-link" id="userBookDonationEventBtn" href="/users/bookDonationEvent">Book Donation Event List</a></li>-->
 
-                <li class="nav-item"><a class="nav-link" id="userBookDonationEventBtn" href="/users/bookDonationEvent/v2">Book Donation Event List</a></li>
-
-                <!--                Book Apply Cancel 유저 책 나눔 신청 취소-->
-                <li class="nav-item"><a class="nav-link" id="userBookApplyCancel" href="/users/bookApplyDonation/cancel">Book Apply Cancel</a></li>
-
-                <!-- Books All List + Searching -->
-                <li class="nav-item"><a class="nav-link" id="booksListBtn" href="/booksList">BooksList</a></li>
-                <!-- Search -->
-                <li class="nav-item"><a class="nav-link active" href="/search">BookSearch</a></li>
                 <!-- About us -->
                 <li class="nav-item"><a class="nav-link active" href="/about258">About Team 258</a></li>
             </ul>
