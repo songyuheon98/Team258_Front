@@ -115,6 +115,7 @@ public class UserService {
     public Page<User> findUsersByUsernameAndRoleV1(String username, String userRole, Pageable pageable) {
         QUser qUser = QUser.user;
         BooleanBuilder builder = new BooleanBuilder();
+
         /**
          * 검색 형식에 맞지 않을 경우 생략
          */
