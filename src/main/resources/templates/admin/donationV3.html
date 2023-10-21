@@ -98,51 +98,20 @@
 
                                     <!-- 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 -->
                                     <li th:each="pageNumber : ${#numbers.sequence((currentBookPage[eventStatus.index] / 10) * 10, (currentBookPage[eventStatus.index] / 10) * 10 + 9)}"
-                                        th:if="${pageNumber < totalPages}"
+                                        th:if="${pageNumber < totalBookPages[eventStatus.index]}"
                                         class="page-item"
                                         th:class="${pageNumber == currentBookPage[eventStatus.index] ? 'active' : ''}">
                                         <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${pageNumber} + ', ' + ${currentEventPage} + ')'" th:text="${pageNumber + 1}"></a>
                                     </li>
 
                                     <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
-                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalPages}">
+                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalBookPages[eventStatus.index]}">
                                         <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${(currentBookPage[eventStatus.index] / 10 + 1) * 10} + ', ' + ${currentEventPage} + ')'" aria-label="Go to the first page of the next group">
                                             <span aria-hidden="true">»</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-<!--                            <div>-->
-<!--                                <ul class="pagination">-->
-<!--                                    &lt;!&ndash; 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 &ndash;&gt;-->
-<!--                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 ) * 10 > 0}">-->
-<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage[eventStatus.index] / 10 - 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">-->
-<!--                                            <span aria-hidden="true">«</span>-->
-<!--                                        </a>-->
-
-<!--                                        <a class="page-link" th:onclick="'modifyArrayAndRedirect(' + ${eventStatus.index} + ', ' + ${(currentBookPage[eventStatus.index] / 10 - 1) * 10} + ', ' + ${currentEventPage} + ')'" aria-label="Go to the first page of the next group">-->
-<!--                                            <span aria-hidden="true">«</span>-->
-<!--                                        </a>-->
-
-
-<!--                                    </li>-->
-
-<!--                                    &lt;!&ndash; 현재 페이지 그룹의 페이지 번호들을 표시. 현재 페이지 번호 기준으로 10개 페이지를 표시 &ndash;&gt;-->
-<!--                                    <li th:each="pageNumber : ${#numbers.sequence((currentBookPage[eventStatus.index] / 10) * 10, (currentBookPage[eventStatus.index] / 10) * 10 + 9)}"-->
-<!--                                        th:if="${pageNumber < totalPages}"-->
-<!--                                        class="page-item"-->
-<!--                                        th:class="${pageNumber == currentBookPage[eventStatus.index] ? 'active' : ''}">-->
-<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${pageNumber},eventPage=${currentEventPage})}" th:text="${pageNumber + 1}"></a>-->
-<!--                                    </li>-->
-
-<!--                                    &lt;!&ndash; 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 &ndash;&gt;-->
-<!--                                    <li class="page-item" th:if="${(currentBookPage[eventStatus.index] / 10 + 1) * 10 < totalPages}">-->
-<!--                                        <a class="page-link" th:href="@{/admin/donation/v3(bookPage=${(currentBookPage[eventStatus.index] / 10 + 1) * 10},eventPage=${currentEventPage})}" aria-label="Go to the first page of the next group">-->
-<!--                                            <span aria-hidden="true">»</span>-->
-<!--                                        </a>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
                         </td>
                     </tr>
                 </th:block>
