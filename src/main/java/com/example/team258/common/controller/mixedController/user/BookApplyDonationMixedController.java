@@ -1,4 +1,4 @@
-package com.example.team258.common.controller.viewController.user;
+package com.example.team258.common.controller.mixedController.user;
 
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.domain.donation.dto.UserBookApplyCancelPageResponseDto;
@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/users/bookApplyDonation")
 @RequiredArgsConstructor
-public class BookApplyDonationViewController {
+public class BookApplyDonationMixedController {
     private final BookApplyDonationService bookApplyDonationService;
     private final BookDonationEventService bookDonationEventService;
     private final BookApplyDonationRepository bookApplyDonationRepository;
@@ -30,15 +30,6 @@ public class BookApplyDonationViewController {
         model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
         return "/users/bookApplyDonationCancel";
     }
-
-//    @GetMapping("/cancel/v2")
-//    public String bookApplyDonationCancelPageV2(Model model) {
-//        Long userId =SecurityUtil.getPrincipal().get().getUserId();
-//        bookApplyDonationRepository.findPageByUserId()
-//
-//        model.addAttribute("userBookApplyCancelPageResponseDto", userBookApplyCancelPageResponseDto);
-//        return "/users/bookApplyDonationCancel";
-//    }
 
     @GetMapping
     public String bookApplyDonation(Model model) {

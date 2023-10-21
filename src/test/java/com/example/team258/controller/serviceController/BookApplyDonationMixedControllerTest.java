@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(addFilters = false)
-class BookApplyDonationViewControllerTest {
+class BookApplyDonationMixedControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

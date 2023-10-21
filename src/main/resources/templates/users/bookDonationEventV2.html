@@ -16,7 +16,23 @@
     <div class="container">
         <div class="container-container1">
             <span class="container-text"><span>Book Donation Event List</span></span>
+            <div class="container-container1">
+                <form th:action="@{/users/bookDonationEvent/v3}" method="get" class="row">
+                    <div class="col-3 mb-2">
+                        <input type="text" class="form-control" id="eventId" name="eventId" placeholder="이벤트 ID">
+                    </div>
+                    <div class="col-3 mb-2">
+                        <input type="date" class="form-control" id="eventStartDate" name="eventStartDate" placeholder="시작 날짜">
+                    </div>
+                    <div class="col-3 mb-2">
+                        <input type="date" class="form-control" id="eventEndDate" name="eventEndDate" placeholder="종료 날짜">
+                    </div>
+                    <div class="col-3 mb-2">
+                        <button type="submit" class="btn btn-primary w-100">검색</button>
+                    </div>
+                </form>
 
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -44,7 +60,7 @@
                     <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
 
                     <li class="page-item" th:if="${(currentPage / 10 ) * 10 > 0}">
-                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page=${(currentPage / 10 - 1) * 10})}" aria-label="Go to the first page of the next group">
+                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page=${(currentPage / 10 - 1) * 10},eventId=${param.eventId},eventStartDate=${param.eventStartDate},eventEndDate=${param.eventEndDate})}" aria-label="Go to the first page of the next group">
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
@@ -54,12 +70,12 @@
                         th:if="${pageNumber < totalPages}"
                         class="page-item"
                         th:class="${pageNumber == currentPage ? 'active' : ''}">
-                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page=${pageNumber},eventId=${param.eventId},eventStartDate=${param.eventStartDate},eventEndDate=${param.eventEndDate})}" th:text="${pageNumber + 1}"></a>
                     </li>
 
                     <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
                     <li class="page-item" th:if="${(currentPage / 10 + 1) * 10 < totalPages}">
-                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page= ${(currentPage / 10 + 1) * 10})}" aria-label="Go to the first page of the next group">
+                        <a class="page-link" th:href="@{/users/bookDonationEvent/v2(page= ${(currentPage / 10 + 1) * 10},eventId=${param.eventId},eventStartDate=${param.eventStartDate},eventEndDate=${param.eventEndDate})}" aria-label="Go to the first page of the next group">
                             <span aria-hidden="true">»</span>
                         </a>
                     </li>

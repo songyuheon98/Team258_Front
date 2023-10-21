@@ -1,4 +1,4 @@
-package com.example.team258.common.controller.viewController.admin;
+package com.example.team258.common.controller.mixedController.admin;
 
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.dto.BookResponsePageDto;
@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/donation")
 @RequiredArgsConstructor
-public class DonationViewController {
+public class DonationMixedController {
     private final BookDonationEventService bookDonationEventService;
     private final BookApplyDonationService bookApplyDonationService;
     private final BookRepository bookRepository;
@@ -175,6 +175,24 @@ public class DonationViewController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", bookResponsePageDto.getTotalPages());
         model.addAttribute("donationId", donationId);
+        return "/admin/bookSettingV2";
+    }
+
+    @GetMapping("/bookSetting/{donationId}/v3")
+    public String bookSettingV3(@RequestParam(defaultValue = "0") int page, @PathVariable Long donationId, Model model, @RequestParam(defaultValue = "") Long bookId,
+                                @RequestParam(defaultValue = "") String bookName, @RequestParam(defaultValue = "") String author,
+                                @RequestParam(defaultValue = "") String publish) {
+
+        BookResponseDto bookResponseDto = new BookResponseDto(bookId,bookName, author, publish);
+        PageRequest pageRequest = PageRequest.of(page, 15);  // page 파라미터로 받은 값을 사용
+
+        BookResponsePageDto bookResponsePageDto = bookApplyDonationService.getDonationBooksV3(BookStatusEnum.POSSIBLE, pageRequest,bookResponseDto);
+
+        model.addAttribute("books", bookResponsePageDto.getBookResponseDtos());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", bookResponsePageDto.getTotalPages());
+        model.addAttribute("donationId", donationId);
+
         return "/admin/bookSettingV2";
     }
 }

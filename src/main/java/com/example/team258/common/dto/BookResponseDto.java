@@ -21,4 +21,11 @@ public class BookResponseDto {
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();
     }
+
+    public BookResponseDto(Long bookId,String bookName, String author, String publish) {
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.bookAuthor = author;
+        this.bookPublish = publish;
+    }
 }
