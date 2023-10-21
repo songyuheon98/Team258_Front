@@ -1,13 +1,13 @@
 //package com.example.team258.service;
 //
-//import com.example.team258.dto.BookDonationEventRequestDto;
-//import com.example.team258.dto.BookDonationEventResponseDto;
+//import com.example.team258.aaaDonation.dto.BookDonationEventRequestDto;
+//import com.example.team258.aaaDonation.dto.BookDonationEventResponseDto;
 //import com.example.team258.dto.MessageDto;
-//import com.example.team258.entity.BookDonationEvent;
+//import com.example.team258.aaaDonation.entity.BookDonationEvent;
 //import com.example.team258.entity.User;
 //import com.example.team258.entity.UserRoleEnum;
 //import com.example.team258.jwt.SecurityUtil;
-//import com.example.team258.repository.BookDonationEventRepository;
+//import com.example.team258.aaaDonation.repository.BookDonationEventRepository;
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Test;

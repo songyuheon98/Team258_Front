@@ -1,11 +1,16 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.*;
-import com.example.team258.repository.BookRentRepository;
-import com.example.team258.repository.BookRepository;
-import com.example.team258.repository.BookReservationRepository;
-import com.example.team258.repository.UserRepository;
+import com.example.team258.domain.user.entity.BookRent;
+import com.example.team258.domain.user.entity.BookReservation;
+import com.example.team258.domain.user.service.BookReservationService;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.repository.BookRepository;
+import com.example.team258.domain.user.repository.BookReservationRepository;
+import com.example.team258.common.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 

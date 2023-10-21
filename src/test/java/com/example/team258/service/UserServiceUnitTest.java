@@ -1,12 +1,13 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.UserSignupRequestDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.User;
-import com.example.team258.entity.UserRoleEnum;
-import com.example.team258.exception.DuplicateUsernameException;
-import com.example.team258.jwt.SecurityUtil;
-import com.example.team258.repository.UserRepository;
+import com.example.team258.domain.member.dto.UserSignupRequestDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.exception.DuplicateUsernameException;
+import com.example.team258.common.jwt.SecurityUtil;
+import com.example.team258.common.repository.UserRepository;
+import com.example.team258.common.service.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

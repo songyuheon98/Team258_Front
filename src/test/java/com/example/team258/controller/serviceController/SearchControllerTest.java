@@ -1,13 +1,12 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.BookResponseDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookCategory;
-import com.example.team258.entity.BookStatusEnum;
-import com.example.team258.repository.BookCategoryRepository;
-import com.example.team258.repository.BookRepository;
-import com.example.team258.service.BookReservationService;
-import com.example.team258.service.SearchService;
+import com.example.team258.common.dto.BookResponseDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.common.entity.BookCategory;
+import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.domain.admin.repository.BookCategoryRepository;
+import com.example.team258.common.repository.BookRepository;
+import com.example.team258.domain.bookSearch.service.SearchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.UserSignupRequestDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.service.UserService;
+import com.example.team258.domain.member.dto.UserSignupRequestDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

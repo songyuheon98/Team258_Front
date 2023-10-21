@@ -1,11 +1,16 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.*;
-import com.example.team258.repository.BookRentRepository;
-import com.example.team258.repository.BookRepository;
-import com.example.team258.repository.UserRepository;
-import org.assertj.core.api.Assertions;
+import com.example.team258.domain.user.entity.BookRent;
+import com.example.team258.domain.user.entity.BookReservation;
+import com.example.team258.domain.user.service.BookRentService;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.domain.user.repository.BookRentRepository;
+import com.example.team258.common.repository.BookRepository;
+import com.example.team258.common.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

@@ -1,11 +1,11 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.AdminResponseDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.User;
-import com.example.team258.entity.UserRoleEnum;
-import com.example.team258.security.UserDetailsImpl;
-import com.example.team258.service.AdminService;
+import com.example.team258.domain.admin.dto.AdminResponseDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.security.UserDetailsImpl;
+import com.example.team258.domain.admin.service.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -1,21 +1,18 @@
 package com.example.team258.repository;
 
-import com.example.team258.config.QueryDslConfig;
-import com.example.team258.entity.UserRoleEnum;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.team258.common.config.QueryDslConfig;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import com.example.team258.entity.User;
+import com.example.team258.common.entity.User;
 import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -26,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired TestEntityManager em;
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     void findByUsername() {

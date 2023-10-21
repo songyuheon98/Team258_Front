@@ -1,10 +1,10 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.BookDonationEventRequestDto;
-import com.example.team258.dto.BookDonationEventResponseDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.BookDonationEvent;
-import com.example.team258.service.BookDonationEventService;
+import com.example.team258.domain.donation.dto.BookDonationEventRequestDto;
+import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.domain.donation.entity.BookDonationEvent;
+import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
