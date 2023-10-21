@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-public class AdminMixedController {
+public class AdminUsersMixedController {
     private final UserRepository userRepository;
     private final UserService userService;
 
