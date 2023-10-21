@@ -109,10 +109,10 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 alert('이벤트 설정 성공!');
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
             },
             error: function(xhr, status, error) {
-                window.location.href = '/admin/donation/v2';
+                window.location.href = '/admin/donation/v3';
                 alert('이벤트 설정 실패!');
             }
         });
