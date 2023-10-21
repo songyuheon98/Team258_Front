@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
-public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredicateExecutor<Book> {
+public interface BookRepository extends JpaRepository <Book,Long>, QuerydslPredicateExecutor<Book>, BookRepositoryCustom {
 
     Page<Book> findAllByBookNameContaining(String keyword, Pageable pageable);
 

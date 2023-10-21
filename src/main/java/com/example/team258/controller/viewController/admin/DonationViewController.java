@@ -94,10 +94,10 @@ public class DonationViewController {
     }
 
     @GetMapping("/v4")
-    public String donationV4(@RequestParam(defaultValue = "0") int eventPage, @RequestParam(defaultValue = "0") int[] bookPage,
-                             @RequestParam(defaultValue = "") String bookName, @RequestParam(defaultValue = "") String author,
-                             @RequestParam(defaultValue = "") String publish, @RequestParam(defaultValue = "") String status,
-                             @RequestParam(defaultValue = "0") int eventId, Model model) {
+    public String donationV4( @RequestParam(defaultValue = "0") int[] bookPage, @RequestParam(defaultValue = "0") int eventPage,
+                              @RequestParam(defaultValue = "0") int eventId, @RequestParam(defaultValue = "") String bookName,
+                              @RequestParam(defaultValue = "") String author, @RequestParam(defaultValue = "") String publish,
+                              @RequestParam(defaultValue = "") String status, Model model) {
 
         int eventPagesize = 3;
         int bookPagesize = 3;
@@ -140,11 +140,11 @@ public class DonationViewController {
         model.addAttribute("currentEventPage", eventPage);  // 현재 페이지 번호 추가
         model.addAttribute("currentBookPage", bookPageTemp);  // 현재 페이지 번호 추가
         model.addAttribute("totalPages", bookDonationEventPageResponseDtoV3.getTotalPages());
-        model.addAttribute("bookName", bookName);
-        model.addAttribute("author", author);
-        model.addAttribute("publish", publish);
-        model.addAttribute("status", status);
-        model.addAttribute("eventId", eventId);
+        model.addAttribute("bookNameInit", bookName);
+        model.addAttribute("authorInit", author);
+        model.addAttribute("publishInit", publish);
+        model.addAttribute("statusInit", status);
+        model.addAttribute("eventIdInit", eventId);
 
         return "/admin/donationV4";
     }
