@@ -1,6 +1,6 @@
 //package com.example.team258.service;
 //
-//import com.example.team258.dto.AdminResponseDto;
+//import com.example.team258.aaaadmin.dto.AdminResponseDto;
 //import com.example.team258.dto.MessageDto;
 //import com.example.team258.entity.User;
 //import com.example.team258.entity.UserRoleEnum;

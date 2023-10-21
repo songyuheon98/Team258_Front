@@ -1,12 +1,13 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.AdminBooksRequestDto;
-import com.example.team258.dto.BookResponseDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookCategory;
-import com.example.team258.entity.BookStatusEnum;
-import com.example.team258.repository.BookCategoryRepository;
-import com.example.team258.repository.BookRepository;
+import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
+import com.example.team258.domain.bookSearch.service.SearchService;
+import com.example.team258.common.dto.BookResponseDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.common.entity.BookCategory;
+import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.domain.admin.repository.BookCategoryRepository;
+import com.example.team258.common.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

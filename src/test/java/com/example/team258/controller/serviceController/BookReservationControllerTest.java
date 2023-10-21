@@ -1,11 +1,11 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.User;
-import com.example.team258.entity.UserRoleEnum;
-import com.example.team258.repository.BookRepository;
-import com.example.team258.security.UserDetailsImpl;
-import com.example.team258.service.BookReservationService;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.common.repository.BookRepository;
+import com.example.team258.common.security.UserDetailsImpl;
+import com.example.team258.domain.user.service.BookReservationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

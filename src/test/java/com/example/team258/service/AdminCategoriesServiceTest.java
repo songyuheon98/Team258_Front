@@ -1,15 +1,17 @@
 package com.example.team258.service;
 
-import com.example.team258.dto.AdminCategoriesRequestDto;
-import com.example.team258.dto.AdminCategoriesResponseDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookCategory;
-import com.example.team258.entity.User;
-import com.example.team258.entity.UserRoleEnum;
-import com.example.team258.repository.AdminBooksRepository;
-import com.example.team258.repository.BookCategoryRepository;
-import com.example.team258.repository.UserRepository;
+import com.example.team258.domain.admin.dto.AdminCategoriesRequestDto;
+import com.example.team258.domain.admin.dto.AdminCategoriesResponseDto;
+import com.example.team258.domain.admin.service.AdminBooksService;
+import com.example.team258.domain.admin.service.AdminCategoriesService;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.common.entity.BookCategory;
+import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
+import com.example.team258.domain.admin.repository.AdminBooksRepository;
+import com.example.team258.domain.admin.repository.BookCategoryRepository;
+import com.example.team258.common.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

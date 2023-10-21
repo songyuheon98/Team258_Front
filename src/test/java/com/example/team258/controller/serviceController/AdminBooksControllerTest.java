@@ -1,13 +1,13 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.AdminBooksRequestDto;
-import com.example.team258.dto.AdminBooksResponseDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.*;
-import com.example.team258.repository.AdminBooksRepository;
-import com.example.team258.repository.BookCategoryRepository;
-import com.example.team258.security.UserDetailsImpl;
-import com.example.team258.service.AdminBooksService;
+import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
+import com.example.team258.domain.admin.dto.AdminBooksResponseDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.*;
+import com.example.team258.domain.admin.repository.AdminBooksRepository;
+import com.example.team258.domain.admin.repository.BookCategoryRepository;
+import com.example.team258.common.security.UserDetailsImpl;
+import com.example.team258.domain.admin.service.AdminBooksService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -26,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

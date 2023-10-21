@@ -1,14 +1,13 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.dto.BookApplyDonationRequestDto;
-import com.example.team258.dto.BookApplyDonationResponseDto;
-import com.example.team258.dto.BookResponseDto;
-import com.example.team258.dto.MessageDto;
-import com.example.team258.entity.Book;
-import com.example.team258.entity.BookApplyDonation;
-import com.example.team258.entity.BookStatusEnum;
-import com.example.team258.service.BookApplyDonationService;
-import com.example.team258.service.UserService;
+import com.example.team258.domain.donation.dto.BookApplyDonationRequestDto;
+import com.example.team258.domain.donation.dto.BookApplyDonationResponseDto;
+import com.example.team258.common.dto.BookResponseDto;
+import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.entity.Book;
+import com.example.team258.domain.donation.entity.BookApplyDonation;
+import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
