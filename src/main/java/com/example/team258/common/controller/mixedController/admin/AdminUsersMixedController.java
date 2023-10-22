@@ -1,4 +1,4 @@
-package com.example.team258.common.controller.mixedController;
+package com.example.team258.common.controller.mixedController.admin;
 
 import com.example.team258.domain.member.dto.UserResponseDto;
 import com.example.team258.common.entity.User;

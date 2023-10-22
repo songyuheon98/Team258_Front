@@ -5,6 +5,7 @@ import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.common.entity.QBook;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.jwt.SecurityUtil;
 import com.example.team258.common.repository.BookRepository;
@@ -16,8 +17,10 @@ import com.example.team258.domain.donation.entity.BookApplyDonation;
 import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.repository.BookApplyDonationRepository;
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -53,7 +56,6 @@ public class BookApplyDonationService {
         if(book.getBookApplyDonation()!=null){
             return ResponseEntity.ok().body(new MessageDto("이미 누군가 먼저 신청했습니다."));
         }
-
         /**
          * 나눔 이벤트 시간이 아닐때
          */
@@ -71,7 +73,7 @@ public class BookApplyDonationService {
         User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
-        /**
+            /**
          * 나눔 신청
          */
         BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
@@ -133,6 +135,29 @@ public class BookApplyDonationService {
 
         return new BookResponsePageDto(bookResponseDtos, pageBooks.getTotalPages());
     }
+    public BookResponsePageDto getDonationBooksV3(BookStatusEnum bookStatusEnum, PageRequest pageRequest, BookResponseDto bookResponseDto) {
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(bookResponseDto.getBookId()!=null && !bookResponseDto.getBookId().equals(""))
+            builder.and(qBook.bookId.eq(bookResponseDto.getBookId()));
+
+        if(bookResponseDto.getBookName()!=null && !bookResponseDto.getBookName().equals(""))
+            builder.and(qBook.bookName.contains(bookResponseDto.getBookName()));
+        if(bookResponseDto.getBookAuthor()!=null && !bookResponseDto.getBookAuthor().equals(""))
+            builder.and(qBook.bookAuthor.contains(bookResponseDto.getBookAuthor()));
+        if(bookResponseDto.getBookPublish()!=null && !bookResponseDto.getBookPublish().equals(""))
+            builder.and(qBook.bookPublish.contains(bookResponseDto.getBookPublish()));
+        builder.and(qBook.bookStatus.eq(bookStatusEnum));
+
+        Page<Book> pageBooks = bookRepository.findAll(builder, pageRequest);
+
+        List<BookResponseDto> bookResponseDtos= pageBooks.stream()
+                .map(BookResponseDto::new)
+                .toList();
+
+        return new BookResponsePageDto(bookResponseDtos, pageBooks.getTotalPages());
+    }
 
     public List<BookApplyDonationResponseDto> getBookApplyDonations() {
         return bookApplyDonationRepository.findAll().stream()
@@ -148,6 +173,7 @@ public class BookApplyDonationService {
         );
         return new UserBookApplyCancelPageResponseDto(user);
     }
+
 
 
 }
