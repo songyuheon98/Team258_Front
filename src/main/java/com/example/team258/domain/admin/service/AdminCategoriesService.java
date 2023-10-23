@@ -160,14 +160,14 @@ public class AdminCategoriesService {
         return bookCategoryRepository.findById(bookCategoryId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
     }
-    void updateParentCategory(BookCategory parentCategory, String newBookCategoryName, Long newBookCategoryIsbnCode) {
+    public void updateParentCategory(BookCategory parentCategory, String newBookCategoryName, Long newBookCategoryIsbnCode) {
         if (parentCategory != null) {
             parentCategory.updateBookCategory(newBookCategoryName, newBookCategoryIsbnCode);
             bookCategoryRepository.save(parentCategory);
         }
     }
 
-    void removeFromParentCategory(BookCategory category) {
+    public void removeFromParentCategory(BookCategory category) {
         BookCategory parentCategory = category.getParentCategory();
         if (parentCategory != null) {
             parentCategory.getChildCategories().remove(category);
