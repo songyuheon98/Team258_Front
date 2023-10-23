@@ -2,6 +2,7 @@ package com.example.team258.common.controller.mixedController.user;
 
 import com.example.team258.domain.donation.dto.UserBookApplyCancelPageResponseDto;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-class BookApplyDonationMixedControllerTest {
+class BookApplyDonationCancelMixedControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -27,6 +28,7 @@ class BookApplyDonationMixedControllerTest {
     BookApplyDonationService bookApplyDonationService;
 
     @Test
+    @DisplayName("유저 책 이벤트 신청 취소 페이지 테스트")
     void bookApplyDonationCancelPage() throws Exception {
         // given
         // when

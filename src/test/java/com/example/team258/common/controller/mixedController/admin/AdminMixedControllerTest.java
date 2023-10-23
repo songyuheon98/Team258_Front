@@ -4,6 +4,7 @@ import com.example.team258.common.entity.User;
 import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.common.repository.UserRepository;
 import com.example.team258.common.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -41,6 +42,7 @@ class AdminMixedControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    @DisplayName("Read 관리자 - 유저 관리 페이지 테스트")
     void adminViewV2() throws Exception {
         // given
         User user = User.builder()

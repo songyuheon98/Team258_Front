@@ -5,6 +5,7 @@ import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.repository.BookRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
@@ -36,6 +37,7 @@ class BookServiceTest {
     }
 
     @Test
+    @DisplayName("READ 책을 검색해서 찾을 때 테스트 ")
     void findBookByNameAndRoleAndDonationIdWithPagination() {
         // given
         BooleanBuilder builder = new BooleanBuilder();

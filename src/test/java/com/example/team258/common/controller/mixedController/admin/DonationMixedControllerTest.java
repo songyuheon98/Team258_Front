@@ -8,6 +8,7 @@ import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDtoV3;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,6 +42,7 @@ class DonationMixedControllerTest {
     private BookApplyDonationService bookApplyDonationService;
 
     @Test
+    @DisplayName("READ 관리자 - 이벤트 관리 페이지 테스트 ( 뷰 )")
     void donationV3() throws Exception {
         // given
         when(bookDonationEventService.donationV3Service(any(int[].class), any(int.class),any(PageRequest.class)))
@@ -54,6 +56,7 @@ class DonationMixedControllerTest {
     }
 
     @Test
+    @DisplayName("READ 관리자 - 이벤트에 책 설정하는 페이지 테스트 ( 뷰 )")
     void bookSettingV3() throws Exception {
         // given
         when(bookApplyDonationService.getDonationBooksV3(any(BookStatusEnum.class),any(PageRequest.class)

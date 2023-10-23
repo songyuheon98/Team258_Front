@@ -11,10 +11,7 @@ import com.example.team258.common.repository.UserRepository;
 import com.example.team258.common.service.UserService;
 import com.example.team258.domain.member.dto.UserUpdateRequestDto;
 import com.querydsl.core.BooleanBuilder;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
@@ -108,6 +105,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 일치 테스트")
     void passwordCheck_비밀번호_일치() {
         //given
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
@@ -122,6 +120,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 불일치 테스트")
     void passwordCheck_비밀번호_불일치() {
         //given
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
@@ -148,6 +147,7 @@ class UserServiceTest {
 //        assertDoesNotThrow(() -> userService.userNameCheck(username2));
 //    }
     @Test
+    @DisplayName("유저 이름 중복 테스트")
     void userNameCheck_중복_일_경우() {
         // given
         String username = "bin7777";
@@ -165,6 +165,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("유저 권한 테스트")
     void getUserRoleEnum_사용자() {
         //given
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
@@ -177,6 +178,7 @@ class UserServiceTest {
 
     }
     @Test
+    @DisplayName("관리자 토큰 일치 테스트")
     void getUserRoleEnum_관리자_토큰_일치() {
         //given
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
@@ -192,6 +194,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("관리자 토큰 불일치 테스트")
     void getUserRoleEnum_관리자_토큰_불일치() {
         //given
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
@@ -206,6 +209,7 @@ class UserServiceTest {
 
     }
     @Test
+    @DisplayName("CREATE 회원가입 테스트")
     void signup() {
         UserSignupRequestDto requestDto = UserSignupRequestDto.builder()
                 .username("bin0222")
@@ -224,6 +228,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("CREATE 회원탈퇴 테스트")
     void escape() {
         // given
         /**
@@ -262,6 +267,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("READ 유저 이름과 권한으로 FIND 테스트")
     void findUsersByUsernameAndRoleV1(){
         when(userRepository.findAll(any(BooleanBuilder.class),any(PageRequest.class)))
                 .thenReturn(new PageImpl<>(List.of(
@@ -283,6 +289,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("UPDATE 비밀번호 수정 테스트")
     void update(){
 //given
         UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
@@ -305,6 +312,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("UPDATE 비밀번호 수정 블일치 테스트")
     void update_비밀번호_불일치(){
         //given
         UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
@@ -326,6 +334,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("UPDATE 사용자 없을때 테스트")
     void update_사용자가_없을때(){
         //given
         UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()

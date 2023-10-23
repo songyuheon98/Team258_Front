@@ -1,4 +1,4 @@
-package com.example.team258.service;
+package com.example.team258.domain.donation.service;
 
 import com.example.team258.domain.donation.dto.BookDonationEventRequestDto;
 import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;

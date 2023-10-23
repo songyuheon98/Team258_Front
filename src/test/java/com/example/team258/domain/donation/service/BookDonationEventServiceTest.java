@@ -124,7 +124,7 @@ class BookDonationEventServiceTest {
 
     @Test
     @DisplayName("도서이벤트 SERVICE UPDATE - 정상 동작 테스트")
-    void updateDonationEvent() {
+    void dupdateDonationEvent() {
         //given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
                 .createdAt(parse("2021-09-01T00:00:00"))
