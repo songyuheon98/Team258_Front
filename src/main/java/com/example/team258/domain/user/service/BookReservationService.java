@@ -26,7 +26,7 @@ public class BookReservationService {
 
     @Transactional(readOnly = true)
     public List<BookReservationResponseDto> getRental(User user) {
-        User savedUser = userRepository.findById(user.getUserId())
+        User savedUser = userRepository.findByIdFetchBookReservation(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         return savedUser.getBookReservations().stream().map(BookReservationResponseDto::new).toList();
     }
