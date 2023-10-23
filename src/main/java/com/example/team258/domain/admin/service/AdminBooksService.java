@@ -1,15 +1,14 @@
 package com.example.team258.domain.admin.service;
 
+import com.example.team258.common.dto.BooksPageResponseDto;
+import com.example.team258.common.entity.*;
 import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
 import com.example.team258.domain.admin.dto.AdminBooksResponseDto;
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.common.entity.Book;
-import com.example.team258.common.entity.BookCategory;
-import com.example.team258.common.entity.User;
-import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.domain.admin.repository.AdminBooksRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
 //import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.BooleanBuilder;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,39 +60,23 @@ public class AdminBooksService {
         return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
     }
 
-    public Page<AdminBooksResponseDto> getAllBooksPagedAndSearched(User loginUser, String keyword, Pageable pageable) {
+    public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+
         // 검색어가 있을 경우 검색 조건을 추가
-        Specification<Book> spec = (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (StringUtils.hasText(keyword)) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("bookName")), "%" + keyword.toLowerCase() + "%"));
-            }
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
+        if (StringUtils.hasText(keyword))
+            builder.and(qBook.bookName.containsIgnoreCase(keyword));
 
         // 페이징된 엔티티를 Dto로 변환하여 반환
-        Page<AdminBooksResponseDto> adminBooksPage = adminBooksRepository.findAll(spec, pageable)
-                .map(AdminBooksResponseDto::new);
+        Page<Book> adminBooks = adminBooksRepository.findAll(builder, pageable);
+        int totalPages = adminBooks.getTotalPages();
+        List<AdminBooksResponseDto> booksResponseDtos = adminBooks.stream().map(AdminBooksResponseDto::new).toList();
 
-        //BooleanExpression predicate = Expressions.asBoolean(true).isTrue();
-        //
-        //if (StringUtils.hasText(keyword)) {
-        //    predicate = predicate.and(book.bookName.containsIgnoreCase(keyword));
-        //}
-        //
-        //Page<AdminBooksResponseDto> adminBooksPage = adminBooksRepository.findAll(predicate, pageable)
-        //        .map(AdminBooksResponseDto::new);
-
-        //    https://jojoldu.tistory.com/372
-        //    QueryDSL 의존성 주입이 안되는 상황 해결 필요
-
-
-        return adminBooksPage;
-
-
+        return new BooksPageResponseDto(booksResponseDtos, totalPages);
     }
 
     public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
@@ -149,5 +132,10 @@ public class AdminBooksService {
     private BookCategory checkExistingCategory(AdminBooksRequestDto requestDto) {
         return bookCategoryRepository.findById(requestDto.getBookCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+    }
+
+    public List<AdminBooksResponseDto> getAllBooks() {
+        return adminBooksRepository.findAll().stream()
+                .map(books -> new AdminBooksResponseDto(books)).toList();
     }
 }

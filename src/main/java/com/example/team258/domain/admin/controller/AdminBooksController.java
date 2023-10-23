@@ -15,6 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/admin/books")
 @RequiredArgsConstructor
@@ -30,12 +32,8 @@ public class AdminBooksController {
 
     // READ ALL with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPagedAndSearch(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword) {
-        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooksPagedAndSearched(userDetails.getUser(), keyword, pageable);
-        return ResponseEntity.ok(bookResponsePage);
+    public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks() {
+        return ResponseEntity.ok().body(adminBooksService.getAllBooks());
     }
 
     // READ SELECT

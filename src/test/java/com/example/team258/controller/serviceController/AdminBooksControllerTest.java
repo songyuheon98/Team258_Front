@@ -1,5 +1,6 @@
 package com.example.team258.controller.serviceController;
 
+import com.example.team258.common.dto.BooksPageResponseDto;
 import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
 import com.example.team258.domain.admin.dto.AdminBooksResponseDto;
 import com.example.team258.common.dto.MessageDto;
@@ -175,20 +176,20 @@ class AdminBooksControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminBooksService.getAllBooksPagedAndSearched(any(), any(), any()))
-                    .thenReturn(new PageImpl<>(booksList, PageRequest.of(0, 10), booksList.size()));
+            when(adminBooksService.getAllBooks()).thenReturn(booksList);
 
             // then
             mockMvc.perform(get("/api/admin/books")
                             .contentType(MediaType.APPLICATION_JSON)
                             .principal(authentication))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.content", hasSize(2)))
-                    .andExpect(jsonPath("$.content[0].bookId").value(1L))
-                    .andExpect(jsonPath("$.content[0].bookName").value("Book 1"))
-                    .andExpect(jsonPath("$.content[1].bookId").value(2L))
-                    .andExpect(jsonPath("$.content[1].bookName").value("Book 2"));
+                    .andExpect(jsonPath("$", hasSize(2)))
+                    .andExpect(jsonPath("$[0].bookId").value(1L))
+                    .andExpect(jsonPath("$[0].bookName").value("Book 1"))
+                    .andExpect(jsonPath("$[1].bookId").value(2L))
+                    .andExpect(jsonPath("$[1].bookName").value("Book 2"));
         }
+
 
 
 

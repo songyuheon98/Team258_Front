@@ -119,6 +119,7 @@ public class BookDonationEventService {
 
     }
 
+    //페이징 컨벤션 참고 위치
     public BookDonationEventOnlyPageResponseDto getDonationEventOnlyV3(PageRequest pageRequest, Long donationId, LocalDate eventStartDate, LocalDate eventEndDate) {
         QBookDonationEvent qBookDonationEvent = QBookDonationEvent.bookDonationEvent;
         BooleanBuilder builder = new BooleanBuilder();
