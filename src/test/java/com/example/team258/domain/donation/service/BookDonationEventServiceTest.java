@@ -68,11 +68,10 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(bookDonationEvent);
 
         //when
-        ResponseEntity<MessageDto> result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
+        MessageDto result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
 
         //then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
     }
 
     @Test
@@ -85,11 +84,10 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(bookDonationEvent));
 
         //when
-        ResponseEntity<MessageDto> result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
+        MessageDto result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
 
         //then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
     }
 
     @Test
@@ -127,11 +125,10 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
     }
 
     @Test
@@ -169,11 +166,10 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(400);
+        assertThat(result.getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
     }
     @Test
     void getDonationEvent() {

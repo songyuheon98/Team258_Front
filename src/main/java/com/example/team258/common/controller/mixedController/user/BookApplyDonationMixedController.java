@@ -24,6 +24,11 @@ public class BookApplyDonationMixedController {
     private final BookApplyDonationRepository bookApplyDonationRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 기부 신청 취소 페이지
+     * @param model
+     * @return
+     */
     @GetMapping("/cancel")
     public String bookApplyDonationCancelPage(Model model) {
         UserBookApplyCancelPageResponseDto userBookApplyCancelPageResponseDto = bookApplyDonationService.getDonationBooksCancel();
@@ -31,12 +36,12 @@ public class BookApplyDonationMixedController {
         return "/users/bookApplyDonationCancel";
     }
 
-    @GetMapping
-    public String bookApplyDonation(Model model) {
-        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
-
-        model.addAttribute("books", bookResponseDtos);
-
-        return "/users/bookApplyDonation";
-    }
+//    @GetMapping
+//    public String bookApplyDonation(Model model) {
+//        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
+//
+//        model.addAttribute("books", bookResponseDtos);
+//
+//        return "/users/bookApplyDonation";
+//    }
 }

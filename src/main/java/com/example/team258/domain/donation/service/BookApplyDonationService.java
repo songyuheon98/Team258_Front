@@ -40,7 +40,7 @@ public class BookApplyDonationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<MessageDto> createBookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+    public MessageDto createBookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
         /**
          * 나눔 책이 존재하지 않을때
          */
@@ -54,7 +54,7 @@ public class BookApplyDonationService {
          * 누군가 먼저 신청했을때
          */
         if(book.getBookApplyDonation()!=null){
-            return ResponseEntity.ok().body(new MessageDto("이미 누군가 먼저 신청했습니다."));
+            return new MessageDto("이미 누군가 먼저 신청했습니다.");
         }
         /**
          * 나눔 이벤트 시간이 아닐때
@@ -64,7 +64,7 @@ public class BookApplyDonationService {
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
-            return ResponseEntity.badRequest().body(new MessageDto("책 나눔 이벤트 기간이 아닙니다."));
+            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
         }
 
         /**
@@ -94,11 +94,11 @@ public class BookApplyDonationService {
          * book의 상태 변경
          */
 
-        return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 완료되었습니다."));
+        return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> deleteBookApplyDonation(Long applyId) {
+    public MessageDto deleteBookApplyDonation(Long applyId) {
         BookApplyDonation bookApplyDonation = bookApplyDonationRepository.findById(applyId)
                 .orElseThrow(()->new IllegalArgumentException("해당 신청이 존재하지 않습니다."));
 
@@ -117,7 +117,7 @@ public class BookApplyDonationService {
          */
         bookApplyDonationRepository.delete(bookApplyDonation);
 
-        return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 취소되었습니다."));
+        return new MessageDto("책 나눔 신청이 취소되었습니다.");
     }
 
     public List<BookResponseDto> getDonationBooks(BookStatusEnum bookStatus) {

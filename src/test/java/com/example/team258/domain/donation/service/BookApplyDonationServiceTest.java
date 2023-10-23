@@ -95,14 +95,13 @@ class BookApplyDonationServiceTest {
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
 
         // when
-        ResponseEntity<MessageDto> result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
+        MessageDto result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
                 .bookId(1L)
                 .donationId(1L)
                 .build());
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("책 나눔 신청이 완료되었습니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("책 나눔 신청이 완료되었습니다.");
 
     }
 
@@ -140,14 +139,13 @@ class BookApplyDonationServiceTest {
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
 
         // when
-        ResponseEntity<MessageDto> result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
+        MessageDto result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
                 .bookId(1L)
                 .donationId(1L)
                 .build());
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("이미 누군가 먼저 신청했습니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이미 누군가 먼저 신청했습니다.");
 
     }
     @Test
@@ -183,14 +181,13 @@ class BookApplyDonationServiceTest {
         when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
 
         // when
-        ResponseEntity<MessageDto> result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
+        MessageDto result =bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder()
                 .bookId(1L)
                 .donationId(1L)
                 .build());
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("책 나눔 이벤트 기간이 아닙니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(400);
+        assertThat(result.getMsg()).isEqualTo("책 나눔 이벤트 기간이 아닙니다.");
 
     }
 
@@ -214,11 +211,10 @@ class BookApplyDonationServiceTest {
         doNothing().when(bookApplyDonationRepository).delete(any(BookApplyDonation.class));
 
         // when
-        ResponseEntity<MessageDto> result = bookApplyDonationService.deleteBookApplyDonation(1L);
+        MessageDto result = bookApplyDonationService.deleteBookApplyDonation(1L);
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("책 나눔 신청이 취소되었습니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("책 나눔 신청이 취소되었습니다.");
     }
 
     @Test

@@ -75,11 +75,10 @@ class BookDonationEventServiceUnitTest {
         when(bookDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(new BookDonationEvent());
 
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.createDonationEvent(new BookDonationEventRequestDto());
+        MessageDto result = bookDonationEventService.createDonationEvent(new BookDonationEventRequestDto());
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
+        assertThat(result.getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
 
     }
 
@@ -90,11 +89,10 @@ class BookDonationEventServiceUnitTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
 
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto());
+        MessageDto result = bookDonationEventService.updateDonationEvent(1L,new BookDonationEventRequestDto());
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
+        assertThat(result.getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
     }
 
     @Test
@@ -121,11 +119,10 @@ class BookDonationEventServiceUnitTest {
         doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
+        assertThat(result.getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
     }
 
     @Test
@@ -156,11 +153,10 @@ class BookDonationEventServiceUnitTest {
         doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(result.getBody().getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
+        assertThat(result.getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
     }
 
 

@@ -50,7 +50,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.createDonationEvent(any(BookDonationEventRequestDto.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
@@ -71,7 +71,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.updateDonationEvent(any(Long.class),any(BookDonationEventRequestDto.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
@@ -91,7 +91,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.deleteDonationEvent(any(Long.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
