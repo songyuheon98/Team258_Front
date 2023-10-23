@@ -1,5 +1,7 @@
 package com.example.team258.domain.donation.service;
 
+import com.example.team258.common.dto.BookApplyDonationEventResultDto;
+import com.example.team258.common.dto.DonationV3ServiceResultDto;
 import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
@@ -13,10 +15,7 @@ import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.repository.BookApplyDonationRepository;
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -27,6 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,53 @@ class BookDonationEventServiceTest {
     void tearDown() {
         mockedSecurityUtil.close();
     }
+
+
     @Test
+    @DisplayName("donationV3ServiceTest - 정상 동작 테스트")
+    void donationV3ServiceTest(){
+// given
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("2011")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookApplyDonation bookApplyDonation = BookApplyDonation.builder()
+                .applyId(1L)
+                .applyDate(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+
+        bookDonationEvent.addBook(book);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+
+        List<BookDonationEvent> bookDonationEvents = new ArrayList<>();
+        bookDonationEvents.add(bookDonationEvent);
+
+        when(bookDonationEventRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(bookDonationEvents));
+        when(bookRepository.findBooksNoStatusByDonationId(any(Long.class),any(PageRequest.class))).thenReturn(new PageImpl<>(List.of(book)));
+
+        //when
+        DonationV3ServiceResultDto result = bookDonationEventService.donationV3Service(new int[]{0},1,PageRequest.of(0, 1));
+
+        //then
+        assertThat(result.getBookDonationEventPageResponseDtoV3().getTotalPages()).isEqualTo(1);
+        assertThat(result.getBookDonationEventPageResponseDtoV3().getBookDonationEventResponseDtoV3().get(0).getDonationId()).isEqualTo(1);
+        assertThat(result.getBookDonationEventPageResponseDtoV3().getBookDonationEventResponseDtoV3().get(0).getClosedAt()).isEqualTo("2024-09-01T00:00:00");
+        assertThat(result.getBookDonationEventPageResponseDtoV3().getBookDonationEventResponseDtoV3().get(0).getCreatedAt()).isEqualTo("2021-07-01T00:00:00");
+
+    }
+
+    @Test
+    @DisplayName("도서이벤트 SERVICE CREATE - 정상 동작 테스트")
     void createDonationEvent() {
         //given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -68,15 +114,17 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(bookDonationEvent);
 
         //when
-        ResponseEntity<MessageDto> result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
+        MessageDto result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
 
         //then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
     }
 
+
+
     @Test
-    void updateDonationEvent() {
+    @DisplayName("도서이벤트 SERVICE UPDATE - 정상 동작 테스트")
+    void dupdateDonationEvent() {
         //given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
                 .createdAt(parse("2021-09-01T00:00:00"))
@@ -85,14 +133,14 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(bookDonationEvent));
 
         //when
-        ResponseEntity<MessageDto> result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
+        MessageDto result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
 
         //then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
     }
 
     @Test
+    @DisplayName("도서이벤트 SERVICE DELETE - 정상 동작 테스트")
     void deleteDonationEvent() {
         // given
         User user = User.builder()
@@ -127,14 +175,146 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
-        assertThat(result.getStatusCodeValue()).isEqualTo(200);
+        assertThat(result.getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
     }
 
     @Test
+    @DisplayName("도서이벤트 SERVICE DELETE - 책이 없을 때 테스트")
+    void deleteDonationEvent_책없을때() {
+        // given
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.ADMIN)
+                .bookApplyDonations(new ArrayList<>())
+                .build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("2011")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookApplyDonation bookApplyDonation = BookApplyDonation.builder()
+                .applyId(1L)
+                .applyDate(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .build();
+
+        bookDonationEvent.addBook(book);
+        bookApplyDonation.addBook(book);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+
+        when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(bookDonationEvent));
+        when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.of(bookApplyDonation));
+        when(bookRepository.findById(any())).thenReturn(Optional.empty());
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.deleteDonationEvent(1L));
+    }
+
+    @Test
+    @DisplayName("도서이벤트 SERVICE DELETE - 해당 신청이 없을 때 테스트")
+    void deleteDonationEvent_신청이_존재하지_않을때() {
+        // given
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.ADMIN)
+                .bookApplyDonations(new ArrayList<>())
+                .build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("2011")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookApplyDonation bookApplyDonation = BookApplyDonation.builder()
+                .applyId(1L)
+                .applyDate(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .build();
+
+        bookDonationEvent.addBook(book);
+        bookApplyDonation.addBook(book);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+
+        when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(bookDonationEvent));
+        when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookRepository.findById(any())).thenReturn(Optional.of(book));
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.deleteDonationEvent(1L));
+    }
+
+    @Test
+    @DisplayName("도서이벤트 SERVICE DELETE - 해당 이벤트가 없을 때 테스트")
+    void deleteDonationEvent_이벤트가_없을_때() {
+        // given
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.ADMIN)
+                .bookApplyDonations(new ArrayList<>())
+                .build();
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("2011")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookApplyDonation bookApplyDonation = BookApplyDonation.builder()
+                .applyId(1L)
+                .applyDate(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .build();
+
+        bookDonationEvent.addBook(book);
+        bookApplyDonation.addBook(book);
+        bookDonationEvent.getBookApplyDonations().add(bookApplyDonation);
+
+        when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.of(bookApplyDonation));
+        when(bookRepository.findById(any())).thenReturn(Optional.of(book));
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.deleteDonationEvent(1L));
+    }
+
+    @Test
+    @DisplayName("도서이벤트 SERVICE DELETE - 이벤트삭제 주체가 user일때 테스트")
     void deleteDonationEvent_이벤트삭제_주체가_user일때() {
         // given
         User user = User.builder()
@@ -169,13 +349,13 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        ResponseEntity<MessageDto> result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
-        assertThat(result.getBody().getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
-        assertThat(result.getStatusCodeValue()).isEqualTo(400);
+        assertThat(result.getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
     }
     @Test
+    @DisplayName("도서이벤트 READ V1 테스트")
     void getDonationEvent() {
 // given
         Book book = Book.builder()
@@ -221,6 +401,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("도서이벤트 READ V2 테스트")
     void getDonationEventV2() {
         // given
         Book book = Book.builder()
@@ -259,6 +440,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("도서이벤트 READ V3 테스트 ( 페이징 + QUERY DSL ) ")
     void getDonationEventV3() {
         // given
         Book book = Book.builder()
@@ -298,6 +480,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("도서이벤트 이벤트만!! READ V2 테스트")
     void getDonationEventOnlyV2() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -323,6 +506,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("도서이벤트만 READ V3 ( 페이징 + QUERY DSL 테스트")
     void getDonationEventOnlyV3() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -337,7 +521,7 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findAll(any(BooleanBuilder.class),any(Pageable.class))).thenReturn(bookDonationEvents);
 
         // when
-        BookDonationEventOnlyPageResponseDto result = bookDonationEventService.getDonationEventOnlyV3(PageRequest.of(0, 1), 1L, null, null);
+        BookDonationEventOnlyPageResponseDto result = bookDonationEventService.getDonationEventOnlyV3(PageRequest.of(0, 1), 1L, LocalDate.now(), LocalDate.now());
 
         // then
         assertThat(result.getBookDonationEventOnlyResponseDtos().get(0).getDonationId()).isEqualTo(1L);
@@ -347,6 +531,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("도서이벤트 페이지 READ  테스트")
     void getDonationEventPage() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -369,6 +554,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("UPDATE - 도서이벤트에 책 추가 테스트")
     void settingDonationEvent() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -402,6 +588,70 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("UPDATE - 도서이벤트에 책 추가 / 해당 이벤트가 존재하지 않을때 테스트")
+    void settingDonationEvent_이벤트가_존재하지_않을때() {
+        // given
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("bookPublish")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookDonationSettingRequestDto bookDonationSettingRequestDto = BookDonationSettingRequestDto.builder()
+                .donationId(1L)
+                .bookIds(List.of(1L))
+                .build();
+
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.settingDonationEvent(bookDonationSettingRequestDto));
+    }
+
+    @Test
+    @DisplayName("UPDATE - 도서이벤트에 책 추가 테스트 / 해당 책이 존재하지 않을때")
+    void settingDonationEvent_해당_책이_존재하지_않을때() {
+        // given
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("bookPublish")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+        BookDonationSettingRequestDto bookDonationSettingRequestDto = BookDonationSettingRequestDto.builder()
+                .donationId(1L)
+                .bookIds(List.of(1L))
+                .build();
+
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(bookDonationEvent));
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.settingDonationEvent(bookDonationSettingRequestDto));
+
+    }
+
+    @Test
+    @DisplayName("DELETE - 도서이벤트에 책 취소 테스트")
     void settingCancelDonationEvent() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -436,6 +686,7 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("DELETE - 도서이벤트에 책 취소 테스트 / 해당 이벤트가 존재하지 않을때")
     void settingCancelDonationEvent_해당_이벤트가_존재하지_않을_때() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -467,6 +718,7 @@ class BookDonationEventServiceTest {
         });
     }
     @Test
+    @DisplayName("DELETE - 도서이벤트에 책 취소 테스트 / 해당 책이 존재하지 않을때")
     void settingCancelDonationEvent_해당_책이_존재하지_않을_때() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -498,6 +750,7 @@ class BookDonationEventServiceTest {
         });
     }
     @Test
+    @DisplayName("DELETE - 도서이벤트 종료 테스트")
     void endDonationEvent() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -528,6 +781,35 @@ class BookDonationEventServiceTest {
     }
 
     @Test
+    @DisplayName("DELETE - 도서이벤트 종료 테스트 / 해당 이벤트가 존재하지 않을때")
+    void endDonationEvent_해당_이벤트가_존재하지_않을때() {
+        // given
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.ADMIN)
+                .bookApplyDonations(new ArrayList<>())
+                .build();
+
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        doNothing().when(bookDonationEventRepository).delete(bookDonationEvent);
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.endDonationEvent(1L));
+    }
+    @Test
+    @DisplayName("DELETE - 도서이벤트 종료 테스트 / 관리자가 아닐 때")
     void endDonationEvent_관리자가_아닐_때() {
         // given
         BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
@@ -557,4 +839,64 @@ class BookDonationEventServiceTest {
         assertThat(result.getMsg()).isEqualTo("관리자만 이벤트를 종료할 수 있습니다.");
     }
 
+    @Test
+    @DisplayName("READ 특정 이벤트에 대한 책 목록 페이징 반환 테스트")
+    void bookApplyDonationEventPageV2ResultTest(){
+        // given
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("bookPublish")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+
+
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(bookDonationEvent));
+        when(bookRepository.findBooksByDonationId(any(),any(),any())).thenReturn(new PageImpl<>(List.of(book)));
+
+        BookApplyDonationEventResultDto result = bookDonationEventService.bookApplyDonationEventPageV2Result(PageRequest.of(0,1),1L);
+
+        assertThat(result.getBookDonationEventResponseDto().getDonationId()).isEqualTo(1L);
+        assertThat(result.getBookDonationEventResponseDto().getClosedAt()).isEqualTo(LocalDateTime.parse("2024-09-01T00:00:00"));
+        assertThat(result.getBookDonationEventResponseDto().getCreatedAt()).isEqualTo(LocalDateTime.parse("2021-07-01T00:00:00"));
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getBookResponseDtos().get(0).getBookId()).isEqualTo(1L);
+        assertThat(result.getBookResponseDtos().get(0).getBookName()).isEqualTo("bookName");
+
+    }
+    @Test
+    @DisplayName("READ 특정 이벤트에 대한 책 목록 페이징 반환 테스트 / 해당 이벤트가 존재하지 않을때")
+    void bookApplyDonationEventPageV2ResultTest_해당_이벤트가_존재하지_않을_때(){
+        // given
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .donationId(1L)
+                .createdAt(LocalDateTime.parse("2021-07-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-09-01T00:00:00"))
+                .bookApplyDonations(new ArrayList<>())
+                .books(new ArrayList<>())
+                .build();
+
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("bookPublish")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
+
+
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(bookRepository.findBooksByDonationId(any(),any(),any())).thenReturn(new PageImpl<>(List.of(book)));
+
+        assertThrows(IllegalArgumentException.class,()->bookDonationEventService.bookApplyDonationEventPageV2Result(PageRequest.of(0,1),1L));
+    }
 }

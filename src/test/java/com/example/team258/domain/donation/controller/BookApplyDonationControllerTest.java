@@ -54,7 +54,7 @@ class BookApplyDonationControllerTest {
                 .build();
 
         // when
-        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(msg);
 
         // then
         mockMvc.perform(post("/api/user/bookApplyDonation")
@@ -73,7 +73,7 @@ class BookApplyDonationControllerTest {
                 .build();
 
         // when
-        when(bookApplyDonationService.deleteBookApplyDonation(any(Long.class))).thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+        when(bookApplyDonationService.deleteBookApplyDonation(any(Long.class))).thenReturn(msg);
 
         // then
         mockMvc.perform(delete("/api/user/bookApplyDonation/{applyId}", 1L))
