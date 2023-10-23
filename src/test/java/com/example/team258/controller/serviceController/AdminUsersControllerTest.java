@@ -1,11 +1,11 @@
 package com.example.team258.controller.serviceController;
 
-import com.example.team258.domain.admin.dto.AdminResponseDto;
+import com.example.team258.domain.admin.dto.AdminUsersResponseDto;
 import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.common.security.UserDetailsImpl;
-import com.example.team258.domain.admin.service.AdminService;
+import com.example.team258.domain.admin.service.AdminUsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,12 +38,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(addFilters = false)
-class AdminControllerTest {
+class AdminUsersControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AdminService adminService;
+    private AdminUsersService adminUsersService;
 
     @Autowired
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -84,13 +84,13 @@ class AdminControllerTest {
         @DisplayName("단순_회원조회_테스트")
         void 단순_회원조회_테스트() throws Exception {
             // given
-            List<AdminResponseDto> userList = new ArrayList<>();
-            userList.add(new AdminResponseDto(user1));
-            userList.add(new AdminResponseDto(user2));
-            userList.add(new AdminResponseDto(adminUser));
+            List<AdminUsersResponseDto> userList = new ArrayList<>();
+            userList.add(new AdminUsersResponseDto(user1));
+            userList.add(new AdminUsersResponseDto(user2));
+            userList.add(new AdminUsersResponseDto(adminUser));
 
             // when
-            when(adminService.getAllUsers())
+            when(adminUsersService.getAllUsers())
                     .thenReturn(userList);
 
             // then
@@ -108,7 +108,7 @@ class AdminControllerTest {
                     .build();
 
             // when
-            when(adminService.deleteUser(user1.getUserId(), user1)).thenReturn(msg);
+            when(adminUsersService.deleteUser(user1.getUserId(), user1)).thenReturn(msg);
 
             // then
             mockMvc.perform(delete("/api/admin/users/{userId}", user1.getUserId())
@@ -126,10 +126,10 @@ class AdminControllerTest {
         @DisplayName("회원 조회 성공 - ADMIN으로 로그인한 경우에 성공")
         void 관리자_회원목록조회_테스트() throws Exception {
             // given
-            List<AdminResponseDto> userList = new ArrayList<>();
-            userList.add(new AdminResponseDto(user1));
-            userList.add(new AdminResponseDto(user2));
-            userList.add(new AdminResponseDto(adminUser));
+            List<AdminUsersResponseDto> userList = new ArrayList<>();
+            userList.add(new AdminUsersResponseDto(user1));
+            userList.add(new AdminUsersResponseDto(user2));
+            userList.add(new AdminUsersResponseDto(adminUser));
 
             // 가상의 ADMIN으로 로그인 상태를 설정
             UserDetailsImpl adminUserDetails = new UserDetailsImpl(adminUser);
@@ -137,7 +137,7 @@ class AdminControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminService.getAllUsers())
+            when(adminUsersService.getAllUsers())
                     .thenReturn(userList);
 
             // then
@@ -160,7 +160,7 @@ class AdminControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminService.deleteUser(user1.getUserId(), adminUser)).thenReturn(msg);
+            when(adminUsersService.deleteUser(user1.getUserId(), adminUser)).thenReturn(msg);
 
             // then
             mockMvc.perform(delete("/api/admin/users/{userId}", 1L)
