@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookApplyDonationMixedController {
     private final BookApplyDonationService bookApplyDonationService;
-    private final BookDonationEventService bookDonationEventService;
-    private final BookApplyDonationRepository bookApplyDonationRepository;
-    private final UserRepository userRepository;
+//    private final BookDonationEventService bookDonationEventService;
+//    private final BookApplyDonationRepository bookApplyDonationRepository;
+//    private final UserRepository userRepository;
 
     /**
      * 기부 신청 취소 페이지

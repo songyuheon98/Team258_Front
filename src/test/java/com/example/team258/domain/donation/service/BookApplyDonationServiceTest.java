@@ -19,10 +19,7 @@ import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.repository.BookApplyDonationRepository;
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -38,6 +35,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -103,6 +101,44 @@ class BookApplyDonationServiceTest {
         // then
         assertThat(result.getMsg()).isEqualTo("책 나눔 신청이 완료되었습니다.");
 
+    }
+
+    @Test
+    void createBookApplyDonation_나눔_신청한_책이_존재하지_않을떄() {
+        // given
+        Book book = Book.builder()
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("bookPublish")
+                .bookStatus(BookStatusEnum.valueOf("POSSIBLE"))
+                .build();
+
+        BookDonationEvent bookDonationEvent = BookDonationEvent.builder()
+                .createdAt(LocalDateTime.parse("2021-08-01T00:00:00"))
+                .closedAt(LocalDateTime.parse("2024-10-01T00:00:00"))
+                .donationId(1L)
+                .build();
+
+        User user = User.builder()
+                .userId(1L)
+                .username("username")
+                .password("password")
+                .role(UserRoleEnum.USER)
+                .build();
+
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(book));
+        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
+        when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(bookApplyDonationRepository.save(any(BookApplyDonation.class))).thenReturn(BookApplyDonation.builder().build());
+
+        // when
+        // then
+        assertThrows(IllegalArgumentException.class,
+                ()->bookApplyDonationService.createBookApplyDonation(BookApplyDonationRequestDto.builder().donationId(1L).build()));
     }
 
     @Test
@@ -341,4 +377,5 @@ class BookApplyDonationServiceTest {
 
 
     }
+
 }

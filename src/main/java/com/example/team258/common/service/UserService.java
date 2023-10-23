@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -96,7 +97,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> update(UserUpdateRequestDto requestDto) {
+    public MessageDto update(UserUpdateRequestDto requestDto) {
         if(!requestDto.getPassword1().equals(requestDto.getPassword2())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
@@ -108,10 +109,10 @@ public class UserService {
         String passwordE = passwordEncoder.encode(requestDto.getPassword1());
         user.update(passwordE);
 
-        return new ResponseEntity<>(new MessageDto("회원 정보 수정이 완료되었습니다"), null, HttpStatus.OK);
+        return new MessageDto("회원 정보 수정이 완료되었습니다");
     }
 
-    public Page<User> findUsersByUsernameAndRoleV1(String username, String userRole, Pageable pageable) {
+    public Page<User> findUsersByUsernameAndRoleV1(String username, String userRole, PageRequest pageRequest) {
         QUser qUser = QUser.user;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -124,7 +125,7 @@ public class UserService {
         if(!username.isEmpty())
             builder.and(qUser.username.contains(username));
 
-        Page<User> users = userRepository.findAll(builder,pageable);
+        Page<User> users = userRepository.findAll(builder,pageRequest);
 
         return users;
     }

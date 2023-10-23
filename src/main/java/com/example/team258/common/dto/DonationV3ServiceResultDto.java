@@ -3,8 +3,10 @@ package com.example.team258.common.dto;
 
 import com.example.team258.domain.donation.dto.BookDonationEventPageResponseDtoV3;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class DonationV3ServiceResultDto {
     private BookDonationEventPageResponseDtoV3 bookDonationEventPageResponseDtoV3;
     private int bookPages[];

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,8 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookDonationEventMixedController {
     private final BookDonationEventService bookDonationEventService;
-    private final BookDonationEventRepository bookDonationEventRepository;
-    private final BookRepository bookRepository;
 
     @GetMapping
     public String bookDonation(Model model) {
@@ -76,7 +75,7 @@ public class BookDonationEventMixedController {
         PageRequest pageRequest = PageRequest.of(page, 8);  // page 파라미터로 받은 값을 사용
 
         BookDonationEventOnlyPageResponseDto bookDonationEventOnlyPageResponseDto = bookDonationEventService.getDonationEventOnlyV3(pageRequest,eventId,eventStartDate,eventEndDate);
-
+        BookDonationEventOnlyPageResponseDto a= bookDonationEventService.getDonationEventOnlyV3(pageRequest,eventId,eventStartDate,eventEndDate);
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages", bookDonationEventOnlyPageResponseDto.getTotalpages());
         model.addAttribute("events", bookDonationEventOnlyPageResponseDto.getBookDonationEventOnlyResponseDtos());

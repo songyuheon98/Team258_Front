@@ -49,7 +49,6 @@ public class BookApplyDonationService {
         /**
          * 나눔 신청한 책이 나눔 상태가 아닐때
          */
-
         /**
          * 누군가 먼저 신청했을때
          */

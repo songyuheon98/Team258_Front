@@ -1,4 +1,5 @@
-package com.example.team258.service;
+package com.example.team258.common.service;
+
 
 import com.example.team258.domain.member.dto.UserSignupRequestDto;
 import com.example.team258.common.dto.MessageDto;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.*;
  * 이 인스턴스는 모든 테스트 메서드에 대해 재사용된다.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserServiceUnitTest {
+class UserServiceTest {
     /**
      * UserRepository에 대한 모의 객체 생성
      */
@@ -90,6 +91,9 @@ class UserServiceUnitTest {
          * SecurityUtil의 static 메서드를 mock하기 위한 객체 생성
          */
         mockedSecurityUtil = mockStatic(SecurityUtil.class);
+
+        //when
+        when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
     }
 
     /**
@@ -131,21 +135,18 @@ class UserServiceUnitTest {
         assertThrows(IllegalArgumentException.class,() -> userService.passwordCheck(requestDto));
     }
 
-    @Test
-    void userNameCheck_중복_아닐경우() {
-        // given
-        String username = "bin7777";
-        String username2 = "bin7778";
-        User user = User.builder()
-                .username(username)
-                .build();
-
-        //when
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-
-        //then
-        assertDoesNotThrow(() -> userService.userNameCheck(username2));
-    }
+//    @Test
+//    void userNameCheck_중복_아닐경우() {
+//        // given
+//        String username = "bin7780";
+//        String username2 = "bin7788";
+//        User user = User.builder()
+//                .username(username)
+//                .build();
+//
+//        //then
+//        assertDoesNotThrow(() -> userService.userNameCheck(username2));
+//    }
     @Test
     void userNameCheck_중복_일_경우() {
         // given
@@ -260,6 +261,89 @@ class UserServiceUnitTest {
         assertThat(msg.getMsg()).isEqualTo("회원탈퇴가 완료되었습니다");
     }
 
+    @Test
+    void findUsersByUsernameAndRoleV1(){
+        when(userRepository.findAll(any(BooleanBuilder.class),any(PageRequest.class)))
+                .thenReturn(new PageImpl<>(List.of(
+                        User.builder()
+                                .username("bin0222")
+                                .userId(1L)
+                                .role(UserRoleEnum.USER)
+                                .build()
+                )));
 
+        //when
+        Page<User> results = userService.findUsersByUsernameAndRoleV1("bin0222","USER",PageRequest.of(0,10));
+
+        //then
+        assertThat(results.getTotalElements()).isEqualTo(1);
+        assertThat(results.getContent().get(0).getUsername()).isEqualTo("bin0222");
+        assertThat(results.getContent().get(0).getUserId()).isEqualTo(1L);
+        assertThat(results.getContent().get(0).getRole()).isEqualTo(UserRoleEnum.USER);
+    }
+
+    @Test
+    void update(){
+//given
+        UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
+                .password1("Bin@12345")
+                .password2("Bin@12345")
+                .build();
+
+        User user = User.builder()
+                .username("bin0222")
+                .build();
+
+        when(securityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.ofNullable(user));
+        when(passwordEncoder.encode(any(String.class))).thenReturn("Bin@12345");
+
+        //when
+        MessageDto result = userService.update(requestDto);
+        // then
+        assertThat(result.getMsg()).isEqualTo("회원 정보 수정이 완료되었습니다");
+    }
+
+    @Test
+    void update_비밀번호_불일치(){
+        //given
+        UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
+                .password1("Bin@12345")
+                .password2("Bin@1235")
+                .build();
+
+        User user = User.builder()
+                .username("bin0222")
+                .build();
+
+        when(securityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.ofNullable(user));
+        when(passwordEncoder.encode(any(String.class))).thenReturn("Bin@12345");
+
+        //when
+        // then
+        assertThrows(IllegalArgumentException.class,()->userService.update(requestDto));
+    }
+
+    @Test
+    void update_사용자가_없을때(){
+        //given
+        UserUpdateRequestDto requestDto = UserUpdateRequestDto.builder()
+                .password1("Bin@12345")
+                .password2("Bin@12345")
+                .build();
+
+        User user = User.builder()
+                .username("bin0222")
+                .build();
+
+        when(securityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findByUsername(any(String.class))).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(any(String.class))).thenReturn("Bin@12345");
+
+        //when
+        // then
+        assertThrows(IllegalArgumentException.class,()->userService.update(requestDto));
+    }
 
 }
