@@ -120,5 +120,4 @@ public class SearchService {
         }
         return answer;
     }
-
 }
