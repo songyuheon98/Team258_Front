@@ -75,10 +75,13 @@ public class BookDonationEventMixedController {
         PageRequest pageRequest = PageRequest.of(page, 8);  // page 파라미터로 받은 값을 사용
 
         BookDonationEventOnlyPageResponseDto bookDonationEventOnlyPageResponseDto = bookDonationEventService.getDonationEventOnlyV3(pageRequest,eventId,eventStartDate,eventEndDate);
-        BookDonationEventOnlyPageResponseDto a= bookDonationEventService.getDonationEventOnlyV3(pageRequest,eventId,eventStartDate,eventEndDate);
+
+
+
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages", bookDonationEventOnlyPageResponseDto.getTotalpages());
         model.addAttribute("events", bookDonationEventOnlyPageResponseDto.getBookDonationEventOnlyResponseDtos());
+
 
         return "/users/bookDonationEventV2";
     }

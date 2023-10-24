@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +175,14 @@ public class BookDonationEventService {
         Page<BookDonationEvent> bookDonationEvents =bookDonationEventRepository.findAll(builder,pageRequest);
         int totalPages = bookDonationEvents.getTotalPages();
         List<BookDonationEventOnlyResponseDto> bookDonationEventResponseDtos = bookDonationEvents.stream().map(BookDonationEventOnlyResponseDto::new).toList();
-        return new BookDonationEventOnlyPageResponseDto(bookDonationEventResponseDtos, totalPages);
+
+        if(bookDonationEventResponseDtos.size()!=0)
+            return new BookDonationEventOnlyPageResponseDto(bookDonationEventResponseDtos, totalPages);
+
+
+        return new BookDonationEventOnlyPageResponseDto(List.of(
+                new BookDonationEventOnlyResponseDto(-1L,LocalDateTime.parse("0001-01-01T00:00:00"),
+                LocalDateTime.parse("0001-01-01T00:00:00"))), 1);
 
     }
     public List<BookDonationEventResponseDto> getDonationEventPage() {

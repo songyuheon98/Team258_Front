@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class Book {
      * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
      */
     @OneToOne(fetch = FetchType.LAZY)
+//    @BatchSize(size = 100)
     @JoinColumn(name = "apply_id")
     private BookApplyDonation bookApplyDonation;
 
