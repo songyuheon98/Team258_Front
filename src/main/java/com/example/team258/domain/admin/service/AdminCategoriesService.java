@@ -1,26 +1,22 @@
 package com.example.team258.domain.admin.service;
 
+import com.example.team258.common.dto.BooksCategoryPageResponseDto;
+import com.example.team258.common.entity.*;
 import com.example.team258.domain.admin.dto.AdminCategoriesRequestDto;
 import com.example.team258.domain.admin.dto.AdminCategoriesResponseDto;
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.common.entity.Book;
-import com.example.team258.common.entity.BookCategory;
-import com.example.team258.common.entity.User;
-import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.domain.admin.repository.AdminBooksRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
-import jakarta.persistence.criteria.Predicate;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -72,24 +68,24 @@ public class AdminCategoriesService {
                 .toList();
     }
 
-    public Page<AdminCategoriesResponseDto> getAllCategoriesPagedAndSearch(User loginUser, String keyword, Pageable pageable) {
+    public BooksCategoryPageResponseDto findBooksCategoriesWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
+        QBookCategory qBookCategory = QBookCategory.bookCategory;
+        BooleanBuilder builder = new BooleanBuilder();
+
         // 검색어가 있을 경우 검색 조건을 추가
-        Specification<BookCategory> spec = (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-            if (StringUtils.hasText(keyword)) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("bookCategoryName")), "%" + keyword.toLowerCase() + "%"));
-            }
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
+        if (StringUtils.hasText(keyword))
+            builder.and(qBookCategory.bookCategoryName.containsIgnoreCase(keyword));
 
         // 페이징된 엔티티를 Dto로 변환하여 반환
-        Page<AdminCategoriesResponseDto> adminCategoriesPage = bookCategoryRepository.findAll(spec, pageable)
-                .map(AdminCategoriesResponseDto::new);
+        Page<BookCategory> bookCategories = bookCategoryRepository.findAll(builder, pageable);
+        int totalPages = bookCategories.getTotalPages();
+        List<AdminCategoriesResponseDto> categoriesResponseDtos = bookCategories.stream().map(AdminCategoriesResponseDto::new).toList();
 
-        return adminCategoriesPage;
+        return new BooksCategoryPageResponseDto(categoriesResponseDtos, totalPages);
+
     }
 
     @Transactional
@@ -147,7 +143,8 @@ public class AdminCategoriesService {
     }
 
     private void validateUserAuthority(User loginUser) {
-        if (!loginUser.getRole().equals(UserRoleEnum.ADMIN)){
+        UserRoleEnum userRole = loginUser.getRole();
+        if (userRole == null || !userRole.equals(UserRoleEnum.ADMIN)) {
             throw new IllegalArgumentException("해당 작업을 수행할 권한이 없습니다.");
         }
     }

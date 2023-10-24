@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -174,19 +172,19 @@ class AdminCategoriesControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminCategoriesService.getAllCategoriesPagedAndSearch(any(), any(), any()))
-                    .thenReturn(new PageImpl<>(categoriesList, PageRequest.of(0, 10), categoriesList.size()));
+            when(adminCategoriesService.getAllCategories())
+                    .thenReturn(categoriesList);
 
             // then
             mockMvc.perform(get("/api/admin/categories")
                             .contentType(MediaType.APPLICATION_JSON)
                             .principal(authentication))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.content", hasSize(2))) // 반환된 목록의 크기가 2여야 함
-                    .andExpect(jsonPath("$.content[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
-                    .andExpect(jsonPath("$.content[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
-                    .andExpect(jsonPath("$.content[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
-                    .andExpect(jsonPath("$.content[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
+                    .andExpect(jsonPath("$", hasSize(2))) // 반환된 목록의 크기가 2여야 함
+                    .andExpect(jsonPath("$[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
+                    .andExpect(jsonPath("$[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
         }
 
 

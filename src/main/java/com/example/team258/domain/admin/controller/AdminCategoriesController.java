@@ -6,14 +6,12 @@ import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/admin/categories")
@@ -38,12 +36,8 @@ public class AdminCategoriesController {
 
     // READ All Categories with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPagedAndSearch(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword) {
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearch(userDetails.getUser(), keyword, pageable);
-        return ResponseEntity.ok(categoryResponsePage);
+    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories() {
+        return ResponseEntity.ok().body(adminCategoriesService.getAllCategories());
     }
 
     // UPDATE Category Name

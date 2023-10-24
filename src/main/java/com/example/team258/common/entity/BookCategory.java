@@ -28,7 +28,7 @@ public class BookCategory {
     private String bookCategoryName;
 
     @Builder.Default
-    @OneToMany(orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "bookCategory")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookCategory")
     private List<Book> books = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
