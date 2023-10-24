@@ -8,6 +8,7 @@ import com.example.team258.common.entity.User;
 import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.common.repository.UserRepository;
 import com.example.team258.domain.donation.entity.BookApplyDonation;
+import com.example.team258.domain.user.entity.BookRent;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,12 @@ public class AdminUsersService {
 //            throw new IllegalArgumentException("자기 자신은 삭제할 수 없습니다.");
 //        }
 //
+        //대여기록 삭제를 위한 Book에서의 연관관계 삭제
+        List<BookRent> bookRents = user.getBookRents();
+        for (BookRent bookRent : bookRents) {
+            bookRent.getBook().deleteRental();
+        }
+
         int bookApplyDonationSize = user.getBookApplyDonations().size();
         int reservationsSize = user.getBookReservations().size();
         int rentSize =user.getBookRents().size();
