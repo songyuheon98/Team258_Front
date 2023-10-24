@@ -146,7 +146,7 @@ class BookRentServiceTest {
 
         //when
         when(bookRepository.findById(3L)).thenReturn(Optional.of(book3));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         //then
         MessageDto result = bookRentService.deleteRental(3L, user1);
         assertThat(result.getMsg()).isEqualTo("도서 반납이 완료되었습니다");
@@ -175,7 +175,7 @@ class BookRentServiceTest {
 
         //when
         when(bookRepository.findById(3L)).thenReturn(Optional.of(book3));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         when(bookRentRepository.save(any(BookRent.class))).thenReturn(new BookRent(book3));
         //then
         MessageDto result = bookRentService.deleteRental(3L, user1);
@@ -209,7 +209,7 @@ class BookRentServiceTest {
 
         //when
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book1));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         //then
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
                 bookRentService.deleteRental(1L, user1));
@@ -228,7 +228,7 @@ class BookRentServiceTest {
 
         //when
         when(bookRepository.findById(2L)).thenReturn(Optional.of(book2));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findByIdFetchBookRent(1L)).thenReturn(Optional.of(user1));
         //then
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
                 bookRentService.deleteRental(2L, user1));
