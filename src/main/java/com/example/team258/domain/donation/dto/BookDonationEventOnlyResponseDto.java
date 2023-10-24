@@ -1,6 +1,7 @@
 package com.example.team258.domain.donation.dto;
 
 import com.example.team258.domain.donation.entity.BookDonationEvent;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,5 +16,11 @@ public class BookDonationEventOnlyResponseDto {
         this.donationId = bookDonationEvent.getDonationId();
         this.createdAt = bookDonationEvent.getCreatedAt();
         this.closedAt = bookDonationEvent.getClosedAt();
+    }
+
+    public BookDonationEventOnlyResponseDto(Long donationId, LocalDateTime createdAt, LocalDateTime closedAt) {
+        this.donationId = donationId;
+        this.createdAt = createdAt;
+        this.closedAt = closedAt;
     }
 }

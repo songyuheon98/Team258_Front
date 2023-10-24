@@ -29,4 +29,15 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
     Optional<User> findByIdFetchBookReservation(@Param("userId") Long userId);
 
 
+    /**
+     * 1대 다 관계라서 데이터 뻥튀기 가능
+     */
+    @Query("select u from users u " +
+            "join fetch u.bookApplyDonations bad " +
+            "join fetch u.bookRents br " +
+            "join fetch u.bookReservations brd " +
+            "where u.userId = :userId")
+    Optional<User> findFetchJoinById(@Param("userId") Long userId);
+
+
 }

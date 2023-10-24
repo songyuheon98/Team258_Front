@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="event : ${events}">
+                <tr th:each="event : ${events}" th:unless="${event.donationId == -1}">
                     <td><label>
                         <input class="form-control" type="text" th:value="${event.donationId}" name="donationId" readonly/>
                     </label></td>
@@ -54,6 +54,7 @@
                     </td>
                 </tr>
                 </tbody>
+
             </table>
             <div>
                 <ul class="pagination">

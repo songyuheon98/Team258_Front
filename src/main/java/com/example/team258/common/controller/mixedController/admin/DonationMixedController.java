@@ -144,7 +144,7 @@ public class DonationMixedController {
 //        return "/admin/donationV4";
 //    }
 
-/*
+//
 //    @GetMapping("/bookSetting/{donationId}")
 //    public String bookSetting(@PathVariable Long donationId, Model model) {
 //        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.POSSIBLE);
@@ -166,7 +166,7 @@ public class DonationMixedController {
 //        model.addAttribute("donationId", donationId);
 //        return "/admin/bookSettingV2";
 //    }
-*/
+
 
     /**
      * 관리자 - 책 설정 페이지

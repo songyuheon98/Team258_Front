@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +30,7 @@ public class BookApplyDonation {
      * 도서 나눔 신청 취소할 시 도서 삭제되는 문제 발생 -> 도서와의 연관 관계 null로 변경하고 삭제하는 걸로 해결
      */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "bookApplyDonation", cascade = CascadeType.REMOVE)
+//    @BatchSize(size = 100)
     private Book book;
 
     public BookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {

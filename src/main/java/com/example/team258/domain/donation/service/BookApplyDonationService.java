@@ -44,6 +44,7 @@ public class BookApplyDonationService {
         /**
          * 나눔 책이 존재하지 않을때
          */
+
         Book book = bookRepository.findById(bookApplyDonationRequestDto.getBookId())
                 .orElseThrow(()->new IllegalArgumentException("나눔 신청한 책이 존재하지 않습니다."));
         /**

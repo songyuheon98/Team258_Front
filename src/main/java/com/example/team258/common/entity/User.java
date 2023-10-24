@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,8 @@ public class User extends Timestamped{
     private List<BookRent> bookRents = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY)
+//    @BatchSize(size = 100)
     @JoinColumn(name = "user_id")
     private List<BookApplyDonation> bookApplyDonations = new ArrayList<>();
 
