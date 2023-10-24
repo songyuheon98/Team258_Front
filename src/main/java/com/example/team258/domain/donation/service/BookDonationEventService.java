@@ -38,7 +38,6 @@ public class BookDonationEventService {
     private final BookDonationEventRepository bookDonationEventRepository;
     private final BookRepository bookRepository;
     private final BookApplyDonationRepository bookApplyDonationRepository;
-    private final EntityManager em;
     public DonationV3ServiceResultDto donationV3Service(int[] bookPage, int bookPagesize, PageRequest eventPageRequest) {
         /**
          * 이벤트 페이징 리스트

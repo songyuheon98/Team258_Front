@@ -37,6 +37,7 @@ class BookDonationEventServiceUnitTest {
     @Mock private BookDonationEventRepository bookDonationEventRepository;
     @Mock private BookRepository bookRepository;
 
+
     @Mock private BookApplyDonationRepository bookApplyDonationRepository;
     @Mock private SecurityUtil securityUtil;
     private BookDonationEventService bookDonationEventService;
@@ -115,7 +116,7 @@ class BookDonationEventServiceUnitTest {
                 .build();
 
         given(securityUtil.getPrincipal()).willReturn(Optional.ofNullable(user));
-        when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
+        when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.of(new BookDonationEvent()));
         doNothing().when(bookDonationEventRepository).delete(any(BookDonationEvent.class));
 
         // when
