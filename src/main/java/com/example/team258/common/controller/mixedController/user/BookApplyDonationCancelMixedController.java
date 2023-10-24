@@ -1,5 +1,7 @@
 package com.example.team258.common.controller.mixedController.user;
 
+import com.example.team258.common.dto.BookResponseDto;
+import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.domain.donation.dto.UserBookApplyCancelPageResponseDto;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users/bookApplyDonation")
@@ -29,12 +33,12 @@ public class BookApplyDonationCancelMixedController {
         return "/users/bookApplyDonationCancel";
     }
 
-//    @GetMapping
-//    public String bookApplyDonation(Model model) {
-//        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
-//
-//        model.addAttribute("books", bookResponseDtos);
-//
-//        return "/users/bookApplyDonation";
-//    }
+    @GetMapping
+    public String bookApplyDonation(Model model) {
+        List<BookResponseDto> bookResponseDtos = bookApplyDonationService.getDonationBooks(BookStatusEnum.DONATION);
+
+        model.addAttribute("books", bookResponseDtos);
+
+        return "/users/bookApplyDonation";
+    }
 }

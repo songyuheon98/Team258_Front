@@ -45,7 +45,6 @@ public class User extends Timestamped{
 
     @Builder.Default
     @OneToMany(orphanRemoval = true,fetch = FetchType.LAZY)
-//    @BatchSize(size = 100)
     @JoinColumn(name = "user_id")
     private List<BookApplyDonation> bookApplyDonations = new ArrayList<>();
 

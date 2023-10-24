@@ -365,7 +365,7 @@ class BookApplyDonationServiceTest {
                 .build();
 
         when(SecurityUtil.getPrincipal()).thenReturn(Optional.ofNullable(user));
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(user));
+        when(userRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(user));
 
     // when
         UserBookApplyCancelPageResponseDto result = bookApplyDonationService.getDonationBooksCancel();
