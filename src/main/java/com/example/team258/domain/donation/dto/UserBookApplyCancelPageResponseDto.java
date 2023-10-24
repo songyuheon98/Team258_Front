@@ -3,10 +3,12 @@ package com.example.team258.domain.donation.dto;
 import com.example.team258.common.dto.BookResponseDto;
 import com.example.team258.common.entity.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class UserBookApplyCancelPageResponseDto {
     private Long userId;
     private List<BookResponseDto> bookResponseDto;

@@ -1,10 +1,12 @@
 //package com.example.team258;
 //
-//import com.example.team258.entity.*;
-//import com.example.team258.repository.*;
+//import com.example.team258.common.entity.*;
+//import com.example.team258.common.repository.BookRepository;
+//import com.example.team258.common.repository.UserRepository;
+//import com.example.team258.domain.admin.repository.BookCategoryRepository;
+//import com.example.team258.domain.donation.entity.BookDonationEvent;
+//import com.example.team258.domain.donation.repository.BookDonationEventRepository;
 //import jakarta.annotation.PostConstruct;
-//import jakarta.persistence.*;
-//import lombok.Builder;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.stereotype.Component;

@@ -11,6 +11,7 @@ import com.example.team258.common.entity.User;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class BookReservationService {
 
     @Transactional(readOnly = true)
     public List<BookReservationResponseDto> getRental(User user) {
-        User savedUser = userRepository.findById(user.getUserId())
+        User savedUser = userRepository.findByIdFetchBookReservation(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         return savedUser.getBookReservations().stream().map(BookReservationResponseDto::new).toList();
     }
@@ -50,7 +51,6 @@ public class BookReservationService {
         if (savedBookReservation.isPresent()) {
             throw new IllegalArgumentException("이미 이 책을 예약한 상태입니다.");
         }
-
         BookReservation bookReservation = bookReservationRepository.save(new BookReservation(savedUser, book));
         book.addBookReservation(bookReservation);
         savedUser.addBookReservation(bookReservation);//하나의 메소드로 통합하는 방안도 확인 필요

@@ -20,39 +20,41 @@ import java.util.stream.Collectors;
 public class AdminUsersMixedController {
     private final UserRepository userRepository;
     private final UserService userService;
+//    @GetMapping("/admin/users")
+//    public String adminView(@RequestParam(defaultValue = "0") int page, Model model) {
+//
+//        PageRequest pageRequest = PageRequest.of(page, 5);  // page 파라미터로 받은 값을 사용
+//        Page<User> users = userRepository.findAll(pageRequest);
+//        int totalPages = users.getTotalPages();
+//
+//        List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());
+//
+//        model.addAttribute("currentPage", page);  // 현재 페이지 번호 추가
+//        model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("users", userResponseDtos);
+//
+//        return "admin";
+//    }
 
-    @GetMapping("/admin/users")
     /**
-     * @RequestParam(defaultValue = "0") int page : page 파라미터가 없으면 0으로 설정
+     * 관리자 - 사용자 관리 페이지
+     * @param page : 현재 페이지
+     * @param model : 뷰에 전달할 데이터
+     * @return : 뷰
      */
-    public String adminView(@RequestParam(defaultValue = "0") int page, Model model) {
-
-        PageRequest pageRequest = PageRequest.of(page, 5);  // page 파라미터로 받은 값을 사용
-        Page<User> users = userRepository.findAll(pageRequest);
-        int totalPages = users.getTotalPages();
-
-        List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());
-
-        model.addAttribute("currentPage", page);  // 현재 페이지 번호 추가
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("users", userResponseDtos);
-
-        return "admin";
-    }
-
     @GetMapping("/admin/users/v2")
     /**
      * @RequestParam(defaultValue = "0") int page : page 파라미터가 없으면 0으로 설정
      */
-    public String adminViewV2(@RequestParam(defaultValue = "0") int page, Model model, @RequestParam(defaultValue = "") String userName,@RequestParam(defaultValue = "") String userRole ) {
-        PageRequest pageRequest = PageRequest.of(page, 5);  // page 파라미터로 받은 값을 사용
-        Page<User> users = userService.findUsersByUsernameAndRoleV1(userName, userRole, pageRequest);
-        int totalPages = users.getTotalPages();
+    public String adminViewV2(@RequestParam(defaultValue = "0") int page, Model model, @RequestParam(defaultValue = "") String userName
+            ,@RequestParam(defaultValue = "") String userRole, @RequestParam(defaultValue = "5") int pageSize ) {
+
+        Page<User> users = userService.findUsersByUsernameAndRoleV1(userName, userRole, PageRequest.of(page, pageSize));
 
         List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());
 
         model.addAttribute("currentPage", page);  // 현재 페이지 번호 추가
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", users.getTotalPages());
         model.addAttribute("users", userResponseDtos);
 
         return "adminV2";
