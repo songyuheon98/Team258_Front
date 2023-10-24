@@ -127,5 +127,85 @@ public class SearchMixedControllerTest {
                 )));
     }
 
+    @Test
+    void SearchMixedControllerTestV1() throws Exception {
+        List<BookResponseDto> responseDtos = new ArrayList<>();
+        BookCategory bookCategory = BookCategory.builder()
+                .bookCategoryId(1L)
+                .bookCategoryName("과학")
+                .build();
+        Book book = Book.builder()
+                .bookId(1L)
+                .bookPublish("2011")
+                .bookName("과학책")
+                .bookCategory(bookCategory)
+                .bookAuthor("과학작가")
+                .bookStatus(POSSIBLE)
+                .build();
+
+        List<AdminCategoriesResponseDto> categories = new ArrayList<>();
+        categories.add(new AdminCategoriesResponseDto(bookCategory));
+
+        responseDtos.add(new BookResponseDto(book));
+        Page<BookResponseDto> bookPage = new PageImpl<>(responseDtos);
+        when(adminCategoriesService.getAllCategories()).thenReturn(categories);
+        when(searchService.getAllBooksByCategoryOrKeyword("과학","학책",0)).thenReturn(bookPage);
+        when(searchService.getAllBooks(0)).thenReturn(bookPage);
+        when(searchService.getAllBooksByCategory("과학",0)).thenReturn(bookPage);
+        when(searchService.getAllBooksByKeyword("학책",0)).thenReturn(bookPage);
+
+        mockMvc.perform(get("/search?page=1"))
+                .andExpect(view().name("search"))
+                .andExpect(model().attribute("bookMaxCount",1))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("bookName", is("과학책")),
+                                hasProperty("bookAuthor", is("과학작가"))
+                        )
+                )))
+                .andExpect(model().attribute("categories",hasItem(
+                        hasProperty("bookCategoryName", is("과학"))
+                )));
+
+        mockMvc.perform(get("/search?keyword=학책&page=1"))
+                .andExpect(view().name("search"))
+                .andExpect(model().attribute("bookMaxCount",1))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("bookName", is("과학책")),
+                                hasProperty("bookAuthor", is("과학작가"))
+                        )
+                )))
+                .andExpect(model().attribute("categories",hasItem(
+                        hasProperty("bookCategoryName", is("과학"))
+                )));
+
+        mockMvc.perform(get("/search?bookCategoryName=과학&page=1"))
+                .andExpect(view().name("search"))
+                .andExpect(model().attribute("bookMaxCount",1))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("bookName", is("과학책")),
+                                hasProperty("bookAuthor", is("과학작가"))
+                        )
+                )))
+                .andExpect(model().attribute("categories",hasItem(
+                        hasProperty("bookCategoryName", is("과학"))
+                )));
+
+        mockMvc.perform(get("/search?bookCategoryName=과학&keyword=학책&page=1"))
+                .andExpect(view().name("search"))
+                .andExpect(model().attribute("bookMaxCount",1))
+                .andExpect(model().attribute("books", hasItem(
+                        allOf(
+                                hasProperty("bookName", is("과학책")),
+                                hasProperty("bookAuthor", is("과학작가"))
+                        )
+                )))
+                .andExpect(model().attribute("categories",hasItem(
+                        hasProperty("bookCategoryName", is("과학"))
+                )));
+    }
+
 
 }
