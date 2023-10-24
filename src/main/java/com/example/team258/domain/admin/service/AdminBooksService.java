@@ -34,7 +34,7 @@ public class AdminBooksService {
     private final BookCategoryRepository bookCategoryRepository;
 
     @Transactional
-    public ResponseEntity<MessageDto> createBook(AdminBooksRequestDto requestDto, User loginUser) {
+    public MessageDto createBook(AdminBooksRequestDto requestDto, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -57,7 +57,7 @@ public class AdminBooksService {
 
         adminBooksRepository.save(newBook);
 
-        return new ResponseEntity<>(new MessageDto("도서 추가가 완료되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("도서 추가가 완료되었습니다.");
     }
 
     public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
@@ -79,18 +79,9 @@ public class AdminBooksService {
         return new BooksPageResponseDto(booksResponseDtos, totalPages);
     }
 
-    public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
-        // 로그인한 사용자 관리자 확인
-        validateUserAuthority(loginUser);
-
-        // 도서의 ID를 이용해서 책 조회
-        Book book = checkExistingBook(bookId);
-
-        return new AdminBooksResponseDto(book);
-    }
 
     @Transactional
-    public ResponseEntity<MessageDto> updateBook(AdminBooksRequestDto requestDto, Long bookId, User loginUser) {
+    public MessageDto updateBook(AdminBooksRequestDto requestDto, Long bookId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -102,11 +93,11 @@ public class AdminBooksService {
 
         book.update(requestDto, bookCategory);
 
-        return new ResponseEntity<>(new MessageDto("도서 정보가 수정되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("도서 정보가 수정되었습니다.");
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> deleteBook(Long bookId, User loginUser) {
+    public MessageDto deleteBook(Long bookId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -115,7 +106,7 @@ public class AdminBooksService {
 
         adminBooksRepository.delete(book);
 
-        return new ResponseEntity<>(new MessageDto("도서가 삭제되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("도서가 삭제되었습니다.");
     }
 
     private void validateUserAuthority(User loginUser) {
@@ -137,5 +128,15 @@ public class AdminBooksService {
     public List<AdminBooksResponseDto> getAllBooks() {
         return adminBooksRepository.findAll().stream()
                 .map(books -> new AdminBooksResponseDto(books)).toList();
+    }
+
+    public AdminBooksResponseDto getBookById(Long bookId, User loginUser) {
+        // 로그인한 사용자 관리자 확인
+        validateUserAuthority(loginUser);
+
+        // 도서의 ID를 이용해서 책 조회
+        Book book = checkExistingBook(bookId);
+
+        return new AdminBooksResponseDto(book);
     }
 }

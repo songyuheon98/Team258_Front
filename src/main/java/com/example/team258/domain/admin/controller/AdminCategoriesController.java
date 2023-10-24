@@ -23,7 +23,7 @@ public class AdminCategoriesController {
     @PostMapping
     public ResponseEntity<MessageDto> createCategory(@RequestBody AdminCategoriesRequestDto requestDto,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.createBookCategory(requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.createBookCategory(requestDto, userDetails.getUser()));
     }
 
     // CREATE SubCategory
@@ -31,7 +31,7 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> createSubBookCategory(@PathVariable Long parentId,
                                                         @RequestBody AdminCategoriesRequestDto requestDto,
                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser()));
     }
 
     // READ All Categories with Paging and Search
@@ -45,7 +45,7 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> updateBookCategoryName(@PathVariable Long bookCategoryId,
                                                              @RequestBody AdminCategoriesRequestDto requestDto,
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.updateBookCategory(bookCategoryId, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.updateBookCategory(bookCategoryId, requestDto, userDetails.getUser()));
     }
 
     // UPDATE Book's Category
@@ -54,13 +54,13 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> updateBookCategory(@PathVariable Long bookId,
                                                          @PathVariable Long categoryId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.updateBookCategory(bookId, categoryId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.updateBookCategory(bookId, categoryId, userDetails.getUser()));
     }
 
     // DELETE Category
     @DeleteMapping("/{bookCategoryId}")
     public ResponseEntity<MessageDto> deleteBookCategory(@PathVariable Long bookCategoryId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.deleteBookCategory(bookCategoryId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.deleteBookCategory(bookCategoryId, userDetails.getUser()));
     }
 }

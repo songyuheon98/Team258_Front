@@ -27,7 +27,7 @@ public class AdminCategoriesService {
     private final AdminBooksRepository adminBooksRepository;
 
     @Transactional
-    public ResponseEntity<MessageDto> createBookCategory(AdminCategoriesRequestDto requestDto, User loginUser) {
+    public MessageDto createBookCategory(AdminCategoriesRequestDto requestDto, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -37,11 +37,11 @@ public class AdminCategoriesService {
         // 카테고리 저장
         bookCategoryRepository.save(newBookCategory);
 
-        return new ResponseEntity<>(new MessageDto("카테고리 추가가 완료되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("카테고리 추가가 완료되었습니다.");
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> createSubBookCategory(Long parentId, AdminCategoriesRequestDto requestDto, User loginUser) {
+    public MessageDto createSubBookCategory(Long parentId, AdminCategoriesRequestDto requestDto, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -56,7 +56,7 @@ public class AdminCategoriesService {
         // 카테고리 저장
         bookCategoryRepository.save(newSubBookCategory);
 
-        return new ResponseEntity<>(new MessageDto("하위 카테고리 추가가 완료되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("하위 카테고리 추가가 완료되었습니다.");
     }
 
     public List<AdminCategoriesResponseDto> getAllCategories() {
@@ -89,7 +89,7 @@ public class AdminCategoriesService {
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> updateBookCategory(Long bookCategoryId, AdminCategoriesRequestDto requestDto, User loginUser) {
+    public MessageDto updateBookCategory(Long bookCategoryId, AdminCategoriesRequestDto requestDto, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -102,14 +102,14 @@ public class AdminCategoriesService {
         // 카테고리 저장
         bookCategoryRepository.save(category);
 
-        return new ResponseEntity<>(new MessageDto("카테고리가 수정되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("카테고리가 수정되었습니다.");
     }
 
     /*
     * 해당 메소드는 책의 정보 업데이트와 중복 될 수 있음. 필요 없을 시 삭제 가능
     * */
     @Transactional
-    public ResponseEntity<MessageDto> updateBookCategory(Long bookId, Long bookCategoryId, User loginUser) {
+    public MessageDto updateBookCategory(Long bookId, Long bookCategoryId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -122,11 +122,11 @@ public class AdminCategoriesService {
         // 도서의 카테고리 업데이트
         book.updateBookCategory(category);
 
-        return new ResponseEntity<>(new MessageDto("도서의 카테고리가 업데이트되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("도서의 카테고리가 업데이트되었습니다.");
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> deleteBookCategory(Long bookCategoryId, User loginUser) {
+    public MessageDto deleteBookCategory(Long bookCategoryId, User loginUser) {
         // 로그인한 사용자 관리자 확인
         validateUserAuthority(loginUser);
 
@@ -139,7 +139,7 @@ public class AdminCategoriesService {
         // 카테고리 삭제
         bookCategoryRepository.delete(category);
 
-        return new ResponseEntity<>(new MessageDto("카테고리가 삭제되었습니다."), null, HttpStatus.OK);
+        return new MessageDto("카테고리가 삭제되었습니다.");
     }
 
     private void validateUserAuthority(User loginUser) {
