@@ -44,6 +44,7 @@ public class Book {
      * casecade를 사용해서 도서 삭제시 나눔 신청도 삭제
      */
     @OneToOne(fetch = FetchType.LAZY)
+//    @BatchSize(size = 100)
     @JoinColumn(name = "apply_id")
     private BookApplyDonation bookApplyDonation;
 
@@ -51,8 +52,7 @@ public class Book {
     @JoinColumn(name = "rent_id")
     private BookRent bookRent;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_reservation_id")
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     private List<BookReservation> bookReservations;
 
     @ManyToOne(fetch = FetchType.LAZY)

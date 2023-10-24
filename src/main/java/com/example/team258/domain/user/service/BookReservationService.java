@@ -11,6 +11,7 @@ import com.example.team258.common.entity.User;
 import com.example.team258.common.repository.BookRepository;
 import com.example.team258.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,6 @@ public class BookReservationService {
         if (savedBookReservation.isPresent()) {
             throw new IllegalArgumentException("이미 이 책을 예약한 상태입니다.");
         }
-
         BookReservation bookReservation = bookReservationRepository.save(new BookReservation(savedUser, book));
         book.addBookReservation(bookReservation);
         savedUser.addBookReservation(bookReservation);//하나의 메소드로 통합하는 방안도 확인 필요

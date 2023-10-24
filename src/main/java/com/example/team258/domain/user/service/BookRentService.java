@@ -54,7 +54,7 @@ public class BookRentService {
     public MessageDto deleteRental(Long bookId, User user) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(()->new IllegalArgumentException("book을 찾을 수 없습니다."));
-        User savedUser = userRepository.findById(user.getUserId())
+        User savedUser = userRepository.findByIdFetchBookRent(user.getUserId())
                 .orElseThrow(()->new IllegalArgumentException("user를 찾을 수 없습니다."));
         BookRent bookRent = book.getBookRent();
         if (bookRent == null) {
