@@ -81,18 +81,15 @@ class AdminBooksServiceTest {
             when(adminBooksRepository.save(any(Book.class))).thenReturn(new Book());
 
             // when
-            ResponseEntity<MessageDto> responseEntity = adminBooksService.createBook(requestDto, adminUser);
+            MessageDto messageDto = adminBooksService.createBook(requestDto, adminUser);
 
             // then
             verify(bookCategoryRepository, times(1)).findById(1L);
             verify(adminBooksRepository, times(1)).save(any());
 
             // Check the response
-            assertAll(
-                    () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
-                    () -> assertNotNull(responseEntity.getBody()),
-                    () -> assertEquals("도서 추가가 완료되었습니다.", responseEntity.getBody().getMsg())
-            );
+            assertNotNull(messageDto);
+            assertEquals("도서 추가가 완료되었습니다.", messageDto.getMsg());
         }
 
         @Test
@@ -263,8 +260,8 @@ class AdminBooksServiceTest {
 
 
         @Test
-        @DisplayName("UPDATE - 도서 수정 성공")
-        void 도서_업데이트_테스트() {
+        @DisplayName("도서 정보 업데이트 성공")
+        void 도서_정보_업데이트_테스트() {
             // given
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
                     .bookName("Updated Book")
@@ -286,34 +283,28 @@ class AdminBooksServiceTest {
                     .bookCategoryId(1L)
                     .build();
 
-            Book existingBook = Book.builder()
-                    .bookId(bookId)
-                    .bookName("Existing Book")
-                    .bookAuthor("Existing Author")
-                    .bookPublish("2011")
-                    .bookCategory(bookCategory)
-                    .build();
-
-            // 모의 객체 설정
+            // Mock 객체 설정
+            Book existingBook = mock(Book.class);  // 새로운 Mock 객체 생성
             when(adminBooksRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
             when(bookCategoryRepository.findById(1L)).thenReturn(Optional.of(bookCategory));
 
             // when
-            ResponseEntity<MessageDto> responseEntity = adminBooksService.updateBook(requestDto, bookId, adminUser);
+            MessageDto messageDto = adminBooksService.updateBook(requestDto, bookId, adminUser);
 
             // then
             // 서비스가 기대한 대로 작동하는지 검증
             verify(adminBooksRepository, times(1)).findById(bookId);
             verify(bookCategoryRepository, times(1)).findById(1L);
-            //verify(adminBooksRepository, times(1)).save(any());
+            verify(adminBooksRepository, times(1)).save(existingBook);  // existingBook을 직접 넘겨줌
 
             // 응답이 기대한 대로 구성되어 있는지 확인
-            assertAll(
-                    () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
-                    () -> assertNotNull(responseEntity.getBody()),
-                    () -> assertEquals("도서 정보가 수정되었습니다.", responseEntity.getBody().getMsg())
-            );
+            assertNotNull(messageDto);
+            assertEquals("도서 정보가 수정되었습니다.", messageDto.getMsg());
+
+            // book 업데이트 메서드 호출 확인
+            verify(existingBook, times(1)).update(eq(requestDto), eq(bookCategory));
         }
+
         @Test
         @DisplayName("DELETE - 도서 삭제 성공")
         void 도서_삭제_테스트() {
@@ -330,20 +321,18 @@ class AdminBooksServiceTest {
                     .build();
 
             when(adminBooksRepository.findById(1L)).thenReturn(Optional.of(existingBook));
+            doNothing().when(adminBooksRepository).delete(existingBook); // doNothing()로 설정
 
             // when
-            ResponseEntity<MessageDto> responseEntity = adminBooksService.deleteBook(1L, adminUser);
+            MessageDto messageDto = adminBooksService.deleteBook(1L, adminUser);
 
             // then
             verify(adminBooksRepository, times(1)).findById(1L);
             verify(adminBooksRepository, times(1)).delete(existingBook);
 
             // Check the response
-            assertAll(
-                    () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
-                    () -> assertNotNull(responseEntity.getBody()),
-                    () -> assertEquals("도서가 삭제되었습니다.", responseEntity.getBody().getMsg())
-            );
+            assertNotNull(messageDto);
+            assertEquals("도서가 삭제되었습니다.", messageDto.getMsg());
         }
     }
 }

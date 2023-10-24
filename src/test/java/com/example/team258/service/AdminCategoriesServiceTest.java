@@ -66,17 +66,16 @@ class AdminCategoriesServiceTest {
             AdminCategoriesRequestDto adminCategoriesRequestDto = new AdminCategoriesRequestDto();
             adminCategoriesRequestDto.setBookCategoryName("TestCategory");  // 카테고리 생성에 필요한 데이터 설정
 
-            // 모의 유저(관리자)생성
+            // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
             when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.createBookCategory(adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.createBookCategory(adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리 추가가 완료되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리 추가가 완료되었습니다.", messageDto.getMsg());
         }
     }
     @Nested
@@ -94,20 +93,20 @@ class AdminCategoriesServiceTest {
 
             // 모의 부모 카테고리 생성
             BookCategory parentCategory = mock(BookCategory.class);
-            when(bookCategoryRepository.findById(1L)).thenReturn(Optional.of(parentCategory));
+            when(bookCategoryRepository.findById(parentCategoryId)).thenReturn(Optional.of(parentCategory));
 
             // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
             when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.createSubBookCategory(parentCategoryId, adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.createSubBookCategory(parentCategoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("하위 카테고리 추가가 완료되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("하위 카테고리 추가가 완료되었습니다.", messageDto.getMsg());
         }
+
 
         @Test
         @DisplayName("부모 카테고리가 없을 때 예외 발생")
@@ -285,17 +284,17 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리가 수정되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리가 수정되었습니다.", messageDto.getMsg());
 
             // 업데이트 메서드 호출 확인
             verify(category, times(1)).updateBookCategory(eq("UpdatedCategoryName"), eq(100L));
             verify(bookCategoryRepository, times(1)).save(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 카테고리 업데이트할 때 예외 발생")
@@ -359,17 +358,17 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.deleteBookCategory(categoryId, adminUser);
+            MessageDto messageDto = adminCategoriesService.deleteBookCategory(categoryId, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리가 삭제되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리가 삭제되었습니다.", messageDto.getMsg());
 
             // 부모 카테고리에서 올바른 메서드가 호출되었는지 확인
             verify(category, times(1)).getParentCategory();
             verify(bookCategoryRepository, times(1)).delete(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 카테고리 삭제할 때 예외 발생")
@@ -434,16 +433,16 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(bookCategoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(bookId, bookCategoryId, adminUser);
+            MessageDto messageDto = adminCategoriesService.updateBookCategory(bookId, bookCategoryId, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("도서의 카테고리가 업데이트되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("도서의 카테고리가 업데이트되었습니다.", messageDto.getMsg());
 
             // 도서의 카테고리 업데이트 메서드가 호출되었는지 확인
             verify(book, times(1)).updateBookCategory(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 도서 업데이트할 때 예외 발생")

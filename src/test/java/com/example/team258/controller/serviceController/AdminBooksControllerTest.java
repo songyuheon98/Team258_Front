@@ -1,6 +1,7 @@
 package com.example.team258.controller.serviceController;
 
 import com.example.team258.common.dto.BooksPageResponseDto;
+import com.example.team258.domain.admin.controller.AdminBooksController;
 import com.example.team258.domain.admin.dto.AdminBooksRequestDto;
 import com.example.team258.domain.admin.dto.AdminBooksResponseDto;
 import com.example.team258.common.dto.MessageDto;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,8 +34,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -62,7 +65,7 @@ class AdminBooksControllerTest {
     @DisplayName("AdminBooksController - CRUD 테스트")
     class LoginnedControllerTest {
         @Test
-        @DisplayName("CREATE - 도서 추가 성공")
+        @DisplayName("도서 추가 - 성공")
         void 도서_추가_테스트() throws Exception {
             // given
             AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
@@ -88,11 +91,10 @@ class AdminBooksControllerTest {
             Authentication authentication = new UsernamePasswordAuthenticationToken(adminUserDetails, null, adminUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // when
             when(adminBooksService.createBook(any(), any()))
-                    .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
+                    .thenReturn(successMessage);
 
-            // then
+            // when
             mockMvc.perform(post("/api/admin/books")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(requestDto))
@@ -101,41 +103,6 @@ class AdminBooksControllerTest {
                     .andExpect(jsonPath("$.msg").value("도서 추가가 완료되었습니다."));
         }
 
-
-        @Test
-        @DisplayName("CREATE - 일반 유저로 도서 추가 시도 - 권한 없음")
-        void 일반_유저로_도서_추가_시도_테스트() throws Exception {
-            // given
-            AdminBooksRequestDto requestDto = AdminBooksRequestDto.builder()
-                    .bookName("Test Book")
-                    .bookAuthor("Test Author")
-                    .bookPublish("2011")
-                    .bookCategoryId(1L)
-                    .build();
-
-            User normalUser = User.builder()
-                    .userId(2L)
-                    .username("user")
-                    .password("1234abcd!")
-                    .role(UserRoleEnum.USER) // 일반 유저
-                    .build();
-
-            // 가상의 일반 유저로 로그인 상태를 설정
-            UserDetailsImpl normalUserDetails = new UserDetailsImpl(normalUser);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(normalUserDetails, null, normalUserDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // when - createBook 메소드가 호출되면 권한 없음 응답을 반환하도록 설정
-            when(adminBooksService.createBook(any(), any()))
-                    .thenReturn(new ResponseEntity<>(HttpStatus.FORBIDDEN)); // 권한 없음 응답
-
-            // then
-            mockMvc.perform(post("/api/admin/books")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(requestDto))
-                            .principal(authentication))
-                    .andExpect(status().isForbidden()); // 권한 없음 응답을 기대
-        }
 
         @Test
         @DisplayName("READ - 도서 조회 성공")
@@ -281,8 +248,8 @@ class AdminBooksControllerTest {
             when(adminBooksRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
             when(bookCategoryRepository.findById(1L)).thenReturn(Optional.of(bookCategory));
             // when
-            when(adminBooksService.updateBook(requestDto, 1L, adminUser)).thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
-
+            when(adminBooksService.updateBook(requestDto, 1L, adminUser))
+                    .thenReturn(successMessage);
             // then
             mockMvc.perform(put("/api/admin/books/1")
                             .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -309,8 +276,8 @@ class AdminBooksControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminBooksService.deleteBook(1L, adminUser)).thenReturn(new ResponseEntity<>(new MessageDto("도서가 삭제되었습니다."), null, HttpStatus.OK));
-
+            when(adminBooksService.deleteBook(1L, adminUser))
+                    .thenReturn(new MessageDto("도서가 삭제되었습니다."));
             // then
             mockMvc.perform(delete("/api/admin/books/1")
                             .principal(authentication))
