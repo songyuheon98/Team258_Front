@@ -29,9 +29,9 @@ public class AdminUsersService {
     public MessageDto deleteUser(Long userId, User loginUser) {
         User user = getUserById(userId);
 
-        if(loginUser.getRole().equals(UserRoleEnum.USER)) {
-            throw new IllegalArgumentException("관리자가 아닙니다.");
-        }
+//        if(loginUser.getRole().equals(UserRoleEnum.USER)) {   in (1,2,3,4,5)
+//            throw new IllegalArgumentException("관리자가 아닙니다.");
+//        }
 
 
 //        if (loginUser.getUserId().equals(user.getUserId()) ) {
@@ -39,11 +39,13 @@ public class AdminUsersService {
 //        }
 //
         int bookApplyDonationSize = user.getBookApplyDonations().size();
+        int reservationsSize = user.getBookReservations().size();
+        int rentSize =user.getBookRents().size();
         for (int i = 0; i < bookApplyDonationSize; i++) {
             BookApplyDonation bookApplyDonation =  user.getBookApplyDonations().get(i);
             Book book =bookApplyDonation.getBook();
-            book.changeStatus(BookStatusEnum.DONATION);
-            bookApplyDonation.removeBook(book);
+//            book.changeStatus(BookStatusEnum.DONATION);
+//            bookApplyDonation.removeBook(book);
         }
 
         //userRepository.delete(user);
@@ -53,8 +55,12 @@ public class AdminUsersService {
 
     private User getUserById(Long userId) {
 //        User user = userRepository.findFetchJoinById(userId)
-        User user = userRepository.findById(userId)
+        User user = userRepository.findFetchJoinBookById(userId)
+////        User user = userRepository.findById(userId)
+////        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("회원을 찾을 수 없습니다."));
+//
+//        User user = userRepository.findJPQLById(userId).orElseThrow(()-> new IllegalArgumentException("회원을 찾을 수 없습니다."));
         return user;
     }
 }
