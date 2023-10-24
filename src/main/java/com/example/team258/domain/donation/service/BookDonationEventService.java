@@ -236,7 +236,7 @@ public class BookDonationEventService {
         if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
             return new MessageDto("관리자만 이벤트를 종료할 수 있습니다.");
         }
-        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
         );
         bookDonationEventRepository.delete(bookDonationEvent);
@@ -245,7 +245,7 @@ public class BookDonationEventService {
 
     public BookApplyDonationEventResultDto bookApplyDonationEventPageV2Result(PageRequest pageRequest, Long donationId) {
 
-        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
+        BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
         );
         Page<Book> books = bookRepository.findBooksByDonationId(donationId,BookStatusEnum.DONATION,pageRequest);

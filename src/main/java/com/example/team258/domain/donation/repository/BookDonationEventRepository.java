@@ -16,8 +16,10 @@ public interface BookDonationEventRepository extends JpaRepository<BookDonationE
     Page<BookDonationEvent> findAll(Pageable pageable);
 
     @Query("select bde from book_donation_event bde " +
-            "join fetch bde.bookApplyDonations bad " +
-            "join fetch bad.book b " +
+            "left join fetch bde.bookApplyDonations bad " +
+            "left join fetch bad.book b " +
             "where bde.donationId = :donationId")
     Optional<BookDonationEvent> findFetchJoinById(@Param("donationId") Long donationId);
+
+
 }

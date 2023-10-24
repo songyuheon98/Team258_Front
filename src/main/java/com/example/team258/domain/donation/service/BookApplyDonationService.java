@@ -66,7 +66,6 @@ public class BookApplyDonationService {
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
             return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
         }
-
         /**
          * 신청자가 도서관 사용자가 아닐때
          */
@@ -78,12 +77,10 @@ public class BookApplyDonationService {
          */
         BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
         bookApplyDonationRepository.save(bookApplyDonation);
-
         /**
          * book과 편의 메소드로 양방향 관계 설정
          */
         bookApplyDonation.addBook(book);
-
         /**
          * user, bookDonationEvent와 단방향 관계 설정
          */
@@ -93,7 +90,6 @@ public class BookApplyDonationService {
         /**
          * book의 상태 변경
          */
-
         return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
 
@@ -168,7 +164,7 @@ public class BookApplyDonationService {
 
     public UserBookApplyCancelPageResponseDto getDonationBooksCancel() {
         Long userId = SecurityUtil.getPrincipal().get().getUserId();
-        User user = userRepository.findById(userId).orElseThrow(
+        User user = userRepository.findFetchJoinById(userId).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         return new UserBookApplyCancelPageResponseDto(user);
