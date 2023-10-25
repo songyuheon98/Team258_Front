@@ -36,11 +36,14 @@
                 <th:block th:each="event, eventStatus : ${events}">
                     <!-- 이벤트 정보 행 -->
                     <tr>
-                        <td><input class="form-control" type="text" th:value="${event.donationId}" name="donationId"
+                        <td style="width: 10%;"><input class="form-control" type="text" th:value="${event.donationId}" name="donationId"
                                    readonly/></td>
-                        <td><input class="form-control" type="text" th:value="${event.createdAt}" name="createdAt"/>
+                        <td>
+                            <input class="form-control" type="datetime-local" th:value="${event.createdAt}" name="createdAt"/>
                         </td>
-                        <td><input class="form-control" type="text" th:value="${event.closedAt}" name="closedAt"/></td>
+                        <td>
+                            <input class="form-control" type="datetime-local" th:value="${event.closedAt}" name="closedAt"/>
+                        </td>
                         <td>
                             <button type="button" class="btn btn-outline-success"
                                     th:onclick="'location.href=\'/admin/donation/bookSetting/' + ${event.donationId} + '/v3'+'\''">

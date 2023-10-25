@@ -29,7 +29,8 @@ public class AdminBooksResponseDto {
         this.bookAuthor = book.getBookAuthor();
         this.bookPublish = book.getBookPublish();
         this.bookStatus = book.getBookStatus();
-        this.bookCategoryId = book.getBookCategory().getBookCategoryId();
+        if (book.getBookCategory() != null)
+            this.bookCategoryId = book.getBookCategory().getBookCategoryId();
         // 카테고리얻어오기위해추가
         this.bookCategory = book.getBookCategory();
     }

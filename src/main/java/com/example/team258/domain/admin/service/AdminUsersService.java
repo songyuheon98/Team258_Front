@@ -62,8 +62,8 @@ public class AdminUsersService {
 
     private User getUserById(Long userId) {
 //        User user = userRepository.findFetchJoinById(userId)
-        User user = userRepository.findFetchJoinBookById(userId)
-////        User user = userRepository.findById(userId)
+//        User user = userRepository.findFetchJoinBookById(userId)
+        User user = userRepository.findById(userId)
 ////        User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("회원을 찾을 수 없습니다."));
 //
