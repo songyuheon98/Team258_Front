@@ -6,14 +6,12 @@ import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/admin/categories")
@@ -25,7 +23,7 @@ public class AdminCategoriesController {
     @PostMapping
     public ResponseEntity<MessageDto> createCategory(@RequestBody AdminCategoriesRequestDto requestDto,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.createBookCategory(requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.createBookCategory(requestDto, userDetails.getUser()));
     }
 
     // CREATE SubCategory
@@ -33,17 +31,13 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> createSubBookCategory(@PathVariable Long parentId,
                                                         @RequestBody AdminCategoriesRequestDto requestDto,
                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.createSubBookCategory(parentId, requestDto, userDetails.getUser()));
     }
 
     // READ All Categories with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminCategoriesResponseDto>> getAllCategoriesPagedAndSearch(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookCategoryId", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword) {
-        Page<AdminCategoriesResponseDto> categoryResponsePage = adminCategoriesService.getAllCategoriesPagedAndSearch(userDetails.getUser(), keyword, pageable);
-        return ResponseEntity.ok(categoryResponsePage);
+    public ResponseEntity<List<AdminCategoriesResponseDto>> getAllCategories() {
+        return ResponseEntity.ok().body(adminCategoriesService.getAllCategories());
     }
 
     // UPDATE Category Name
@@ -51,7 +45,7 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> updateBookCategoryName(@PathVariable Long bookCategoryId,
                                                              @RequestBody AdminCategoriesRequestDto requestDto,
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.updateBookCategory(bookCategoryId, requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.updateBookCategory(bookCategoryId, requestDto, userDetails.getUser()));
     }
 
     // UPDATE Book's Category
@@ -60,13 +54,13 @@ public class AdminCategoriesController {
     public ResponseEntity<MessageDto> updateBookCategory(@PathVariable Long bookId,
                                                          @PathVariable Long categoryId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.updateBookCategory(bookId, categoryId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.updateBookCategory(bookId, categoryId, userDetails.getUser()));
     }
 
     // DELETE Category
     @DeleteMapping("/{bookCategoryId}")
     public ResponseEntity<MessageDto> deleteBookCategory(@PathVariable Long bookCategoryId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminCategoriesService.deleteBookCategory(bookCategoryId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminCategoriesService.deleteBookCategory(bookCategoryId, userDetails.getUser()));
     }
 }

@@ -1,17 +1,16 @@
 package com.example.team258.service;
 
+import com.example.team258.common.dto.BooksCategoryPageResponseDto;
+import com.example.team258.common.entity.*;
 import com.example.team258.domain.admin.dto.AdminCategoriesRequestDto;
 import com.example.team258.domain.admin.dto.AdminCategoriesResponseDto;
 import com.example.team258.domain.admin.service.AdminBooksService;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.common.entity.Book;
-import com.example.team258.common.entity.BookCategory;
-import com.example.team258.common.entity.User;
-import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.domain.admin.repository.AdminBooksRepository;
 import com.example.team258.domain.admin.repository.BookCategoryRepository;
 import com.example.team258.common.repository.UserRepository;
+import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,18 +18,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,17 +66,16 @@ class AdminCategoriesServiceTest {
             AdminCategoriesRequestDto adminCategoriesRequestDto = new AdminCategoriesRequestDto();
             adminCategoriesRequestDto.setBookCategoryName("TestCategory");  // 카테고리 생성에 필요한 데이터 설정
 
-            // 모의 유저(관리자)생성
+            // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
             when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.createBookCategory(adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.createBookCategory(adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리 추가가 완료되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리 추가가 완료되었습니다.", messageDto.getMsg());
         }
     }
     @Nested
@@ -94,20 +93,20 @@ class AdminCategoriesServiceTest {
 
             // 모의 부모 카테고리 생성
             BookCategory parentCategory = mock(BookCategory.class);
-            when(bookCategoryRepository.findById(1L)).thenReturn(Optional.of(parentCategory));
+            when(bookCategoryRepository.findById(parentCategoryId)).thenReturn(Optional.of(parentCategory));
 
             // 모의 유저(관리자) 생성
             User adminUser = mock(User.class);
             when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.createSubBookCategory(parentCategoryId, adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.createSubBookCategory(parentCategoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("하위 카테고리 추가가 완료되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("하위 카테고리 추가가 완료되었습니다.", messageDto.getMsg());
         }
+
 
         @Test
         @DisplayName("부모 카테고리가 없을 때 예외 발생")
@@ -133,48 +132,134 @@ class AdminCategoriesServiceTest {
     class ReadCategories {
 
         @Test
-        @DisplayName("모든 카테고리 조회 성공")
-        void getAllCategories() {
+        @DisplayName("카테고리 조회 - 성공")
+        void findBooksCategoriesWithPaginationAndSearching() {
             // Given
-            User adminUser = User.builder()
-                    .userId(1L)
-                    .username("user1")
-                    .password("pass1")
-                    .role(UserRoleEnum.ADMIN)
-                    .build();
+            User adminUser = mock(User.class);
+            when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
 
             BookCategory category1 = mock(BookCategory.class);
+            when(category1.getBookCategoryId()).thenReturn(1L);
+            when(category1.getBookCategoryName()).thenReturn("카테고리1");
+
             BookCategory category2 = mock(BookCategory.class);
+            when(category2.getBookCategoryId()).thenReturn(2L);
+            when(category2.getBookCategoryName()).thenReturn("카테고리2");
+
             BookCategory category3 = mock(BookCategory.class);
+            when(category3.getBookCategoryId()).thenReturn(3L);
+            when(category3.getBookCategoryName()).thenReturn("카테고리3");
 
-            // 모의 카테고리 목록 생성
-            List<BookCategory> mockCategories = Arrays.asList(
-                    category1, category2, category3
-            );
+            List<BookCategory> mockCategories = Arrays.asList(category1, category2, category3);
 
-            // 페이징 정보
             Pageable pageable = PageRequest.of(0, 10);
 
-            // 페이징된 엔티티를 Dto로 변환하여 반환
-            when(bookCategoryRepository.findAll(any(Specification.class), eq(pageable)))
+            when(bookCategoryRepository.findAll(any(BooleanBuilder.class), eq(pageable)))
                     .thenReturn(new PageImpl<>(mockCategories, pageable, mockCategories.size()));
 
             // When
-            Page<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategoriesPagedAndSearch(adminUser, null, pageable);
+            BooksCategoryPageResponseDto response = adminCategoriesService.findBooksCategoriesWithPaginationAndSearching(adminUser, null, pageable);
 
             // Then
             assertNotNull(response);
 
-            // 카테고리 목록을 AdminCategoriesResponseDto 목록으로 변환
             List<AdminCategoriesResponseDto> expectedResponse = mockCategories.stream()
                     .map(AdminCategoriesResponseDto::new)
-                    .collect(Collectors.toList());
+                    .toList();
 
-            assertEquals(expectedResponse.size(), response.getContent().size());
-            // 기존의 검증 로직 유지하거나 필요에 따라 수정
+            assertEquals(expectedResponse.size(), response.getAdminCategoriesResponseDtos().size());
+        }
+
+        @Test
+        @DisplayName("카테고리 조회 - 성공 (검색어 포함)")
+        void findBooksCategoriesWithPaginationAndSearchingWithKeyword() {
+            // Given
+            User adminUser = mock(User.class);
+            when(adminUser.getRole()).thenReturn(UserRoleEnum.ADMIN);
+
+            BookCategory category1 = mock(BookCategory.class);
+            when(category1.getBookCategoryId()).thenReturn(1L);
+            when(category1.getBookCategoryName()).thenReturn("카테고리1");
+
+            List<BookCategory> mockCategories = Arrays.asList(category1);
+
+            Pageable pageable = PageRequest.of(0, 10);
+            String keyword = "카테고리1";
+
+            BooleanBuilder expectedBuilder = new BooleanBuilder();
+            expectedBuilder.and(QBookCategory.bookCategory.bookCategoryName.containsIgnoreCase(keyword));
+
+            when(bookCategoryRepository.findAll(expectedBuilder, pageable))
+                    .thenReturn(new PageImpl<>(mockCategories, pageable, mockCategories.size()));
+
+            // When
+            BooksCategoryPageResponseDto response = adminCategoriesService.findBooksCategoriesWithPaginationAndSearching(adminUser, keyword, pageable);
+
+            // Then
+            assertNotNull(response);
+
+            // 다른 검증 로직 추가
+
+            // builder에 대한 검증
+            verify(bookCategoryRepository).findAll(expectedBuilder, pageable);
         }
 
 
+        @Test
+        @DisplayName("카테고리 조회 - 실패 - 권한 없음")
+        void findBooksCategoriesWithPaginationAndSearchingWithoutAdminPermission() {
+            // Given
+            User regularUser = mock(User.class);
+            when(regularUser.getRole()).thenReturn(UserRoleEnum.USER);
+
+            Pageable pageable = PageRequest.of(0, 10);
+
+            // When & Then
+            IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () ->
+                    adminCategoriesService.findBooksCategoriesWithPaginationAndSearching(regularUser, null, pageable)
+            );
+
+            assertEquals("해당 작업을 수행할 권한이 없습니다.", thrown.getMessage());
+        }
+
+        @Test
+        @DisplayName("모든 카테고리 조회 - 성공")
+        void getAllCategories() {
+            // Given
+            BookCategory category1 = mock(BookCategory.class);
+            when(category1.getBookCategoryId()).thenReturn(1L);
+            when(category1.getBookCategoryName()).thenReturn("카테고리1");
+
+            BookCategory category2 = mock(BookCategory.class);
+            when(category2.getBookCategoryId()).thenReturn(2L);
+            when(category2.getBookCategoryName()).thenReturn("카테고리2");
+
+            BookCategory category3 = mock(BookCategory.class);
+            when(category3.getBookCategoryId()).thenReturn(3L);
+            when(category3.getBookCategoryName()).thenReturn("카테고리3");
+
+            List<BookCategory> mockCategories = Arrays.asList(category1, category2, category3);
+
+            when(bookCategoryRepository.findAll()).thenReturn(mockCategories);
+
+            // When
+            List<AdminCategoriesResponseDto> response = adminCategoriesService.getAllCategories();
+
+            // Then
+            assertNotNull(response);
+            assertEquals(mockCategories.size(), response.size());
+
+            // 각 카테고리에 대한 변환 및 내용 확인
+            for (int i = 0; i < mockCategories.size(); i++) {
+                AdminCategoriesResponseDto expectedDto = new AdminCategoriesResponseDto(mockCategories.get(i));
+                assertThat(response.get(i), hasProperty("bookCategoryId", is(expectedDto.getBookCategoryId())));
+                assertThat(response.get(i), hasProperty("bookCategoryName", is(expectedDto.getBookCategoryName())));
+                // 필드 추가되면 추가로 비교
+            }
+
+            // bookCategoryRepository의 findAll이 한 번 호출되었는지 확인
+            verify(bookCategoryRepository, times(1)).findAll();
+        }
     }
 
     @Nested
@@ -199,17 +284,17 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
+            MessageDto messageDto = adminCategoriesService.updateBookCategory(categoryId, adminCategoriesRequestDto, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리가 수정되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리가 수정되었습니다.", messageDto.getMsg());
 
             // 업데이트 메서드 호출 확인
             verify(category, times(1)).updateBookCategory(eq("UpdatedCategoryName"), eq(100L));
             verify(bookCategoryRepository, times(1)).save(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 카테고리 업데이트할 때 예외 발생")
@@ -273,17 +358,17 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.deleteBookCategory(categoryId, adminUser);
+            MessageDto messageDto = adminCategoriesService.deleteBookCategory(categoryId, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("카테고리가 삭제되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("카테고리가 삭제되었습니다.", messageDto.getMsg());
 
             // 부모 카테고리에서 올바른 메서드가 호출되었는지 확인
             verify(category, times(1)).getParentCategory();
             verify(bookCategoryRepository, times(1)).delete(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 카테고리 삭제할 때 예외 발생")
@@ -348,16 +433,16 @@ class AdminCategoriesServiceTest {
             when(bookCategoryRepository.findById(bookCategoryId)).thenReturn(Optional.of(category));
 
             // When
-            ResponseEntity<MessageDto> response = adminCategoriesService.updateBookCategory(bookId, bookCategoryId, adminUser);
+            MessageDto messageDto = adminCategoriesService.updateBookCategory(bookId, bookCategoryId, adminUser);
 
             // Then
-            assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-            assertNotNull(response.getBody());
-            assertEquals("도서의 카테고리가 업데이트되었습니다.", response.getBody().getMsg());
+            assertNotNull(messageDto);
+            assertEquals("도서의 카테고리가 업데이트되었습니다.", messageDto.getMsg());
 
             // 도서의 카테고리 업데이트 메서드가 호출되었는지 확인
             verify(book, times(1)).updateBookCategory(category);
         }
+
 
         @Test
         @DisplayName("존재하지 않는 도서 업데이트할 때 예외 발생")
