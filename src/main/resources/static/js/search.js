@@ -10,13 +10,13 @@ $(document).ready(function () {
 
     let url = ""
     if(currentKeyword != null & currentCategory !=null)
-        url = `/search?keyword=${currentKeyword}&bookCategoryName=${currentCategory}&page=`
+        url = `/search/v3?keyword=${currentKeyword}&bookCategoryName=${currentCategory}&page=`
     else if(currentKeyword == null & currentCategory !=null)
-        url = `/search?bookCategoryName=${currentCategory}&page=`
+        url = `/search/v3?bookCategoryName=${currentCategory}&page=`
     else if(currentKeyword != null & currentCategory ==null)
-        url = `/search?keyword=${currentKeyword}&page=`
+        url = `/search/v3?keyword=${currentKeyword}&page=`
     else if(currentKeyword == null & currentCategory ==null)
-        url = "/search?page="
+        url = "/search/v3?page="
     if (rangeStart > 1) {
         pagination.innerHTML += `<a href="${url}${rangeStart - 1}">Prev</a> `;
     }
@@ -50,13 +50,13 @@ function search() {
     let category = document.getElementById('bookCategoryId').value;
 
     if(keyword != '' & category != '')
-        url = `/search?keyword=${keyword}&bookCategoryName=${category}&page=1`
+        url = `/search/v3?keyword=${keyword}&bookCategoryName=${category}&page=1`
     else if(keyword == '' & category !='')
-        url = `/search?bookCategoryName=${category}&page=1`
+        url = `/search/v3?bookCategoryName=${category}&page=1`
     else if(keyword != '' & category =='')
-        url = `/search?keyword=${keyword}&page=1`
+        url = `/search/v3?keyword=${keyword}&page=1`
     else if(keyword == '' & category =='')
-        url = "/search?page=1"
+        url = "/search/v3?page=1"
 
     window.location.href = url;
 }

@@ -1,10 +1,7 @@
 package com.example.team258.domain.donation.controller;
 
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.domain.donation.dto.BookDonationEventRequestDto;
-import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
-import com.example.team258.domain.donation.dto.BookDonationSettingCancelRequestDto;
-import com.example.team258.domain.donation.dto.BookDonationSettingRequestDto;
+import com.example.team258.domain.donation.dto.*;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +16,24 @@ public class BookDonationEventController {
 
     private final BookDonationEventService bookDonationEventService;
     @PostMapping
-    public ResponseEntity<MessageDto> createDonationEvent(@RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
+    public ResponseEntity<MessageAndDonationIdDto> createDonationEvent(@RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
         return ResponseEntity.ok().body(bookDonationEventService.createDonationEvent(bookDonationEventRequestDto));
     }
 
     @PutMapping("/{donationId}")
-    public ResponseEntity<MessageDto> updateDonationEvent(@PathVariable Long donationId, @RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
+    public ResponseEntity<MessageAndDonationIdDto> updateDonationEvent(@PathVariable Long donationId, @RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
         return ResponseEntity.ok().body(bookDonationEventService.updateDonationEvent(donationId,bookDonationEventRequestDto));
     }
 
     @DeleteMapping("/{donationId}")
-    public ResponseEntity<MessageDto> deleteDonationEvent(@PathVariable Long donationId){
+    public ResponseEntity<MessageAndDonationIdDto> deleteDonationEvent(@PathVariable Long donationId){
         return ResponseEntity.ok().body(bookDonationEventService.deleteDonationEvent(donationId));
     }
 
+    /**
+     * 전체 조회 사용 X
+     * @return
+     */
     @GetMapping
     public ResponseEntity<List<BookDonationEventResponseDto>> getDonationEvent(){
         return ResponseEntity.ok().body(bookDonationEventService.getDonationEvent());

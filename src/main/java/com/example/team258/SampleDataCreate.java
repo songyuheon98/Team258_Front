@@ -24,7 +24,7 @@
 //        initService.userInit();
 //        initService.bookInit();
 //        initService.categoryInit();
-//        initService.bookEventDonationInit();
+////        initService.bookEventDonationInit();
 //    }
 //    @Component
 //    @Transactional
@@ -40,7 +40,7 @@
 //        public void userInit() {
 //
 //            for (int i = 0; i < 100; i++) {
-//                User user = User.builder().username("bin000"+i).password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.USER).build();
+//                User user = User.builder().username("bin000"+i+i).password(passwordEncoder.encode("Bin@12345")).role(UserRoleEnum.USER).build();
 //                userRepository.save(user);
 //            }
 //        }

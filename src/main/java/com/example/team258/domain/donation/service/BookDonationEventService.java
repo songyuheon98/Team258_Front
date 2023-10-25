@@ -1,9 +1,6 @@
 package com.example.team258.domain.donation.service;
 
-import com.example.team258.common.dto.BookApplyDonationEventResultDto;
-import com.example.team258.common.dto.BookResponseDto;
-import com.example.team258.common.dto.DonationV3ServiceResultDto;
-import com.example.team258.common.dto.MessageDto;
+import com.example.team258.common.dto.*;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.entity.User;
@@ -16,12 +13,10 @@ import com.example.team258.domain.donation.entity.QBookDonationEvent;
 import com.example.team258.domain.donation.repository.BookApplyDonationRepository;
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
 import com.querydsl.core.BooleanBuilder;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +42,11 @@ public class BookDonationEventService {
         int bookPageTemp[] = new int[eventListSize];
         int bookPageTotalTemp[] = new int[eventListSize];
 
+        if(eventListSize==0)
+            return new DonationV3ServiceResultDto(
+                    new BookDonationEventPageResponseDtoV3(List.of(new BookDonationEventResponseDtoV3(-1L, LocalDateTime.now(),LocalDateTime.now())),1),
+                    new int[]{0},new int[]{0});
+
         for (int i = 0; i < bookPage.length; i++)
             bookPageTemp[i] = bookPage[i];
 
@@ -61,6 +60,7 @@ public class BookDonationEventService {
                     bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().get(i).getDonationId(),
                     bookPageRequest));
         }
+
         /**
          * 이벤트에 대한 도서들 페이징 리스트를 이벤트에 추가
          */
@@ -70,32 +70,35 @@ public class BookDonationEventService {
             bookPageTotalTemp[i] = bookPages.get(i).getTotalPages();
         }
 
+
+        if(bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().size()!=0)
+            return new DonationV3ServiceResultDto(bookDonationEventPageResponseDtoV3, bookPageTotalTemp,bookPageTemp);
         return new DonationV3ServiceResultDto(bookDonationEventPageResponseDtoV3, bookPageTotalTemp,bookPageTemp);
 
     }
 
     @Transactional
-    public MessageDto createDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto) {
+    public MessageAndDonationIdDto createDonationEvent(BookDonationEventRequestDto bookDonationEventRequestDto) {
         BookDonationEvent bookDonationEvent = new BookDonationEvent(bookDonationEventRequestDto);
         bookDonationEventRepository.save(bookDonationEvent);
-        return new MessageDto("이벤트추가가 완료되었습니다");
+        return new MessageAndDonationIdDto(bookDonationEvent.getDonationId(),"이벤트추가가 완료되었습니다");
     }
 
 
     @Transactional
-    public MessageDto updateDonationEvent(Long donationId, BookDonationEventRequestDto bookDonationEventRequestDto) {
+    public MessageAndDonationIdDto updateDonationEvent(Long donationId, BookDonationEventRequestDto bookDonationEventRequestDto) {
         BookDonationEvent bookDonationEvent = bookDonationEventRepository.findById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
         );
         bookDonationEvent.update(bookDonationEventRequestDto);
-        return new MessageDto("이벤트 수정이 완료되었습니다");
+        return new MessageAndDonationIdDto(bookDonationEvent.getDonationId(),"이벤트 수정이 완료되었습니다");
     }
 
     @Transactional
-    public MessageDto deleteDonationEvent(Long donationId) {
+    public MessageAndDonationIdDto deleteDonationEvent(Long donationId) {
         User user = SecurityUtil.getPrincipal().get();
         if(!user.getRole().getAuthority().equals("ROLE_ADMIN")){
-            return new MessageDto("관리자만 이벤트를 삭제할 수 있습니다.");
+            return new MessageAndDonationIdDto(user.getUserId(),"관리자만 이벤트를 삭제할 수 있습니다.");
         }
         BookDonationEvent bookDonationEvent = bookDonationEventRepository.findFetchJoinById(donationId).orElseThrow(
                 () -> new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.")
@@ -127,7 +130,7 @@ public class BookDonationEventService {
         }
 
         bookDonationEventRepository.delete(bookDonationEvent);
-        return new MessageDto("이벤트 삭제가 완료되었습니다");
+        return new MessageAndDonationIdDto(bookDonationEvent.getDonationId(),"이벤트 삭제가 완료되었습니다");
     }
 
     public List<BookDonationEventResponseDto> getDonationEvent() {

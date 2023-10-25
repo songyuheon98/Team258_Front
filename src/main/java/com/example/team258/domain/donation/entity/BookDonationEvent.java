@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Builder
 public class BookDonationEvent {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="donation_id")
     private Long donationId;
 

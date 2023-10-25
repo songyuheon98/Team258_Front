@@ -17,4 +17,9 @@ public class BookDonationEventResponseDtoV3 {
         this.createdAt = t.getCreatedAt();
         this.closedAt = t.getClosedAt();
     }
+    public BookDonationEventResponseDtoV3(Long donationId, LocalDateTime createdAt, LocalDateTime closedAt) {
+        this.donationId = donationId;
+        this.createdAt = createdAt;
+        this.closedAt = closedAt;
+    }
 }

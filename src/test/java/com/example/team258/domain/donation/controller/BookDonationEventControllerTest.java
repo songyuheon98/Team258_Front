@@ -1,10 +1,7 @@
 package com.example.team258.domain.donation.controller;
 
 import com.example.team258.common.dto.MessageDto;
-import com.example.team258.domain.donation.dto.BookDonationEventRequestDto;
-import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
-import com.example.team258.domain.donation.dto.BookDonationSettingCancelRequestDto;
-import com.example.team258.domain.donation.dto.BookDonationSettingRequestDto;
+import com.example.team258.domain.donation.dto.*;
 import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +45,7 @@ class BookDonationEventControllerTest {
     @Test
     void createDonationEvent() throws Exception {
         // given
-        MessageDto msg =  MessageDto.builder()
+        MessageAndDonationIdDto msg =  MessageAndDonationIdDto.builder()
                 .msg("이벤트추가가 완료되었습니다")
                 .build();
 
@@ -69,7 +66,7 @@ class BookDonationEventControllerTest {
     @Test
     void updateDonationEvent() throws Exception {
         // given
-        MessageDto msg =  MessageDto.builder()
+        MessageAndDonationIdDto msg =  MessageAndDonationIdDto.builder()
                 .msg("이벤트 수정이 완료되었습니다")
                 .build();
 
@@ -89,7 +86,7 @@ class BookDonationEventControllerTest {
     @Test
     void deleteDonationEvent() throws Exception {
         // given
-        MessageDto msg =  MessageDto.builder()
+        MessageAndDonationIdDto msg =  MessageAndDonationIdDto.builder()
                 .msg("이벤트 삭제가 완료되었습니다")
                 .build();
 
