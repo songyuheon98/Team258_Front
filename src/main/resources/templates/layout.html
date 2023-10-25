@@ -18,6 +18,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <!--  각 세부 페이지 기능 구현  -->
 
+    <script>
+        // JavaScript
+        window.addEventListener('load', function() {
+            // 페이지 로드가 완료될 때 실행되는 코드
+            adjustContentPosition();
+        });
+
+        // 화면 크기가 변할 때 실행되는 코드
+        window.addEventListener('resize', function() {
+            adjustContentPosition();
+        });
+
+        function adjustContentPosition() {
+            var headerHeight = document.querySelector('.index-header') ? document.querySelector('.index-header').offsetHeight : 0;
+            var container = document.querySelector('.index-container');
+            var contents = document.querySelector('.index-contents');
+
+            if (container && contents) {
+                container.style.marginTop = headerHeight + 'px';
+                contents.style.maxHeight = (100 - (headerHeight / window.innerHeight) * 100) + 'vh';
+            }
+        }
+    </script>
+
+
 </head>
 
 <body class="index-body">
