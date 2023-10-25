@@ -1,4 +1,4 @@
-package com.example.team258.controller.serviceController;
+package com.example.team258.domain.donation.controller;
 
 import com.example.team258.domain.donation.dto.BookApplyDonationRequestDto;
 import com.example.team258.domain.donation.dto.BookApplyDonationResponseDto;
@@ -32,11 +32,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureMockMvc(addFilters = false)
-class BookApplyDonationViewControllerTest {
+class BookApplyDonationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -53,7 +54,7 @@ class BookApplyDonationViewControllerTest {
                 .build();
 
         // when
-        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+        when(bookApplyDonationService.createBookApplyDonation(any(BookApplyDonationRequestDto.class))).thenReturn(msg);
 
         // then
         mockMvc.perform(post("/api/user/bookApplyDonation")
@@ -72,7 +73,7 @@ class BookApplyDonationViewControllerTest {
                 .build();
 
         // when
-        when(bookApplyDonationService.deleteBookApplyDonation(any(Long.class))).thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+        when(bookApplyDonationService.deleteBookApplyDonation(any(Long.class))).thenReturn(msg);
 
         // then
         mockMvc.perform(delete("/api/user/bookApplyDonation/{applyId}", 1L))
@@ -86,12 +87,12 @@ class BookApplyDonationViewControllerTest {
         // given
         List<BookResponseDto> bookResponseDtos = new ArrayList<>();
         Book book = Book.builder()
-                        .bookId(1L)
-                        .bookName("bookName")
-                        .bookAuthor("bookAuthor")
-                        .bookPublish("2011")
-                        .bookStatus(BookStatusEnum.POSSIBLE)
-                        .build();
+                .bookId(1L)
+                .bookName("bookName")
+                .bookAuthor("bookAuthor")
+                .bookPublish("2011")
+                .bookStatus(BookStatusEnum.POSSIBLE)
+                .build();
         bookResponseDtos.add(new BookResponseDto(book));
 
         // when

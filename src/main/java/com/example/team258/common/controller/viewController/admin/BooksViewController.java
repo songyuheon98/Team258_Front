@@ -1,10 +1,12 @@
 package com.example.team258.common.controller.viewController.admin;
 
+import com.example.team258.common.dto.BooksPageResponseDto;
 import com.example.team258.domain.admin.dto.AdminBooksResponseDto;
 import com.example.team258.common.security.UserDetailsImpl;
 import com.example.team258.domain.admin.service.AdminBooksService;
 import com.example.team258.domain.admin.service.AdminCategoriesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -33,18 +35,21 @@ public class BooksViewController {
     }
 
     @GetMapping("/admin/booksManage")
-    public String adminBooksManageView(
-            Model model,
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword) {
+    public String adminBooksManageView( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, // 현재 페이지, 페이지 크기
+                                        @RequestParam(defaultValue = "bookId") String sort, @RequestParam(defaultValue = "ASC") String direction, // 정렬 기준, 정렬 방향
+                                        @RequestParam(value = "keyword", required = false) String keyword, // 검색 키워드
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 
-        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooksPagedAndSearched(userDetails.getUser(), keyword, pageable);
-        List<AdminBooksResponseDto> bookResponseDtos = bookResponsePage.getContent();
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
 
-        model.addAttribute("books", bookResponseDtos);
-        model.addAttribute("currentPage", bookResponsePage.getNumber());
-        model.addAttribute("totalPages", bookResponsePage.getTotalPages());
+        PageRequest pageRequest = PageRequest.of(page, size, sortDirection, sort);
+
+        BooksPageResponseDto booksPageResponseDto =
+                adminBooksService.findBooksWithPaginationAndSearching(userDetails.getUser(), keyword, pageRequest);
+
+        model.addAttribute("books", booksPageResponseDto.getAdminBooksResponseDtos());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", booksPageResponseDto.getTotalPages());
 
         return "/admin/booksManage";
     }

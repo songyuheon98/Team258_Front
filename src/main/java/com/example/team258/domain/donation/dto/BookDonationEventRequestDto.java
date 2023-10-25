@@ -1,11 +1,14 @@
 package com.example.team258.domain.donation.dto;
 
 
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDonationEventRequestDto {
     private LocalDateTime createdAt;
     private LocalDateTime closedAt;

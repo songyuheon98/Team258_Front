@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -89,7 +87,7 @@ class AdminCategoriesControllerTest {
 
 
             when(adminCategoriesService.createBookCategory(any(), any()))
-                    .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
+                    .thenReturn(successMessage);
 
             // when
             mockMvc.perform(post("/api/admin/categories")
@@ -131,7 +129,7 @@ class AdminCategoriesControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             when(adminCategoriesService.createSubBookCategory(eq(parentId), any(), any()))
-                    .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
+                    .thenReturn(successMessage);
 
             // when
             mockMvc.perform(post("/api/admin/categories/{parentId}/subcategories", parentId)
@@ -174,19 +172,19 @@ class AdminCategoriesControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // when
-            when(adminCategoriesService.getAllCategoriesPagedAndSearch(any(), any(), any()))
-                    .thenReturn(new PageImpl<>(categoriesList, PageRequest.of(0, 10), categoriesList.size()));
+            when(adminCategoriesService.getAllCategories())
+                    .thenReturn(categoriesList);
 
             // then
             mockMvc.perform(get("/api/admin/categories")
                             .contentType(MediaType.APPLICATION_JSON)
                             .principal(authentication))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.content", hasSize(2))) // 반환된 목록의 크기가 2여야 함
-                    .andExpect(jsonPath("$.content[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
-                    .andExpect(jsonPath("$.content[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
-                    .andExpect(jsonPath("$.content[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
-                    .andExpect(jsonPath("$.content[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
+                    .andExpect(jsonPath("$", hasSize(2))) // 반환된 목록의 크기가 2여야 함
+                    .andExpect(jsonPath("$[0].bookCategoryId").value(1L)) // 첫 번째 카테고리의 ID가 1L이어야 함
+                    .andExpect(jsonPath("$[0].bookCategoryName").value("카테고리1")) // 첫 번째 카테고리의 이름이 "카테고리1"이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryId").value(2L)) // 두 번째 카테고리의 ID가 2L이어야 함
+                    .andExpect(jsonPath("$[1].bookCategoryName").value("카테고리2")); // 두 번째 카테고리의 이름이 "카테고리2"이어야 함
         }
 
 
@@ -228,7 +226,7 @@ class AdminCategoriesControllerTest {
 
             // when
             when(adminCategoriesService.updateBookCategory(1L, requestDto, adminUser))
-                    .thenReturn(new ResponseEntity<>(successMessage, HttpStatus.OK));
+                    .thenReturn(successMessage);
 
             // then
             mockMvc.perform(put("/api/admin/categories/{bookCategoryId}", bookCategoryId)
@@ -273,7 +271,7 @@ class AdminCategoriesControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             when(adminCategoriesService.updateBookCategory(bookId, categoryId, adminUserDetails.getUser()))
-                    .thenReturn(new ResponseEntity<>(new MessageDto("도서의 카테고리가 수정되었습니다."), null, HttpStatus.OK));
+                    .thenReturn(new MessageDto("도서의 카테고리가 수정되었습니다."));
 
             when(adminBooksRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
             when(bookCategoryRepository.findById(categoryId)).thenReturn(Optional.of(newCategory));
@@ -317,7 +315,7 @@ class AdminCategoriesControllerTest {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             when(adminCategoriesService.deleteBookCategory(bookCategoryId, adminUserDetails.getUser()))
-                    .thenReturn(new ResponseEntity<>(successMessage, null, HttpStatus.OK));
+                    .thenReturn(successMessage);
 
             when(bookCategoryRepository.findById(bookCategoryId)).thenReturn(Optional.of(existingCategory));
 

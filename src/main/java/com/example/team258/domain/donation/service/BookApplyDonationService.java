@@ -5,6 +5,7 @@ import com.example.team258.common.dto.BookResponsePageDto;
 import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
+import com.example.team258.common.entity.QBook;
 import com.example.team258.common.entity.User;
 import com.example.team258.common.jwt.SecurityUtil;
 import com.example.team258.common.repository.BookRepository;
@@ -16,8 +17,10 @@ import com.example.team258.domain.donation.entity.BookApplyDonation;
 import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.repository.BookApplyDonationRepository;
 import com.example.team258.domain.donation.repository.BookDonationEventRepository;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,23 +40,22 @@ public class BookApplyDonationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<MessageDto> createBookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
+    public MessageDto createBookApplyDonation(BookApplyDonationRequestDto bookApplyDonationRequestDto) {
         /**
          * 나눔 책이 존재하지 않을때
          */
+
         Book book = bookRepository.findById(bookApplyDonationRequestDto.getBookId())
                 .orElseThrow(()->new IllegalArgumentException("나눔 신청한 책이 존재하지 않습니다."));
         /**
          * 나눔 신청한 책이 나눔 상태가 아닐때
          */
-
         /**
          * 누군가 먼저 신청했을때
          */
         if(book.getBookApplyDonation()!=null){
-            return ResponseEntity.ok().body(new MessageDto("이미 누군가 먼저 신청했습니다."));
+            return new MessageDto("이미 누군가 먼저 신청했습니다.");
         }
-
         /**
          * 나눔 이벤트 시간이 아닐때
          */
@@ -62,26 +64,23 @@ public class BookApplyDonationService {
 
         if(LocalDateTime.now().isBefore(bookDonationEvent.getCreatedAt()) ||
                 LocalDateTime.now().isAfter( bookDonationEvent.getClosedAt())){
-            return ResponseEntity.badRequest().body(new MessageDto("책 나눔 이벤트 기간이 아닙니다."));
+            return new MessageDto("책 나눔 이벤트 기간이 아닙니다.");
         }
-
         /**
          * 신청자가 도서관 사용자가 아닐때
          */
         User user = userRepository.findById(SecurityUtil.getPrincipal().get().getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자는 도서관 사용자가 아닙니다.")
         );
-        /**
+            /**
          * 나눔 신청
          */
         BookApplyDonation bookApplyDonation = new BookApplyDonation(bookApplyDonationRequestDto);
         bookApplyDonationRepository.save(bookApplyDonation);
-
         /**
          * book과 편의 메소드로 양방향 관계 설정
          */
         bookApplyDonation.addBook(book);
-
         /**
          * user, bookDonationEvent와 단방향 관계 설정
          */
@@ -91,12 +90,11 @@ public class BookApplyDonationService {
         /**
          * book의 상태 변경
          */
-
-        return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 완료되었습니다."));
+        return new MessageDto("책 나눔 신청이 완료되었습니다.");
     }
 
     @Transactional
-    public ResponseEntity<MessageDto> deleteBookApplyDonation(Long applyId) {
+    public MessageDto deleteBookApplyDonation(Long applyId) {
         BookApplyDonation bookApplyDonation = bookApplyDonationRepository.findById(applyId)
                 .orElseThrow(()->new IllegalArgumentException("해당 신청이 존재하지 않습니다."));
 
@@ -115,7 +113,7 @@ public class BookApplyDonationService {
          */
         bookApplyDonationRepository.delete(bookApplyDonation);
 
-        return ResponseEntity.ok().body(new MessageDto("책 나눔 신청이 취소되었습니다."));
+        return new MessageDto("책 나눔 신청이 취소되었습니다.");
     }
 
     public List<BookResponseDto> getDonationBooks(BookStatusEnum bookStatus) {
@@ -133,6 +131,29 @@ public class BookApplyDonationService {
 
         return new BookResponsePageDto(bookResponseDtos, pageBooks.getTotalPages());
     }
+    public BookResponsePageDto getDonationBooksV3(BookStatusEnum bookStatusEnum, PageRequest pageRequest, BookResponseDto bookResponseDto) {
+        QBook qBook = QBook.book;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(bookResponseDto.getBookId()!=null && !bookResponseDto.getBookId().equals(""))
+            builder.and(qBook.bookId.eq(bookResponseDto.getBookId()));
+
+        if(bookResponseDto.getBookName()!=null && !bookResponseDto.getBookName().equals(""))
+            builder.and(qBook.bookName.contains(bookResponseDto.getBookName()));
+        if(bookResponseDto.getBookAuthor()!=null && !bookResponseDto.getBookAuthor().equals(""))
+            builder.and(qBook.bookAuthor.contains(bookResponseDto.getBookAuthor()));
+        if(bookResponseDto.getBookPublish()!=null && !bookResponseDto.getBookPublish().equals(""))
+            builder.and(qBook.bookPublish.contains(bookResponseDto.getBookPublish()));
+        builder.and(qBook.bookStatus.eq(bookStatusEnum));
+
+        Page<Book> pageBooks = bookRepository.findAll(builder, pageRequest);
+
+        List<BookResponseDto> bookResponseDtos= pageBooks.stream()
+                .map(BookResponseDto::new)
+                .toList();
+
+        return new BookResponsePageDto(bookResponseDtos, pageBooks.getTotalPages());
+    }
 
     public List<BookApplyDonationResponseDto> getBookApplyDonations() {
         return bookApplyDonationRepository.findAll().stream()
@@ -143,11 +164,12 @@ public class BookApplyDonationService {
 
     public UserBookApplyCancelPageResponseDto getDonationBooksCancel() {
         Long userId = SecurityUtil.getPrincipal().get().getUserId();
-        User user = userRepository.findById(userId).orElseThrow(
+        User user = userRepository.findFetchJoinById(userId).orElseThrow(
                 ()->new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         return new UserBookApplyCancelPageResponseDto(user);
     }
+
 
 
 }

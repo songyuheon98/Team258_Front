@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class BookService {
     private final BookRepository bookRepository;
 
+    //페이징, 키워드검색도 컨벤션 참고
     public Page<Book> findBookByNameAndRoleAndDonationIdWithPagination(String bookName, String author, String publish, String status,
                                                                        Long donationId, Pageable pageable) {
         QBook qBook = QBook.book;

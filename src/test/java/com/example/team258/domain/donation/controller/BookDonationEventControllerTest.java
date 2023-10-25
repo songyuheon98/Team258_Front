@@ -1,8 +1,10 @@
-package com.example.team258.controller.serviceController;
+package com.example.team258.domain.donation.controller;
 
+import com.example.team258.common.dto.MessageDto;
 import com.example.team258.domain.donation.dto.BookDonationEventRequestDto;
 import com.example.team258.domain.donation.dto.BookDonationEventResponseDto;
-import com.example.team258.common.dto.MessageDto;
+import com.example.team258.domain.donation.dto.BookDonationSettingCancelRequestDto;
+import com.example.team258.domain.donation.dto.BookDonationSettingRequestDto;
 import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +27,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +53,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.createDonationEvent(any(BookDonationEventRequestDto.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
@@ -71,7 +74,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.updateDonationEvent(any(Long.class),any(BookDonationEventRequestDto.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
@@ -91,7 +94,7 @@ class BookDonationEventControllerTest {
                 .build();
 
         when(bookDonationEventService.deleteDonationEvent(any(Long.class)))
-                .thenReturn(new ResponseEntity<>(msg, HttpStatus.OK));
+                .thenReturn(msg);
 
         // when
         // then
@@ -108,11 +111,11 @@ class BookDonationEventControllerTest {
         bookDonationEventResponseDtos.add(
                 new BookDonationEventResponseDto(
                         BookDonationEvent.builder()
-                        .donationId(1L)
-                        .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
-                        .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
+                                .donationId(1L)
+                                .createdAt(LocalDateTime.parse("2023-10-12T19:16:01"))
+                                .closedAt(LocalDateTime.parse("2023-10-12T19:16:59"))
                                 .books(new ArrayList<>())
-                        .build()
+                                .build()
                 )
         );
 
@@ -126,6 +129,57 @@ class BookDonationEventControllerTest {
                 .andExpect(jsonPath("$[0].donationId").value(1L))
                 .andExpect(jsonPath("$[0].createdAt").value("2023-10-12T19:16:01"))
                 .andExpect(jsonPath("$[0].closedAt").value("2023-10-12T19:16:59"))
+                .andDo(print());
+
+    }
+
+    @Test
+    void settingDonationEvent() throws Exception {
+        // given
+        BookDonationSettingRequestDto bookDonationSettingRequestDto = new BookDonationSettingRequestDto();
+        bookDonationSettingRequestDto.setDonationId(1L);
+        bookDonationSettingRequestDto.setBookIds(new ArrayList<>());
+
+
+        when(bookDonationEventService.settingDonationEvent(any(BookDonationSettingRequestDto.class))).thenReturn(new MessageDto("이벤트 설정이 완료되었습니다"));
+
+        // when
+        // then
+        mockMvc.perform(put("/api/admin/donation/setting")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(bookDonationSettingRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("이벤트 설정이 완료되었습니다"))
+                .andDo(print());
+    }
+
+    @Test
+    void settingCancelDonationEvent() throws Exception {
+        // given
+        when(bookDonationEventService.settingCancelDonationEvent(any(BookDonationSettingCancelRequestDto.class))).thenReturn(new MessageDto("이벤트 설정 취소가 완료되었습니다"));
+
+        // when
+        // then
+        mockMvc.perform(put("/api/admin/donation/settingCancel")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new BookDonationSettingCancelRequestDto())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("이벤트 설정 취소가 완료되었습니다"))
+                .andDo(print());
+    }
+
+    @Test
+    void endDonationEvent() throws Exception {
+        // given
+        when(bookDonationEventService.endDonationEvent(any(Long.class))).thenReturn(new MessageDto("이벤트 종료가 완료되었습니다"));
+
+        // when
+        // then
+        mockMvc.perform(delete("/api/admin/donation/end/{donationId}",1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new BookDonationSettingCancelRequestDto())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.msg").value("이벤트 종료가 완료되었습니다"))
                 .andDo(print());
 
     }

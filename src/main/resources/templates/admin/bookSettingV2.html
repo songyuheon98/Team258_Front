@@ -17,7 +17,29 @@
     <div class="container">
         <div class="container-container1">
             <span class="container-text"><span>Book Donation Event List - ADMIN ONLY</span></span>
-
+            <div class="search-form mb-4" style="max-width: 1200px; margin: 0 auto;">
+                <form th:action="@{/admin/donation/bookSetting/{donationId}/v3(donationId=${donationId})}" method="get" class="row">
+                    <div class="col-2 mb-2">
+                        <input type="text" class="form-control" id="bookIdSearch" name="bookId"
+                               placeholder="book Id">
+                    </div>
+                    <div class="col-2 mb-2">
+                        <input type="text" class="form-control" id="bookNameSearch" name="bookName"
+                               placeholder="book Name">
+                    </div>
+                    <div class="col-2 mb-2">
+                        <input type="text" class="form-control" id="authorSearch" name="author"
+                               placeholder="Author">
+                    </div>
+                    <div class="col-2 mb-2">
+                        <input type="text" class="form-control" id="publishSearch" name="publish"
+                               placeholder="Publisher">
+                    </div>
+                    <div class="col-2 mb-2">
+                        <button type="submit" class="btn btn-primary w-100">검색</button>
+                    </div>
+                </form>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>

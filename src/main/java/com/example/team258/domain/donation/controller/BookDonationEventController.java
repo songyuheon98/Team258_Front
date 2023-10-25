@@ -20,17 +20,17 @@ public class BookDonationEventController {
     private final BookDonationEventService bookDonationEventService;
     @PostMapping
     public ResponseEntity<MessageDto> createDonationEvent(@RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
-        return bookDonationEventService.createDonationEvent(bookDonationEventRequestDto);
+        return ResponseEntity.ok().body(bookDonationEventService.createDonationEvent(bookDonationEventRequestDto));
     }
 
     @PutMapping("/{donationId}")
     public ResponseEntity<MessageDto> updateDonationEvent(@PathVariable Long donationId, @RequestBody BookDonationEventRequestDto bookDonationEventRequestDto){
-        return bookDonationEventService.updateDonationEvent(donationId,bookDonationEventRequestDto);
+        return ResponseEntity.ok().body(bookDonationEventService.updateDonationEvent(donationId,bookDonationEventRequestDto));
     }
 
     @DeleteMapping("/{donationId}")
     public ResponseEntity<MessageDto> deleteDonationEvent(@PathVariable Long donationId){
-        return bookDonationEventService.deleteDonationEvent(donationId);
+        return ResponseEntity.ok().body(bookDonationEventService.deleteDonationEvent(donationId));
     }
 
     @GetMapping

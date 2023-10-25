@@ -15,6 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/admin/books")
 @RequiredArgsConstructor
@@ -25,24 +27,20 @@ public class AdminBooksController {
     @PostMapping
     public ResponseEntity<MessageDto> createBook(@RequestBody AdminBooksRequestDto requestDto,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminBooksService.createBook(requestDto, userDetails.getUser());
+        return ResponseEntity.ok().body(adminBooksService.createBook(requestDto, userDetails.getUser()));
     }
 
     // READ ALL with Paging and Search
     @GetMapping
-    public ResponseEntity<Page<AdminBooksResponseDto>> getAllBooksPagedAndSearch(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PageableDefault(size = 10, sort = "bookId", direction = Sort.Direction.ASC) Pageable pageable,
-            @RequestParam(value = "keyword", required = false) String keyword) {
-        Page<AdminBooksResponseDto> bookResponsePage = adminBooksService.getAllBooksPagedAndSearched(userDetails.getUser(), keyword, pageable);
-        return ResponseEntity.ok(bookResponsePage);
+    public ResponseEntity<List<AdminBooksResponseDto>> getAllBooks() {
+        return ResponseEntity.ok().body(adminBooksService.getAllBooks());
     }
 
     // READ SELECT
     @GetMapping("/{bookId}")
     public ResponseEntity<AdminBooksResponseDto> getBook(@PathVariable Long bookId,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(adminBooksService.getBookById(bookId, userDetails.getUser()));
+        return ResponseEntity.ok().body(adminBooksService.getBookById(bookId, userDetails.getUser()));
     }
 
     // UPDATE SELECT
@@ -50,14 +48,14 @@ public class AdminBooksController {
     public ResponseEntity<MessageDto> updateBook(@RequestBody AdminBooksRequestDto requestDto,
                                                  @PathVariable Long bookId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminBooksService.updateBook(requestDto, bookId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminBooksService.updateBook(requestDto, bookId, userDetails.getUser()));
     }
 
     // DELETE SELECT
     @DeleteMapping("/{bookId}")
     public ResponseEntity<MessageDto> deleteBook(@PathVariable Long bookId,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminBooksService.deleteBook(bookId, userDetails.getUser());
+        return ResponseEntity.ok().body(adminBooksService.deleteBook(bookId, userDetails.getUser()));
     }
 }
 

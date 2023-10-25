@@ -20,12 +20,12 @@ public class BookApplyDonationController {
     private final BookApplyDonationService bookApplyDonationService;
     @PostMapping("/bookApplyDonation")
     public ResponseEntity<MessageDto> createBookApplyDonation(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
-        return bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto);
+        return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
     }
 
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
-        return bookApplyDonationService.deleteBookApplyDonation(applyId);
+        return ResponseEntity.ok().body(bookApplyDonationService.deleteBookApplyDonation(applyId));
     }
 
     /**
