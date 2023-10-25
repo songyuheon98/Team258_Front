@@ -11140,7 +11140,8 @@ textarea.form-control-lg {
     position: fixed;
     top: 250px;
 
-    height: 617px;
+    /*height: 617px;*/
+    height : 50%;
     padding: 10px;
     text-align: center;
 
