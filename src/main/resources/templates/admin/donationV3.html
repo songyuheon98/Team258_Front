@@ -33,7 +33,7 @@
 
 
                 <tbody>
-                <th:block th:each="event, eventStatus : ${events}">
+                <th:block th:each="event, eventStatus : ${events}" th:unless="${event.donationId == -1}">
                     <!-- 이벤트 정보 행 -->
                     <tr>
                         <td style="width: 10%;"><input class="form-control" type="text" th:value="${event.donationId}" name="donationId"

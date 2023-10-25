@@ -42,6 +42,11 @@ public class BookDonationEventService {
         int bookPageTemp[] = new int[eventListSize];
         int bookPageTotalTemp[] = new int[eventListSize];
 
+        if(eventListSize==0)
+            return new DonationV3ServiceResultDto(
+                    new BookDonationEventPageResponseDtoV3(List.of(new BookDonationEventResponseDtoV3(-1L, LocalDateTime.now(),LocalDateTime.now())),1),
+                    new int[]{0},new int[]{0});
+
         for (int i = 0; i < bookPage.length; i++)
             bookPageTemp[i] = bookPage[i];
 
@@ -55,6 +60,7 @@ public class BookDonationEventService {
                     bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().get(i).getDonationId(),
                     bookPageRequest));
         }
+
         /**
          * 이벤트에 대한 도서들 페이징 리스트를 이벤트에 추가
          */
@@ -64,6 +70,9 @@ public class BookDonationEventService {
             bookPageTotalTemp[i] = bookPages.get(i).getTotalPages();
         }
 
+
+        if(bookDonationEventPageResponseDtoV3.getBookDonationEventResponseDtoV3().size()!=0)
+            return new DonationV3ServiceResultDto(bookDonationEventPageResponseDtoV3, bookPageTotalTemp,bookPageTemp);
         return new DonationV3ServiceResultDto(bookDonationEventPageResponseDtoV3, bookPageTotalTemp,bookPageTemp);
 
     }
