@@ -114,7 +114,7 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.save(any(BookDonationEvent.class))).thenReturn(bookDonationEvent);
 
         //when
-        MessageDto result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
+        MessageAndDonationIdDto result = bookDonationEventService.createDonationEvent(BookDonationEventRequestDto.builder().build());
 
         //then
         assertThat(result.getMsg()).isEqualTo("이벤트추가가 완료되었습니다");
@@ -133,7 +133,7 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(java.util.Optional.ofNullable(bookDonationEvent));
 
         //when
-        MessageDto result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
+        MessageAndDonationIdDto result = bookDonationEventService.updateDonationEvent(1L, BookDonationEventRequestDto.builder().build());
 
         //then
         assertThat(result.getMsg()).isEqualTo("이벤트 수정이 완료되었습니다");
@@ -175,7 +175,7 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findFetchJoinById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageAndDonationIdDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
         assertThat(result.getMsg()).isEqualTo("이벤트 삭제가 완료되었습니다");
@@ -349,7 +349,7 @@ class BookDonationEventServiceTest {
         when(bookDonationEventRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookDonationEvent));
         when(bookApplyDonationRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(bookApplyDonation));
         // when
-        MessageDto result = bookDonationEventService.deleteDonationEvent(1L);
+        MessageAndDonationIdDto result = bookDonationEventService.deleteDonationEvent(1L);
 
         // then
         assertThat(result.getMsg()).isEqualTo("관리자만 이벤트를 삭제할 수 있습니다.");
