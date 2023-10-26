@@ -7,10 +7,12 @@ import com.example.team258.domain.donation.dto.BookApplyDonationRequestDto;
 import com.example.team258.domain.donation.dto.BookApplyDonationResponseDto;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,13 +20,23 @@ import java.util.List;
 public class BookApplyDonationController {
 
     private final BookApplyDonationService bookApplyDonationService;
+    private final Semaphore semaphore;
     @PostMapping("/bookApplyDonation")
     public ResponseEntity<MessageDto> createBookApplyDonation(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
-        return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
+        try{
+            semaphore.acquire();
+            return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new MessageDto("나눔 신청에 실패했습니다."));
+        }finally {
+            semaphore.release();
+        }
     }
 
     @DeleteMapping("/bookApplyDonation/{applyId}")
     public ResponseEntity<MessageDto> deleteBookApplyDonation(@PathVariable Long applyId){
+
         return ResponseEntity.ok().body(bookApplyDonationService.deleteBookApplyDonation(applyId));
     }
 
