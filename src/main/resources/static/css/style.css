@@ -11065,6 +11065,7 @@ textarea.form-control-lg {
     min-height: 100vh;
     align-items: center;
     flex-direction: column;
+    position: relative; /* 변경된 부분 */
 }
 
 /* Navigator */
@@ -11137,14 +11138,14 @@ textarea.form-control-lg {
 /* Contents */
 .index-contents {
     width: 100%;
-    position: fixed;
-    top: 250px;
-
-    height: 80%;
+    position: absolute; /* 변경된 부분 */
+    top: 25vh; /* 브라우저 뷰포트 높이의 20% 지점에 위치 */
+    height: auto;
     padding: 10px;
     text-align: center;
-
-    overflow-y: auto; /* 스크롤 */
+    max-height: 70vh; /* 브라우저 뷰포트 높이의 70%까지만 확장되도록 설정 */
+    overflow-y: auto;
+    margin: auto;
 }
 
 /* Footer */
@@ -11171,7 +11172,7 @@ textarea.form-control-lg {
 /* Contents - Container */
 .index-container2 {
     flex-direction: column; /* 추가 */
-
+    /*overflow: scroll;*/
     gap: 60px;
     height: 585px;
     display: flex;
