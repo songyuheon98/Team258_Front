@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,17 +22,16 @@ import java.util.concurrent.Semaphore;
 public class BookApplyDonationController {
 
     private final BookApplyDonationService bookApplyDonationService;
-    private final Semaphore semaphore;
+    private final Lock lock=new ReentrantLock();
+
     @PostMapping("/bookApplyDonation")
     public ResponseEntity<MessageDto> createBookApplyDonation(@RequestBody BookApplyDonationRequestDto bookApplyDonationRequestDto){
         try{
-            semaphore.acquire();
+            lock.lock();
             return ResponseEntity.ok().body(bookApplyDonationService.createBookApplyDonation(bookApplyDonationRequestDto));
-        }catch (InterruptedException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(new MessageDto("나눔 신청에 실패했습니다."));
-        }finally {
-            semaphore.release();
+        }
+        finally {
+            lock.unlock();
         }
     }
 
