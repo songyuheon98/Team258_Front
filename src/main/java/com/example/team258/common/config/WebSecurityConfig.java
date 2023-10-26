@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/users/**").permitAll() // '/api/users/'로 시작하는 POST 요청 모두 접근 허가
                         .requestMatchers(HttpMethod.GET,"/api/books/search**").permitAll() //
                         .requestMatchers(HttpMethod.GET,"/api/books/{bookId}").permitAll() //
+
                         .requestMatchers(HttpMethod.GET,"/api/books").permitAll() //
 
                         // swagger 관련 요청 허용
@@ -72,12 +73,12 @@ public class WebSecurityConfig {
 
         );
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAfter(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
 
 //        // 필터 관리
-//        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
-//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

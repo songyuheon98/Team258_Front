@@ -30,14 +30,14 @@ public class AdminUsersService {
     public MessageDto deleteUser(Long userId, User loginUser) {
         User user = getUserById(userId);
 
-//        if(loginUser.getRole().equals(UserRoleEnum.USER)) {   in (1,2,3,4,5)
-//            throw new IllegalArgumentException("관리자가 아닙니다.");
-//        }
+        if(loginUser.getRole().equals(UserRoleEnum.USER)) {
+            throw new IllegalArgumentException("관리자가 아닙니다.");
+        }
 
 
-//        if (loginUser.getUserId().equals(user.getUserId()) ) {
-//            throw new IllegalArgumentException("자기 자신은 삭제할 수 없습니다.");
-//        }
+        if (loginUser.getUserId().equals(user.getUserId()) ) {
+            throw new IllegalArgumentException("자기 자신은 삭제할 수 없습니다.");
+        }
 //
         //대여기록 삭제를 위한 Book에서의 연관관계 삭제
         List<BookRent> bookRents = user.getBookRents();
@@ -51,11 +51,11 @@ public class AdminUsersService {
         for (int i = 0; i < bookApplyDonationSize; i++) {
             BookApplyDonation bookApplyDonation =  user.getBookApplyDonations().get(i);
             Book book =bookApplyDonation.getBook();
-//            book.changeStatus(BookStatusEnum.DONATION);
-//            bookApplyDonation.removeBook(book);
+            book.changeStatus(BookStatusEnum.DONATION);
+            bookApplyDonation.removeBook(book);
         }
 
-        //userRepository.delete(user);
+        userRepository.delete(user);
         return new MessageDto("삭제가 완료되었습니다");
     }
 
