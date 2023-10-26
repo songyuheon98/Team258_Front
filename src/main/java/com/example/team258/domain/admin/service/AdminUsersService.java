@@ -4,6 +4,7 @@ import com.example.team258.common.dto.MessageDto;
 import com.example.team258.common.entity.Book;
 import com.example.team258.common.entity.BookStatusEnum;
 import com.example.team258.common.entity.User;
+import com.example.team258.common.entity.UserRoleEnum;
 import com.example.team258.common.repository.UserRepository;
 import com.example.team258.domain.admin.dto.AdminUsersResponseDto;
 import com.example.team258.domain.donation.entity.BookApplyDonation;
