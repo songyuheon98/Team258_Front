@@ -44,12 +44,15 @@ public class AdminBooksService {
         // book 생성을 위한 샘플 카테고리 생성
         bookCategoryRepository.save(bookCategory);
 
-        // 새로운 도서 생성
-        Book newBook = new Book(requestDto, bookCategory);
-
-        adminBooksRepository.save(newBook);
-
-        return new MessageDto("도서 추가가 완료되었습니다.");
+        // 이미 도서가 존재하는지 확인
+        if (!bookAlreadyExists(requestDto)) {
+            // 새로운 도서 생성
+            Book newBook = new Book(requestDto, bookCategory);
+            adminBooksRepository.save(newBook);
+            return new MessageDto("도서 추가가 완료되었습니다.");
+        } else {
+            return new MessageDto("이미 존재하는 도서입니다.");
+        }
     }
 
     public BooksPageResponseDto findBooksWithPaginationAndSearching(User loginUser, String keyword, Pageable pageable) {
@@ -117,6 +120,11 @@ public class AdminBooksService {
     private BookCategory checkExistingCategory(AdminBooksRequestDto requestDto) {
         return bookCategoryRepository.findById(requestDto.getBookCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
+    }
+
+    private boolean bookAlreadyExists(AdminBooksRequestDto requestDto) {
+        // 도서의 이름으로 중복 확인
+        return adminBooksRepository.findByBookName(requestDto.getBookName()).isPresent();
     }
 
     public List<AdminBooksResponseDto> getAllBooks() {

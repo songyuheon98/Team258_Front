@@ -34,17 +34,26 @@
         <!-- 페이지 번호 표시 -->
         <div class="pagination">
           <ul class="pagination d-inline">
-            <li th:if="${currentPage > 0}">
-              <a class="page-link" th:href="@{/admin/booksManage(page=${currentPage - 1}, keyword=${param.keyword})}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
+
+            <!-- 현재 페이지 번호가 10 이상일 경우, 이전 페이지 그룹의 첫 번째 페이지로 이동 -->
+            <li class="page-item" th:if="${(currentPage / 10 ) * 10 > 0}">
+              <a class="page-link" th:href="@{/admin/booksManage(page=${(currentPage / 10 - 1) * 10}, keyword=${param.keyword})}" aria-label="Go to the first page of the next group">
+                <span aria-hidden="true">«</span>
               </a>
             </li>
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'active' : ''">
-              <a class="page-link" th:href="@{/admin/booksManage(page=${i}, keyword=${param.keyword})}" th:text="${i + 1}"></a>
+
+            <!-- 현재 페이지 그룹의 페이지 번호들을 표시 -->
+            <li th:each="pageNumber : ${#numbers.sequence((currentPage / 10) * 10, (currentPage / 10) * 10 + 9)}"
+                th:if="${pageNumber < totalPages}"
+                class="page-item"
+                th:class="${pageNumber == currentPage ? 'active' : ''}">
+              <a class="page-link" th:href="@{/admin/booksManage(page=${pageNumber},keyword=${param.keyword})}" th:text="${pageNumber + 1}"></a>
             </li>
-            <li th:if="${currentPage < totalPages - 1}">
-              <a class="page-link" th:href="@{/admin/booksManage(page=${currentPage + 1}, keyword=${param.keyword})}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
+
+            <!-- 현재 페이지 그룹의 마지막 페이지가 전체 페이지 수보다 작을 경우, 다음 페이지 그룹의 첫 번째 페이지로 이동 -->
+            <li class="page-item" th:if="${(currentPage / 10 + 1) * 10 < totalPages}">
+              <a class="page-link" th:href="@{/admin/booksManage(page=${(currentPage / 10 + 1) * 10}, keyword=${param.keyword})}" aria-label="Go to the first page of the next group">
+                <span aria-hidden="true">»</span>
               </a>
             </li>
           </ul>

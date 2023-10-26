@@ -8,7 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AdminBooksRepository extends JpaRepository<Book, Long>, QuerydslPredicateExecutor<Book> {
     Page<Book> findAll(Specification<Book> spec, Pageable pageable);
+
+    Optional<Book> findByBookName(String bookName);
 }
