@@ -51,6 +51,6 @@ public class BooksViewController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", booksPageResponseDto.getTotalPages());
 
-        return "/admin/booksManage";
+        return "admin/booksManage";
     }
 }

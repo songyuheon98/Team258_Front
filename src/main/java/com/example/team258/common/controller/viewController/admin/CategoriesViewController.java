@@ -34,6 +34,6 @@ public class CategoriesViewController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", booksCategoryPageResponseDto.getTotalPages());
 
-        return "/admin/categories";
+        return "admin/categories";
     }
 }
