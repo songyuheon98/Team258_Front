@@ -10,3 +10,4 @@ public class MyRentalsViewController {
         return "/users/myrentals";
     }
 }
+
