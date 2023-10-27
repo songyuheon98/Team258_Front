@@ -34,6 +34,7 @@ class BookApplyDonationCancelMixedControllerTest {
         // when
         when(bookApplyDonationService.getDonationBooksCancel()).thenReturn(new UserBookApplyCancelPageResponseDto());
 
+
         // then
         mockMvc.perform(get("/users/bookApplyDonation/cancel"))
                 .andExpect(status().isOk())
