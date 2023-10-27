@@ -37,6 +37,6 @@ class BookApplyDonationCancelMixedControllerTest {
         // then
         mockMvc.perform(get("/users/bookApplyDonation/cancel"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/users/bookApplyDonationCancel"));
+                .andExpect(view().name("users/bookApplyDonationCancel"));
     }
 }
