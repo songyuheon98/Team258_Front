@@ -13,6 +13,7 @@ import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.example.team258.domain.donation.service.BookService;
+import com.example.team258.kafka.DonationEventV3KafkaDto;
 import com.example.team258.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,21 +62,22 @@ public class DonationMixedController {
      * 관리자 - 책 나눔 이벤트 관리 페이지 v3
      * @param eventPage : 현재 이벤트 페이지
      * @param bookPage :  현재 이벤트에 대한 도서들 페이지
-     * @param eventPagesize : 이벤트를 표시할 개수 (페이지)
-     * @param bookPagesize : 이벤트에 대한 도서들을 표시할 개수 (페이지)
+     * @param eventPageSize : 이벤트를 표시할 개수 (페이지)
+     * @param bookPageSize : 이벤트에 대한 도서들을 표시할 개수 (페이지)
      * @param model : 모델
      * @return : 뷰
      */
     @GetMapping("/v3")
     public String donationV3(@RequestParam(defaultValue = "0") int eventPage, @RequestParam(defaultValue = "0") int[] bookPage,
-                             @RequestParam(defaultValue = "3") int eventPagesize, @RequestParam(defaultValue = "3") int bookPagesize,
+                             @RequestParam(defaultValue = "3") int eventPageSize, @RequestParam(defaultValue = "3") int bookPageSize,
                              Model model) {
 
-        PageRequest eventPageRequest = PageRequest.of(eventPage, eventPagesize);  // page 파라미터로 받은 값을 사용
+        PageRequest eventPageRequest = PageRequest.of(eventPage, eventPageSize);  // page 파라미터로 받은 값을 사용
+        DonationEventV3KafkaDto donationEventV3KafkaDto = new DonationEventV3KafkaDto(bookPage, bookPageSize,eventPageRequest);
 
-        producer.sendMessage("test","test");
-
-        DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPagesize,eventPageRequest);
+//        producer.sendMessage("bookDonationEventApplyInput",donationEventV3KafkaDto);
+        
+        DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPageSize,eventPageRequest);
 
         model.addAttribute("events", donationV3ServiceResultDto.getBookDonationEventPageResponseDtoV3().getBookDonationEventResponseDtoV3());
         model.addAttribute("currentEventPage", eventPage);  // 현재 페이지 번호 추가
