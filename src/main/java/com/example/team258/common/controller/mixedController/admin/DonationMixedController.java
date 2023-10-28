@@ -13,6 +13,7 @@ import com.example.team258.domain.donation.entity.BookDonationEvent;
 import com.example.team258.domain.donation.service.BookApplyDonationService;
 import com.example.team258.domain.donation.service.BookDonationEventService;
 import com.example.team258.domain.donation.service.BookService;
+import com.example.team258.kafka.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,7 @@ public class DonationMixedController {
     private final BookApplyDonationService bookApplyDonationService;
     private final BookRepository bookRepository;
     private final BookService bookService;
+    private final KafkaProducerService producer;
 
 //    @GetMapping
 //    public String donation(Model model) {
@@ -70,6 +72,8 @@ public class DonationMixedController {
                              Model model) {
 
         PageRequest eventPageRequest = PageRequest.of(eventPage, eventPagesize);  // page 파라미터로 받은 값을 사용
+
+        producer.sendMessage("test","test");
 
         DonationV3ServiceResultDto donationV3ServiceResultDto = bookDonationEventService.donationV3Service(bookPage,  bookPagesize,eventPageRequest);
 
