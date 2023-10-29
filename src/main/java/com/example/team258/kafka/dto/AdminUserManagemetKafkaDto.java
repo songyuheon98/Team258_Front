@@ -11,6 +11,7 @@ public class AdminUserManagemetKafkaDto {
     private String userRole;
     private int page;
     private int pageSize;
+    private String correlationId;
     public AdminUserManagemetKafkaDto(String userName, String userRole, int page, int pageSize) {
         this.userName = userName;
         this.userRole = userRole;

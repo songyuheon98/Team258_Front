@@ -23,7 +23,7 @@ public class KafkaConsumerService {
     private final UserService userService;
     private final KafkaProducerService producer;
 
-    @KafkaListener(topics = "bookDonationEventApplyInput", groupId = "event-apply-Input-consumer-group")
+    @KafkaListener(topics = "user-management-input-topic", groupId = "user-management-input-consumer-group")
     public void AdminUserManagementConsume(String message) throws JsonProcessingException {
         System.out.println("Received Message in group 'test-consumer-group1': " + message);
 
@@ -34,10 +34,11 @@ public class KafkaConsumerService {
                 , PageRequest.of(kafkaDto.getPage(), kafkaDto.getPageSize()));
 
         List<UserResponseDto> userResponseDtos = users.stream().map(UserResponseDto::new).toList();
-        UserResponseKafkaDto userResponseKafkaDto = new UserResponseKafkaDto(userResponseDtos, kafkaDto.getPage(),users.getTotalPages());
+        UserResponseKafkaDto userResponseKafkaDto = new UserResponseKafkaDto(userResponseDtos, kafkaDto.getPage(),users.getTotalPages()
+                ,kafkaDto.getCorrelationId());
 
         String jsonString = objectMapper.writeValueAsString(userResponseKafkaDto);
-        producer.sendMessage("bookDonationEventApplyOutput", jsonString);
+        producer.sendMessage("user-management-output-topic", jsonString);
 
     }
 }
